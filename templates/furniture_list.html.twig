@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ title }}</h1>
+                <p class="lead text-muted">{{ description }}</p>
+                <p>
+                    <a href="/furniture/new" class="btn btn-primary my-2">neuen Einrichtungsgegenstand erstellen</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="album py-5">
+        <div class="container">
+            <h5>
+            {% for currentFurniture in furniture %}
+                <a href="/furniture/edit/{{ currentFurniture.id }}"><span class="badge {% if currentFurniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ currentFurniture.title }}</span></a>
+            {% endfor %}
+            </h5>
+        </div>
+    </div>
+{% endblock %}

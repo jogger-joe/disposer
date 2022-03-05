@@ -17,7 +17,7 @@ class DashboardController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $defaultFurniture = $doctrine->getRepository(Furniture::class)->findBy(['default' => true]);
+        $defaultFurniture = $doctrine->getRepository(Furniture::class)->findBy(['type' => 0]);
         $housings = $doctrine->getRepository(Housing::class)->findAll();
         $housingsWithMissingDefaultFurniture = new ArrayCollection();
 

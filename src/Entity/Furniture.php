@@ -29,14 +29,21 @@ class Furniture
     private $title;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      *
-     * @var bool
+     * @var int
      */
-    private $default = false;
+    private $type = 0;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Housing::class, inversedBy="furnitures")
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $amount = 0;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Housing::class, mappedBy="furnitures")
      *
      * @var Collection
      */
@@ -71,17 +78,17 @@ class Furniture
     /**
      * @return bool
      */
-    public function isDefault(): bool
+    public function getType(): bool
     {
-        return $this->default;
+        return $this->type == 1;
     }
 
     /**
-     * @param bool $default
+     * @param int $type
      */
-    public function setDefault(bool $default): void
+    public function setType(int $type): void
     {
-        $this->default = $default;
+        $this->type = $type;
     }
 
     /**
@@ -92,10 +99,23 @@ class Furniture
         return $this->housings;
     }
 
+    /**
+     * @param Collection $housings
+     * @return Collection
+     */
+    public function setHousings(Collection $housings): Collection
+    {
+        $this->housings->clear();
+        foreach ($housings as $housing) {
+            $this->addHousing($housing);
+        }
+        return $this->housings;
+    }
+
     public function addHousing(Housing $housing): self
     {
         if (!$this->housings->contains($housing)) {
-            $this->housings[] = $housing;
+            $this->housings->add($housing);
         }
         return $this;
     }
@@ -104,5 +124,21 @@ class Furniture
     {
         $this->housings->removeElement($housing);
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
     }
 }

@@ -34,11 +34,18 @@ class Housing
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Furniture::class, inversedBy="housings")
+     * @ORM\ManyToMany(targetEntity=Furniture::class, inversedBy="housings", cascade={"persist"})
      *
      * @var Collection
      */
     private $furnitures;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $status;
 
     public function __construct()
     {
@@ -94,7 +101,7 @@ class Housing
     public function addFurniture(Furniture $furniture): self
     {
         if (!$this->furnitures->contains($furniture)) {
-            $this->furnitures[] = $furniture;
+            $this->furnitures->add($furniture);
             $furniture->addHousing($this);
         }
         return $this;
@@ -104,5 +111,21 @@ class Housing
     {
         $this->furnitures->removeElement($furniture);
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
     }
 }

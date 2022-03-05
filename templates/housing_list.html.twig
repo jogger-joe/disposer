@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Übersicht der Einrichtungen</h1>
+                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Einrichtungen.</p>
+                <p>
+                    <a href="/housing/new" class="btn btn-primary my-2">neue Unterkunft erstellen</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="album py-5">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for currentHousing in housing %}
+                    <div class="col">
+                        <div
+                            class="card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="card-text">{{ currentHousing.title }} <span
+                                        class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {% if currentHousing.status == 2 %}voll belegt{% elseif currentHousing.status == 1 %}teilweise belegt{% else %}frei{% endif %}
+                                    </span></h3>
+                                <p class="card-text">{{ currentHousing.description }}</p>
+                                <h6>{% for furniture in currentHousing.furnitures %}
+                                        <span
+                                            class="badge {% if furniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ furniture.title }}</span>
+                                    {% endfor %}</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="/housing/edit/{{ currentHousing.id }}" type="button"
+                                           class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

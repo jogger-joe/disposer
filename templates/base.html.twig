@@ -18,20 +18,20 @@
 <nav class="py-2 bg-light border-bottom">
     <div class="container d-flex flex-wrap">
         <ul class="nav me-auto">
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Unterkünfte</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Einrichtungen</a></li>
+            <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
+            <li class="nav-item"><a href="/housing" class="nav-link link-dark px-2">Unterkünfte</a></li>
+            <li class="nav-item"><a href="/furniture" class="nav-link link-dark px-2">Einrichtungsgegenstände</a></li>
+            <li class="nav-item"><a href="/supporter" class="nav-link link-dark px-2">Helfer</a></li>
         </ul>
         <ul class="nav">
             <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Über</a></li>
+            <li class="nav-item"><a href="mailto:ich2211@gmail.com" class="nav-link link-dark px-2">Kontakt/Verbesserungsvorschläge</a></li>
         </ul>
     </div>
 </nav>
 <main>
-    <div class="bd-masthead mb-3" id="content">
-        <div class="container">
-            {% block body %}{% endblock %}
-        </div>
+    <div class="container">
+        {% block body %}{% endblock %}
     </div>
 </main>
 <footer></footer>
