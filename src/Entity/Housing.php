@@ -41,6 +41,11 @@ class Housing
     private $furnitures;
 
     /**
+     * @var Collection
+     */
+    private $missingDefaultFurnitures;
+
+    /**
      * @ORM\Column(type="integer")
      *
      * @var int
@@ -50,6 +55,7 @@ class Housing
     public function __construct()
     {
         $this->furnitures = new ArrayCollection();
+        $this->missingDefaultFurnitures = new ArrayCollection();
     }
 
 
@@ -127,5 +133,18 @@ class Housing
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    public function addMissingDefaultFurniture($defaultFurniture)
+    {
+        if (!$this->missingDefaultFurnitures instanceof ArrayCollection) {
+            $this->missingDefaultFurnitures = new ArrayCollection();
+        }
+        $this->missingDefaultFurnitures->add($defaultFurniture);
+    }
+
+    public function getMissingDefaultFurnitures()
+    {
+        return $this->missingDefaultFurnitures;
     }
 }

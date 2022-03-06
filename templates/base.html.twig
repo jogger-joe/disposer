@@ -9,13 +9,14 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" media="screen" />
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </head>
 <body>
-<nav class="py-2 bg-light border-bottom">
+<nav class="py-2 bg-light border-bottom fixed-top">
     <div class="container d-flex flex-wrap">
         <ul class="nav me-auto">
             <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
@@ -24,8 +25,7 @@
             <li class="nav-item"><a href="/supporter" class="nav-link link-dark px-2">Helfer</a></li>
         </ul>
         <ul class="nav">
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Über</a></li>
-            <li class="nav-item"><a href="mailto:ich2211@gmail.com" class="nav-link link-dark px-2">Kontakt/Verbesserungsvorschläge</a></li>
+            <li class="nav-item"><a href="mailto:ich2211@gmail.com" class="nav-link link-dark px-2" target="_blank">Kontakt/Verbesserungsvorschläge</a></li>
         </ul>
     </div>
 </nav>
@@ -34,6 +34,10 @@
         {% block body %}{% endblock %}
     </div>
 </main>
-<footer></footer>
+<footer class="footer mt-auto py-3 bg-light fixed-bottom">
+    <div class="container">
+        <span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190">Robert Mietusch</a></span>
+    </div>
+</footer>
 </body>
 </html>

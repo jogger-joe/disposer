@@ -1,23 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ title }}</h1>
+                <p class="lead text-muted">{{ description }}</p>
+                <p>
+                    <a href="/housing/new" class="btn btn-primary my-2">neue Unterkunft erstellen</a>
+                    <a href="/furniture/new" class="btn btn-primary my-2">neuen Einrichtungsgegenstand erstellen</a>
+                    <a href="/supporter/new" class="btn btn-primary my-2">neuen Helfer registrieren</a>
+                </p>
+            </div>
+        </div>
+    </section>
     <div class="album py-5">
         <div class="container">
-
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                {% for housing in housingsWithMissingDefaultFurniture %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="card-text">{{ housing.title }} <span
+                                        class="badge {% if housing.status == 2 %}bg-danger{% elseif housing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {% if housing.status == 2 %}voll belegt{% elseif housing.status == 1 %}teilweise belegt{% else %}frei{% endif %}
+                                    </span></h3>
+                                <p class="card-text">{{ housing.description }}</p>
+                                <h6>{% for defaultFurniture in housing.missingDefaultFurnitures %}
+                                        <span
+                                            class="badge bg-danger">{{ defaultFurniture.title }}</span>
+                                    {% endfor %}</h6>
+                                <h6>{% for furniture in housing.furnitures %}
+                                        <span
+                                            class="badge {% if furniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ furniture.title }}</span>
+                                    {% endfor %}</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="/housing/edit/{{ housing.id }}" type="button"
+                                           class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
