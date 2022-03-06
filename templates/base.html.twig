@@ -16,27 +16,34 @@
     {% endblock %}
 </head>
 <body>
-<nav class="py-2 bg-light border-bottom fixed-top">
+<nav class="py-2 bg-light border-bottom">
     <div class="container d-flex flex-wrap">
         <ul class="nav me-auto">
             <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-            <li class="nav-item"><a href="/housing" class="nav-link link-dark px-2">Unterkünfte</a></li>
-            <li class="nav-item"><a href="/furniture" class="nav-link link-dark px-2">Einrichtungsgegenstände</a></li>
-            <li class="nav-item"><a href="/supporter" class="nav-link link-dark px-2">Helfer</a></li>
+            <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">Unterkünfte</a></li>
+            <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände</a></li>
+            <li class="nav-item"><a href="{{ path('app_supporter_index') }}" class="nav-link link-dark px-2">Helfer</a></li>
         </ul>
         <ul class="nav">
             <li class="nav-item"><a href="mailto:ich2211@gmail.com" class="nav-link link-dark px-2" target="_blank">Kontakt/Verbesserungsvorschläge</a></li>
         </ul>
     </div>
 </nav>
+<header class="py-3 mb-4 border-bottom">
+    <div class="container d-flex flex-wrap justify-content-center">
+        <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+            <span class="fs-4 ps-2">Friedländer Unterkunftsverwalter <i class="bi bi-house-door"></i></span>
+        </a>
+    </div>
+</header>
 <main>
     <div class="container">
         {% block body %}{% endblock %}
     </div>
 </main>
-<footer class="footer mt-auto py-3 bg-light fixed-bottom">
+<footer class="footer mt-auto py-3 bg-light border-top">
     <div class="container">
-        <span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190">Robert Mietusch</a></span>
+        <p class="text-center"><span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190">Robert Mietusch</a></span></p>
     </div>
 </footer>
 </body>

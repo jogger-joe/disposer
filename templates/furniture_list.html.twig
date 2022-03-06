@@ -7,7 +7,8 @@
                 <h1 class="fw-light">{{ title }}</h1>
                 <p class="lead text-muted">{{ description }}</p>
                 <p>
-                    <a href="/furniture/new" class="btn btn-primary my-2">neuen Einrichtungsgegenstand erstellen</a>
+                    <a href="{{ path('app_furniture_new') }}" class="btn btn-primary my-2">neuen Einrichtungsgegenstand
+                        erstellen</a>
                 </p>
             </div>
         </div>
@@ -15,9 +16,11 @@
     <div class="album py-5">
         <div class="container">
             <h5>
-            {% for currentFurniture in furniture %}
-                <a href="/furniture/edit/{{ currentFurniture.id }}"><span class="badge {% if currentFurniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ currentFurniture.title }}</span></a>
-            {% endfor %}
+                {% for currentFurniture in furniture |sort((a, b) => a.title <=> b.title) %}
+                    <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}"><span
+                            class="badge {% if currentFurniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ currentFurniture.title }} (<span
+                                title="gesamt {{ currentFurniture.amount }}, verbraucht {{ currentFurniture.used }}">{{ currentFurniture.remaining }}</span>)</span></a>
+                {% endfor %}
             </h5>
         </div>
     </div>

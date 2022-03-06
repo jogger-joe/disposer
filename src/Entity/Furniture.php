@@ -141,4 +141,12 @@ class Furniture
     {
         $this->amount = $amount;
     }
+
+    public function getRemaining(): int {
+        return $this->amount - $this->housings->count();
+    }
+
+    public function getUsed(): int {
+        return $this->housings->count();
+    }
 }

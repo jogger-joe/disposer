@@ -25,6 +25,7 @@ class HousingType extends AbstractType
                     'frei' => 0,
                     'teilweise belegt' => 1,
                     'vollständig belegt' => 2,
+                    'bezugsbereit' => 3,
                 ],
                 'multiple' => false,
                 'expanded' => true,])
