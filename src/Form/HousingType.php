@@ -40,7 +40,7 @@ class HousingType extends AbstractType
                     return $choice->getType() == 0 ? 'Sonstige' : 'Standard';
                 },
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'required' => false])
             ->add('save', SubmitType::class, ['label' => 'Speichern']);
     }
