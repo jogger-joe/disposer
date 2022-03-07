@@ -1,6 +1,6 @@
-# Symfony Docker
+# Disposer
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
+This Project contains a [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
 
 ![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
 
@@ -12,17 +12,18 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 5. Run `docker-compose down --remove-orphans` to stop the Docker containers.
 
-## Features
+## Fist Start of Application
 
-* Production, development and CI ready
-* Automatic HTTPS (in dev and in prod!)
-* HTTP/2, HTTP/3 and [Preload](https://symfony.com/doc/current/web_link.html) support
-* Built-in [Mercure](https://symfony.com/doc/current/mercure.html) hub
-* [Vulcain](https://vulcain.rocks) support
-* Just 2 services (PHP FPM and Caddy server)
-* Super-readable configuration
+1. Install PHP-Dependencies with composer: ``composer install``
+2. Create Schema by using Symfony-CLI inside PHP-Container: 
+``docker exec -it disposer_php_1 php bin/console doctrine:schema:create``
+3. Install JS-Dependencies: ``npm install``
+4. Build JS & CSS dependencies with Webpack: ``npm run build``
 
-**Enjoy!**
+
+## Deployment
+
+TODO 
 
 ## Docs
 
@@ -34,6 +35,3 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 6. [Using a Makefile](docs/makefile.md)
 7. [Troubleshooting](docs/troubleshooting.md)
 
-## Credits
-
-Created by [Kévin Dunglas](https://dunglas.fr), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
