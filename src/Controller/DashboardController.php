@@ -33,13 +33,13 @@ class DashboardController extends AbstractController
                     $housing->addMissingDefaultFurniture($currentDefaultFurniture);
                 }
             }
-            if ($housing->getMissingDefaultFurnitures()){
+            if ($housing->getMissingDefaultFurnitures() || $housing->getMissingServices()){
                 $housingsWithMissingDefaultFurniture->add($housing);
             }
         }
         return $this->render('dashboard.html.twig', [
             'title' =>  'Dashboard',
-            'description' =>  'Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen angezeigt. Rot Markiert ist die fehlende Standardeinrichtung. Darunter ist die bestehende Einrichtung zu sehen.',
+            'description' =>  'Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder Dienstleistungen angezeigt.',
             'housingsWithMissingDefaultFurniture' => $housingsWithMissingDefaultFurniture,
         ]);
     }

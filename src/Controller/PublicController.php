@@ -6,9 +6,7 @@ use App\Entity\Furniture;
 use App\Entity\Housing;
 use App\Entity\Service;
 use App\Entity\Supporter;
-use App\Form\HousingType;
 use App\Form\SupporterType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +23,6 @@ class PublicController extends AbstractController
         $defaultFurniture = $doctrine->getRepository(Furniture::class)->findBy(['type' => 1]);
         $services = $doctrine->getRepository(Service::class)->findAll();
         $housing = $doctrine->getRepository(Housing::class)->findAll();
-
         return $this->render('public.html.twig', [
             'furnitures' => $defaultFurniture,
             'services' => $services,
@@ -43,6 +40,7 @@ class PublicController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $supporter = $form->getData();
+            $supporter->setStatus(0);
             $doctrine->getManager()->persist($supporter);
             $doctrine->getManager()->flush($supporter);
             return $this->redirectToRoute('app_public_index');

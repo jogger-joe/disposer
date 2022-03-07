@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Furniture;
 use App\Entity\Housing;
+use App\Entity\Service;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,7 +31,7 @@ class HousingType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,])
             ->add('furnitures', EntityType::class, [
-                'label' => 'Einrichtungsgegenstände',
+                'label' => 'vorhandene Einrichtungsgegenstände',
                 'class' => Furniture::class,
                 'by_reference' => false,
                 'choice_label' => function (Furniture $furniture) {
@@ -38,6 +39,16 @@ class HousingType extends AbstractType
                 },
                 'group_by' => function(Furniture $choice, $key, $value) {
                     return $choice->getType() == 0 ? 'Sonstige' : 'Standard';
+                },
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false])
+            ->add('missingServices', EntityType::class, [
+                'label' => 'benötigte Dienstleistungen',
+                'class' => Service::class,
+                'by_reference' => false,
+                'choice_label' => function (Service $service) {
+                    return $service->getTitle();
                 },
                 'multiple' => true,
                 'expanded' => false,

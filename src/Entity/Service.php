@@ -33,9 +33,17 @@ class Service
      */
     private $housings;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Supporter::class, mappedBy="availableServices")
+     *
+     * @var Collection
+     */
+    private $supporter;
+
     public function __construct()
     {
         $this->housings = new ArrayCollection();
+        $this->supporter = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,6 +99,41 @@ class Service
     public function removeHousing(Housing $housing): self
     {
         $this->housings->removeElement($housing);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Housing[]
+     */
+    public function getSupporter(): Collection
+    {
+        return $this->supporter;
+    }
+
+    /**
+     * @param Collection $supporter
+     * @return Collection
+     */
+    public function setSupporter(Collection $supporter): Collection
+    {
+        $this->supporter->clear();
+        foreach ($supporter as $currentSupporter) {
+            $this->addSupporter($currentSupporter);
+        }
+        return $this->supporter;
+    }
+
+    public function addSupporter(Supporter $supporter): self
+    {
+        if (!$this->supporter->contains($supporter)) {
+            $this->supporter->add($supporter);
+        }
+        return $this;
+    }
+
+    public function removeSupporter(Supporter $supporter): self
+    {
+        $this->supporter->removeElement($supporter);
         return $this;
     }
 

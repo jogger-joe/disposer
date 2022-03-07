@@ -45,7 +45,7 @@ class Housing
      *
      * @var Collection
      */
-    private $services;
+    private $missingServices;
 
     /**
      * @var Collection
@@ -62,7 +62,7 @@ class Housing
     public function __construct()
     {
         $this->furnitures = new ArrayCollection();
-        $this->services = new ArrayCollection();
+        $this->missingServices = new ArrayCollection();
         $this->missingDefaultFurnitures = new ArrayCollection();
     }
 
@@ -130,23 +130,23 @@ class Housing
     /**
      * @return Collection|Service[]
      */
-    public function getServices(): Collection
+    public function getMissingServices(): Collection
     {
-        return $this->services;
+        return $this->missingServices;
     }
 
-    public function addService(Service $service): self
+    public function addMissingService(Service $service): self
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
+        if (!$this->missingServices->contains($service)) {
+            $this->missingServices->add($service);
             $service->addHousing($this);
         }
         return $this;
     }
 
-    public function removeService(Service $service): self
+    public function removeMissingService(Service $service): self
     {
-        $this->services->removeElement($service);
+        $this->missingServices->removeElement($service);
         return $this;
     }
 
