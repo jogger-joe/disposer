@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ title }}</h1>
+                <p>
+                    <a href="{{ path('app_register') }}" class="btn btn-primary my-2">neuen User registrieren</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-primary my-2">neuen User registrieren</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="album py-5">
+        <div class="container">
+            {% for currentUser in user %}
+            <h5>{{ currentUser.username }}</h5>
+        </div>
+    </div>
+{% endblock %}

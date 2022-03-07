@@ -7,19 +7,27 @@
                 <h1 class="fw-light">{{ title }}</h1>
                 <p class="lead text-muted">{{ description }}</p>
                 <p>
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-primary my-2">neuen Einrichtungsgegenstand
-                        erstellen</a>
+                    <a href="{{ path('app_furniture_new') }}" class="btn btn-primary my-2">neuen Einrichtungsgegenstand erstellen</a>
+                    <a href="{{ path('app_service_new') }}" class="btn btn-primary my-2">neuen Service erstellen</a>
                 </p>
             </div>
         </div>
     </section>
     <div class="album py-5">
         <div class="container">
+            <h3>Einrichtungsgegenstände</h3>
             <h5>
                 {% for currentFurniture in furniture |sort((a, b) => a.title <=> b.title) %}
                     <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}"><span
                             class="badge {% if currentFurniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ currentFurniture.title }} (<span
                                 title="gesamt {{ currentFurniture.amount }}, verbraucht {{ currentFurniture.used }}">{{ currentFurniture.remaining }}</span>)</span></a>
+                {% endfor %}
+            </h5>
+            <h3>Services</h3>
+            <h5>
+                {% for currentService in service |sort((a, b) => a.title <=> b.title) %}
+                    <a href="{{ path('app_furniture_edit', {'id': currentService.id}) }}"><span
+                            class="badge bg-warning">{{ currentService.title }}</span></a>
                 {% endfor %}
             </h5>
         </div>

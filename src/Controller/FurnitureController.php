@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Furniture;
+use App\Entity\Service;
 use App\Form\FurnitureType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/furniture")
+ * @Route("/admin/furniture")
  */
 class FurnitureController extends AbstractController
 {
@@ -21,10 +22,12 @@ class FurnitureController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $furniture = $doctrine->getRepository(Furniture::class)->findAll();
+        $service = $doctrine->getRepository(Service::class)->findAll();
         return $this->render('furniture_list.html.twig', [
             'title' => 'Übersicht der Einrichtungsgegenstände',
             'description' => 'Diese Seite dient nur der Übersicht und Verwaltung von Einrichtungsgegenständen. Unten sind die bestehenden Einrichtungsgegenstände aufgelistet. Blau die Standardeinrichtungen, Grau die zusätzlichen Einrichtungsgegenstände.',
-            'furniture' => $furniture
+            'furniture' => $furniture,
+            'service' => $service,
         ]);
     }
 

@@ -1,0 +1,44 @@
+{% extends 'base-public.html.twig' %}
+
+{% block body %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Was wird benötigt?</h1>
+                <p class="lead text-muted">Hier sehen sie alle Einrichtungsgegenstände und Dienstleistungen die für die
+                    Unterkünfte noch benötigt werden.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5">
+        <div class="container">
+            <h3>benötigte Einrichtungsgegenstände</h3>
+            {% if furnitures is empty %}
+                <h5>momentan nichts benötigt</h5>
+            {% endif %}
+            <h5 class="mb-3">
+                {% for currentFurniture in furnitures |sort((a, b) => a.title <=> b.title) %}
+                    {% if housingCount - currentFurniture.used > 0 %}
+                    <span
+                        class="badge bg-danger">{{ currentFurniture.title }} (<span
+                            title="noch für {{ housingCount - currentFurniture.used }} Unterkünfte benötigt">{{ housingCount - currentFurniture.used }}</span>)</span>
+                    {% endif %}
+                {% endfor %}
+            </h5>
+            <h3>benötigte Dienstleistungen</h3>
+            {% if services is empty %}
+                <h5>momentan nichts benötigt</h5>
+            {% endif %}
+            <h5>
+                {% for currentService in services |sort((a, b) => a.title <=> b.title) %}
+                    {% if housingCount - currentService.assigned > 0  %}
+                    <span
+                        class="badge bg-warning">{{ currentService.title }} (<span
+                            title="noch in {{ housingCount - currentService.assigned }} benötigt">{{ housingCount - currentService.assigned }}</span>)</span>
+                    {% endif %}
+                {% endfor %}
+            </h5>
+        </div>
+    </div>
+{% endblock %}
