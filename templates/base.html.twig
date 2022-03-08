@@ -24,15 +24,7 @@
 <body>
 <nav class="py-2 bg-light border-bottom">
     <div class="container d-flex flex-wrap">
-        <ul class="nav me-auto">
-            <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-            <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">Unterkünfte</a></li>
-            <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände</a></li>
-            <li class="nav-item"><a href="{{ path('app_supporter_index') }}" class="nav-link link-dark px-2">Helfer</a></li>
-        </ul>
-        <ul class="nav">
-            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link link-dark px-2">Logout</a></li>
-        </ul>
+        {% block navigation %}{% endblock %}
     </div>
 </nav>
 <header class="py-3 mb-4 border-bottom">
@@ -49,7 +41,7 @@
 </main>
 <footer class="footer mt-auto py-3 bg-light border-top">
     <div class="container">
-        <p class="text-center"><span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190">Robert Mietusch</a></span></p>
+        <p class="text-center"><span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190" target="_blank">Robert Mietusch</a></span></p>
     </div>
 </footer>
 </body>

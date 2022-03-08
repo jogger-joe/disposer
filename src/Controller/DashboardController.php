@@ -38,8 +38,6 @@ class DashboardController extends AbstractController
             }
         }
         return $this->render('dashboard.html.twig', [
-            'title' =>  'Dashboard',
-            'description' =>  'Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder Dienstleistungen angezeigt.',
             'housingsWithMissingDefaultFurniture' => $housingsWithMissingDefaultFurniture,
         ]);
     }

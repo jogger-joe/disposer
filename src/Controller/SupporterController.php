@@ -25,8 +25,6 @@ class SupporterController extends AbstractController
         $activeSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 1]);
         $inactiveSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
         return $this->render('supporter_list.html.twig', [
-            'title' => 'Übersicht der Helfer',
-            'description' => 'Diese Seite dient nur der Übersicht und Verwaltung von Helfern. Unten sind die vorhandene Helfer aufgelistet.',
             'activeSupporter' => $activeSupporter,
             'inactiveSupporter' => $inactiveSupporter
         ]);

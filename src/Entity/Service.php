@@ -27,7 +27,7 @@ class Service
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Housing::class, mappedBy="furnitures")
+     * @ORM\ManyToMany(targetEntity=Housing::class, mappedBy="missingServices")
      *
      * @var Collection
      */

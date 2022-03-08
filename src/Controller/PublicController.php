@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PublicController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="app_public_index")
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -42,7 +42,7 @@ class PublicController extends AbstractController
             $supporter = $form->getData();
             $supporter->setStatus(0);
             $doctrine->getManager()->persist($supporter);
-            $doctrine->getManager()->flush($supporter);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_public_index');
         }
         return $this->renderForm('register_supporter.html.twig', [

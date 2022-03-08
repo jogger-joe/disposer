@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
 {% block body %}
     <section class="text-center container">
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">{{ title }}</h1>
-                <p class="lead text-muted">{{ description }}</p>
+                <h1 class="fw-light">Übersicht der Helfer</h1>
+                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Helfern. Unten sind die vorhandene Helfer aufgelistet. Neue/Unbestätigte Helfer sind Helfer, die sich über den öffentlichen Bereich registriert haben.</p>
                 <p>
                     <a href="{{ path('app_supporter_new') }}" class="btn btn-primary my-2">neuen Helfer erstellen</a>
                 </p>

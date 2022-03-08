@@ -32,10 +32,10 @@
             {% endif %}
             <h5>
                 {% for currentService in services |sort((a, b) => a.title <=> b.title) %}
-                    {% if housingCount - currentService.assigned > 0  %}
+                    {% if currentService.assigned > 0  %}
                     <span
                         class="badge bg-warning">{{ currentService.title }} (<span
-                            title="noch in {{ housingCount - currentService.assigned }} benötigt">{{ housingCount - currentService.assigned }}</span>)</span>
+                            title="noch in {{ currentService.assigned }} benötigt">{{ currentService.assigned }}</span>)</span>
                     {% endif %}
                 {% endfor %}
             </h5>

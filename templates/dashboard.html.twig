@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
 {% block body %}
     <section class="text-center container">
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">{{ title }}</h1>
-                <p class="lead text-muted">{{ description }}</p>
+                <h1 class="fw-light">Dashboard</h1>
+                <p class="lead text-muted">Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder Dienstleistungen angezeigt.</p>
                 <p>
                     <a href="{{ path('app_housing_new') }}" class="btn btn-primary my-2">neue Unterkunft erstellen</a>
                     <a href="{{ path('app_furniture_new') }}" class="btn btn-primary my-2">neuen Einrichtungsgegenstand erstellen</a>

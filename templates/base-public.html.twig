@@ -1,54 +1,15 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" media="screen" />
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    {% endblock %}
+{% extends 'base.html.twig' %}
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-        <script>
-            $(document).ready(function() {
-                $('select').select2();
-            });
-        </script>
-    {% endblock %}
-</head>
-<body>
-<nav class="py-2 bg-light border-bottom">
-    <div class="container d-flex flex-wrap">
-        <ul class="nav me-auto">
-            <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Was wird benötigt?</a></li>
-            <li class="nav-item"><a href="{{ path('app_register_supporter') }}" class="nav-link link-dark px-2">Wie kann ich Helfen?</a></li>
-        </ul>
-        <ul class="nav">
-            <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2">Admin</a></li>
-        </ul>
-    </div>
-</nav>
-<header class="py-3 mb-4 border-bottom">
-    <div class="container d-flex flex-wrap justify-content-center">
-        <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-            <span class="fs-4 ps-2">Friedländer Unterkunftsverwalter <i class="bi bi-house-door"></i></span>
-        </a>
-    </div>
-</header>
-<main class="mb-3">
-    <div class="container">
-        {% block body %}{% endblock %}
-    </div>
-</main>
-<footer class="footer mt-auto py-3 bg-light border-top">
-    <div class="container">
-        <p class="text-center"><span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190" target="_blank">Robert Mietusch</a></span></p>
-    </div>
-</footer>
-</body>
-</html>
+{% block title %}Willkommen im Öffentlichen-Bereich{% endblock %}
+
+{% block navigation %}
+    <ul class="nav me-auto">
+        <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Was wird benötigt?</a></li>
+        <li class="nav-item"><a href="{{ path('app_register_supporter') }}" class="nav-link link-dark px-2">Wie kann ich Helfen?</a></li>
+    </ul>
+    <ul class="nav">
+        <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2">Admin</a></li>
+    </ul>
+{% endblock %}
+
+{% block body %}{% endblock %}

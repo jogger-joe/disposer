@@ -24,8 +24,6 @@ class FurnitureController extends AbstractController
         $furniture = $doctrine->getRepository(Furniture::class)->findAll();
         $service = $doctrine->getRepository(Service::class)->findAll();
         return $this->render('furniture_list.html.twig', [
-            'title' => 'Übersicht der Einrichtungsgegenstände',
-            'description' => 'Diese Seite dient nur der Übersicht und Verwaltung von Einrichtungsgegenständen. Unten sind die bestehenden Einrichtungsgegenstände aufgelistet. Blau die Standardeinrichtungen, Grau die zusätzlichen Einrichtungsgegenstände.',
             'furniture' => $furniture,
             'service' => $service,
         ]);

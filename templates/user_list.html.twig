@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
 {% block body %}
     <section class="text-center container">
@@ -6,7 +6,6 @@
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">{{ title }}</h1>
                 <p>
-                    <a href="{{ path('app_register') }}" class="btn btn-primary my-2">neuen User registrieren</a>
                     <a href="{{ path('app_register') }}" class="btn btn-primary my-2">neuen User registrieren</a>
                 </p>
             </div>
@@ -16,6 +15,7 @@
         <div class="container">
             {% for currentUser in user %}
             <h5>{{ currentUser.username }}</h5>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
