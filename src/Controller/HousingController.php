@@ -71,4 +71,20 @@ class HousingController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/remove/{id}")
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $housing = $doctrine->getRepository(Housing::class)->find($id);
+        if (!$housing) {
+            throw $this->createNotFoundException(
+                'no housing found for id ' . $id
+            );
+        }
+        $housing->setStatus(-1);
+        $doctrine->getManager()->flush($housing);
+        return $this->redirectToRoute('app_housing_index');
+    }
 }

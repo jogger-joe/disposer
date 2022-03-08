@@ -56,7 +56,7 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
-            'title' => 'Neuen Service erstellen',
+            'title' => 'Neue Dienstleistung erstellen',
             'form' => $form,
         ]);
     }
