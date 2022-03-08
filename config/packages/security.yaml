@@ -11,7 +11,7 @@ security:
         app_default_users:
             memory:
                 users:
-                    friedland: { password: '$2y$13$nVxTYtUxygNlADgTxSjae.r6ytYd55r27aSria3gbaprm/u4NaFoW', roles: [ 'ROLE_USER' ] }
+                    '%env(resolve:DEFAULT_APP_USER)%': { password: '%env(resolve:DEFAULT_APP_PASSWORD)%', roles: [ 'ROLE_USER' ] }
         app_db_users:
             entity:
                 class: App\Entity\User
