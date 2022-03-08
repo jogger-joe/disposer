@@ -43,11 +43,19 @@ class PublicController extends AbstractController
             $supporter->setStatus(0);
             $doctrine->getManager()->persist($supporter);
             $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_public_index');
+            return $this->redirectToRoute('app_register_result');
         }
         return $this->renderForm('register_supporter.html.twig', [
             'title' => 'Unterstützung anbieten',
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/register_result", name="app_register_result")
+     */
+    public function registerResult(): Response
+    {
+        return $this->renderForm('register_result.html.twig');
     }
 }
