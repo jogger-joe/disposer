@@ -19,10 +19,10 @@
             {% endif %}
             <h5 class="mb-3">
                 {% for currentFurniture in furnitures |sort((a, b) => a.title <=> b.title) %}
-                    {% if housingCount - currentFurniture.used > 0 %}
+                    {% if currentFurniture.missingAmount > 0 %}
                     <span
                         class="badge bg-danger">{{ currentFurniture.title }} (<span
-                            title="noch für {{ housingCount - currentFurniture.used }} Unterkünfte benötigt">{{ housingCount - currentFurniture.used }}</span>)</span>
+                            title="noch für {{ currentFurniture.missingAmount }} Unterkünfte benötigt">{{ currentFurniture.missingAmount }}</span>)</span>
                     {% endif %}
                 {% endfor %}
             </h5>
@@ -32,10 +32,10 @@
             {% endif %}
             <h5>
                 {% for currentService in services |sort((a, b) => a.title <=> b.title) %}
-                    {% if currentService.assigned > 0  %}
+                    {% if currentService.missingAmount > 0  %}
                     <span
                         class="badge bg-warning">{{ currentService.title }} (<span
-                            title="noch in {{ currentService.assigned }} benötigt">{{ currentService.assigned }}</span>)</span>
+                            title="noch in {{ currentService.missingAmount }} benötigt">{{ currentService.missingAmount }}</span>)</span>
                     {% endif %}
                 {% endfor %}
             </h5>

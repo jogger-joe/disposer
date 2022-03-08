@@ -5,11 +5,15 @@
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Dashboard</h1>
-                <p class="lead text-muted">Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder Dienstleistungen angezeigt.</p>
+                <p class="lead text-muted">Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder
+                    Dienstleistungen angezeigt.</p>
                 <div class="btn-group">
-                    <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft erstellen</a>
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen Einrichtungsgegenstand erstellen</a>
-                    <a href="{{ path('app_supporter_new') }}" class="btn btn-outline-secondary">neuen Helfer registrieren</a>
+                    <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft
+                        erstellen</a>
+                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen
+                        Einrichtungsgegenstand erstellen</a>
+                    <a href="{{ path('app_supporter_new') }}" class="btn btn-outline-secondary">neuen Helfer
+                        registrieren</a>
                 </div>
             </div>
         </div>
@@ -17,45 +21,48 @@
     <div class="album py-5">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for housing in housingsWithMissingDefaultFurniture %}
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h3 class="card-text">{{ housing.title }} <span
-                                        class="badge {% if housing.status == 2 %}bg-danger{% elseif housing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                        {% if housing.status == 0 %}
-                                            frei
-                                        {% elseif housing.status ==  1 %}
-                                            teilweise belegt
-                                        {% elseif housing.status == 2 %}
-                                            vollständig belegt
-                                        {% elseif housing.status ==  3 %}
-                                            bezugsbereit
-                                        {% endif %}
-                                    </span></h3>
-                                <p class="card-text">{{ housing.description }}</p>
-                                {% if housing.missingDefaultFurnitures is not empty %}<h5>fehlende Einrichtungsgegenstände:</h5>
-                                <h6>{% for defaultFurniture in housing.missingDefaultFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                        <span
-                                            class="badge bg-danger">{{ defaultFurniture.title }}</span>
-                                    {% endfor %}</h6>
-                                {% endif %}
-                                {% if housing.missingServices is not empty %}<h5>fehlende Dienstleistungen:</h5>
-                                <h6>{% for service in housing.missingServices|sort((a, b) => a.title <=> b.title) %}
-                                        <span
-                                            class="badge bg-warning">{{ service.title }}</span>
-                                    {% endfor %}</h6>
-                                {% endif %}
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{{ path('app_housing_edit', {'id': housing.id}) }}" type="button"
-                                           class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ activeSupporter }} aktive Unterstützer</h3>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ newSupporter }} neu registrierte Unterstützer</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ freeHousings }} freie Unterkünfte</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ partialOccupiedHousings }} teilweise belegt Unterkünfte</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ occupiedHousings }} belegte Unterkünfte</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ readyForOccupationHousings }} bezugsbereite Unterkünfte</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

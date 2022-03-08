@@ -6,9 +6,11 @@ use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Eine Dienstleistung mit der Bezeichnung existiert bereits.")
  */
 class Service
 {
@@ -137,7 +139,9 @@ class Service
         return $this;
     }
 
-    public function getAssigned(): int {
-        return $this->housings->count();
+    public function getMissingAmount(): int {
+        return $this->housings->filter(function (Housing $housing) {
+            return $housing->getStatus() >= 0;
+        })->count();
     }
 }

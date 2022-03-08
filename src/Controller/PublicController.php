@@ -20,13 +20,11 @@ class PublicController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $defaultFurniture = $doctrine->getRepository(Furniture::class)->findBy(['type' => 1]);
+        $furniture = $doctrine->getRepository(Furniture::class)->findAll();
         $services = $doctrine->getRepository(Service::class)->findAll();
-        $housing = $doctrine->getRepository(Housing::class)->findAll();
         return $this->render('public.html.twig', [
-            'furnitures' => $defaultFurniture,
-            'services' => $services,
-            'housingCount' => count($housing)
+            'furnitures' => $furniture,
+            'services' => $services
         ]);
     }
 

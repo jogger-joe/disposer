@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\HousingRepository;
+use App\Service\HousingStatusResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HousingRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Eine Unterkunft mit Bezeichnung existiert bereits.")
  */
 class Housing
 {
@@ -38,7 +41,7 @@ class Housing
      *
      * @var Collection
      */
-    private $furnitures;
+    private $missingFurnitures;
 
     /**
      * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="housings", cascade={"persist"})
@@ -46,11 +49,6 @@ class Housing
      * @var Collection
      */
     private $missingServices;
-
-    /**
-     * @var Collection
-     */
-    private $missingDefaultFurnitures;
 
     /**
      * @ORM\Column(type="integer")
@@ -61,9 +59,8 @@ class Housing
 
     public function __construct()
     {
-        $this->furnitures = new ArrayCollection();
+        $this->missingFurnitures = new ArrayCollection();
         $this->missingServices = new ArrayCollection();
-        $this->missingDefaultFurnitures = new ArrayCollection();
     }
 
 
@@ -107,23 +104,23 @@ class Housing
     /**
      * @return Collection|Furniture[]
      */
-    public function getFurnitures(): Collection
+    public function getMissingFurnitures(): Collection
     {
-        return $this->furnitures;
+        return $this->missingFurnitures;
     }
 
-    public function addFurniture(Furniture $furniture): self
+    public function addMissingFurniture(Furniture $furniture): self
     {
-        if (!$this->furnitures->contains($furniture)) {
-            $this->furnitures->add($furniture);
+        if (!$this->missingFurnitures->contains($furniture)) {
+            $this->missingFurnitures->add($furniture);
             $furniture->addHousing($this);
         }
         return $this;
     }
 
-    public function removeFurniture(Furniture $furniture): self
+    public function removeMissingFurniture(Furniture $furniture): self
     {
-        $this->furnitures->removeElement($furniture);
+        $this->missingFurnitures->removeElement($furniture);
         return $this;
     }
 
@@ -159,23 +156,18 @@ class Housing
     }
 
     /**
+     * @return string
+     */
+    public function getStatusLabel(): string
+    {
+        return HousingStatusResolver::getHousingStatusLabel($this->status);
+    }
+
+    /**
      * @param int $status
      */
     public function setStatus(int $status): void
     {
         $this->status = $status;
-    }
-
-    public function addMissingDefaultFurniture($defaultFurniture)
-    {
-        if (!$this->missingDefaultFurnitures instanceof ArrayCollection) {
-            $this->missingDefaultFurnitures = new ArrayCollection();
-        }
-        $this->missingDefaultFurnitures->add($defaultFurniture);
-    }
-
-    public function getMissingDefaultFurnitures()
-    {
-        return $this->missingDefaultFurnitures;
     }
 }
