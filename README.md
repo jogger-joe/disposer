@@ -14,11 +14,10 @@ This Project contains a [Docker](https://www.docker.com/)-based installer and ru
 
 ## Fist Start of Application
 
-1. Install PHP-Dependencies with composer: ``composer install``
-2. Create Schema by using Symfony-CLI inside PHP-Container: 
+1. Create Schema by using Symfony-CLI inside PHP-Container: 
 ``docker exec -it disposer_php_1 php bin/console doctrine:schema:create``
-3. Install JS-Dependencies: ``npm install``
-4. Build JS & CSS dependencies with Webpack: ``npm run build``
+2. Install JS-Dependencies: ``npm install``
+3. Build JS & CSS dependencies with Webpack: ``npm run build``
 
 
 ## Deployment

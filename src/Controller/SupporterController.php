@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/supporter")
+ * @Route("/admin/supporter")
  */
 class SupporterController extends AbstractController
 {
@@ -22,11 +22,11 @@ class SupporterController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $supporter = $doctrine->getRepository(Supporter::class)->findAll();
+        $activeSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 1]);
+        $inactiveSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
         return $this->render('supporter_list.html.twig', [
-            'title' => 'Übersicht der Helfer',
-            'description' => 'Diese Seite dient nur der Übersicht und Verwaltung von Helfern. Unten sind die vorhandene Helfer aufgelistet.',
-            'supporter' => $supporter
+            'activeSupporter' => $activeSupporter,
+            'inactiveSupporter' => $inactiveSupporter
         ]);
     }
 
@@ -55,6 +55,38 @@ class SupporterController extends AbstractController
     }
 
     /**
+     * @Route("/activate/{id}")
+     */
+    public function activate(ManagerRegistry $doctrine, int $id): Response
+    {
+        $supporter = $doctrine->getRepository(Supporter::class)->find($id);
+        if (!$supporter) {
+            throw $this->createNotFoundException(
+                'no supporter found for id ' . $id
+            );
+        }
+        $supporter->setStatus(1);
+        $doctrine->getManager()->flush($supporter);
+        return $this->redirectToRoute('app_supporter_index');
+    }
+
+    /**
+     * @Route("/remove/{id}")
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $supporter = $doctrine->getRepository(Supporter::class)->find($id);
+        if (!$supporter) {
+            throw $this->createNotFoundException(
+                'no supporter found for id ' . $id
+            );
+        }
+        $supporter->setStatus(-1);
+        $doctrine->getManager()->flush($supporter);
+        return $this->redirectToRoute('app_supporter_index');
+    }
+
+    /**
      * @Route("/new")
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
@@ -64,6 +96,7 @@ class SupporterController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $supporter = $form->getData();
+            $supporter->setStatus(1);
             $doctrine->getManager()->persist($supporter);
             $doctrine->getManager()->flush($supporter);
             return $this->redirectToRoute('app_supporter_index');

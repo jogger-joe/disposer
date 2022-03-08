@@ -41,6 +41,13 @@ class Housing
     private $furnitures;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="housings", cascade={"persist"})
+     *
+     * @var Collection
+     */
+    private $missingServices;
+
+    /**
      * @var Collection
      */
     private $missingDefaultFurnitures;
@@ -55,6 +62,7 @@ class Housing
     public function __construct()
     {
         $this->furnitures = new ArrayCollection();
+        $this->missingServices = new ArrayCollection();
         $this->missingDefaultFurnitures = new ArrayCollection();
     }
 
@@ -116,6 +124,29 @@ class Housing
     public function removeFurniture(Furniture $furniture): self
     {
         $this->furnitures->removeElement($furniture);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Service[]
+     */
+    public function getMissingServices(): Collection
+    {
+        return $this->missingServices;
+    }
+
+    public function addMissingService(Service $service): self
+    {
+        if (!$this->missingServices->contains($service)) {
+            $this->missingServices->add($service);
+            $service->addHousing($this);
+        }
+        return $this;
+    }
+
+    public function removeMissingService(Service $service): self
+    {
+        $this->missingServices->removeElement($service);
         return $this;
     }
 

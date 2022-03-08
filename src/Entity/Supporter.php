@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SupporterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +39,25 @@ class Supporter
      * @var string
      */
     private $information;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="supporter", cascade={"persist"})
+     *
+     * @var Collection
+     */
+    private $availableServices;
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 1})
+     *
+     * @var int
+     */
+    private $status;
+
+    public function __construct()
+    {
+        $this->availableServices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,5 +110,44 @@ class Supporter
     public function setInformation(string $information): void
     {
         $this->information = $information;
+    }
+
+    /**
+     * @return Collection|Service[]
+     */
+    public function getAvailableServices(): Collection
+    {
+        return $this->availableServices;
+    }
+
+    public function addAvailableService(Service $service): self
+    {
+        if (!$this->availableServices->contains($service)) {
+            $this->availableServices->add($service);
+            $service->addSupporter($this);
+        }
+        return $this;
+    }
+
+    public function removeAvailableService(Service $service): self
+    {
+        $this->availableServices->removeElement($service);
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
     }
 }
