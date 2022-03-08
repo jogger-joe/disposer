@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Willkommen im Öffentlichen-Bereich{% endblock %}
+
+{% block navigation %}
+    <ul class="nav me-auto">
+        <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Was wird benötigt?</a></li>
+        <li class="nav-item"><a href="{{ path('app_register_supporter') }}" class="nav-link link-dark px-2">Wie kann ich Helfen?</a></li>
+    </ul>
+    <ul class="nav">
+        <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2">Admin</a></li>
+    </ul>
+{% endblock %}
+
+{% block body %}{% endblock %}

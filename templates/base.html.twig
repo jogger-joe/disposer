@@ -24,33 +24,28 @@
 <body>
 <nav class="py-2 bg-light border-bottom">
     <div class="container d-flex flex-wrap">
-        <ul class="nav me-auto">
-            <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-            <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">Unterkünfte</a></li>
-            <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände</a></li>
-            <li class="nav-item"><a href="{{ path('app_supporter_index') }}" class="nav-link link-dark px-2">Helfer</a></li>
-        </ul>
-        <ul class="nav">
-            <li class="nav-item"><a href="mailto:ich2211@gmail.com" class="nav-link link-dark px-2" target="_blank">Kontakt/Verbesserungsvorschläge</a></li>
-        </ul>
+        {% block navigation %}{% endblock %}
     </div>
 </nav>
 <header class="py-3 mb-4 border-bottom">
     <div class="container d-flex flex-wrap justify-content-center">
-        <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-            <span class="fs-4 ps-2">Friedländer Unterkunftsverwalter <i class="bi bi-house-door"></i></span>
-        </a>
+        <h1 class="text-center">
+            Friedländer Unterkunfts- und Unterstützungsverwaltung
+        </h1>
     </div>
 </header>
-<main>
+<main class="mb-5">
     <div class="container">
         {% block body %}{% endblock %}
     </div>
 </main>
-<footer class="footer mt-auto py-3 bg-light border-top">
-    <div class="container">
-        <p class="text-center"><span class="text-muted">Made with <i class="bi bi-balloon-heart"></i> by <a href="https://www.facebook.com/profile.php?id=100010779459190">Robert Mietusch</a></span></p>
-    </div>
+<footer class="py-3 my-4 border-top">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a class="nav-link px-2 text-muted" href="https://www.friedland-mecklenburg.de/impressum" target="_blank">Impressum</a></li>
+        <li class="nav-item"><a class="nav-link px-2 text-muted" href="https://www.friedland-mecklenburg.de/datenschutz1" target="_blank">Datenschutz</a></li>
+        <li class="nav-item"><a class="nav-link px-2 text-muted" href="https://github.com/jogger-joe/disposer" target="_blank">Quellcode</a></li>
+    </ul>
+    <p class="text-center text-muted">Entwickelt mit <i class="bi bi-balloon-heart"></i> in Friedland (Mecklenburg)</p>
 </footer>
 </body>
 </html>

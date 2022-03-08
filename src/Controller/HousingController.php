@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/housing")
+ * @Route("/admin/housing")
  */
 class HousingController extends AbstractController
 {
@@ -23,8 +23,6 @@ class HousingController extends AbstractController
     {
         $housings = $doctrine->getRepository(Housing::class)->findAll();
         return $this->render('housing_list.html.twig', [
-            'title' => 'Übersicht der Unterkünfte',
-            'description' => 'Diese Seite dient nur der Übersicht und Verwaltung von Unterkünfte. Unten sind die bestehenden Unterkünfte aufgelistet.',
             'housing' => $housings
         ]);
     }

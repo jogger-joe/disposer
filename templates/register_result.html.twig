@@ -1,0 +1,15 @@
+{% extends 'base-public.html.twig' %}
+
+{% block body %}
+    <section class="text-center container">
+        <div class="row ">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light"><i class="bi bi-balloon-heart-fill"></i> Danke für deine Registrierung <i class="bi bi-balloon-heart-fill"></i></h1>
+                <p class="lead text-muted">Sobald wir passende Tätigkeiten für dich haben, werden wir uns mit dir in Verbindung setzen!</p>
+                <div class="btn-group">
+                    <a href="{{ path('app_public_index') }}" class="btn btn-outline-secondary">zurück zur Startseite</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

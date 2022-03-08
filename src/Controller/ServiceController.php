@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Furniture;
 use App\Entity\Service;
 use App\Form\FurnitureType;
+use App\Form\ServiceType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,43 +13,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/furniture")
+ * @Route("/admin/service")
  */
-class FurnitureController extends AbstractController
+class ServiceController extends AbstractController
 {
-    /**
-     * @Route("/")
-     */
-    public function index(ManagerRegistry $doctrine): Response
-    {
-        $furniture = $doctrine->getRepository(Furniture::class)->findAll();
-        $service = $doctrine->getRepository(Service::class)->findAll();
-        return $this->render('furniture_list.html.twig', [
-            'furniture' => $furniture,
-            'service' => $service,
-        ]);
-    }
-
     /**
      * @Route("/edit/{id}")
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
-        $furniture = $doctrine->getRepository(Furniture::class)->find($id);
-        if (!$furniture) {
+        $service = $doctrine->getRepository(Service::class)->find($id);
+        if (!$service) {
             throw $this->createNotFoundException(
-                'no furniture found for id ' . $id
+                'no service found for id ' . $id
             );
         }
-        $form = $this->createForm(FurnitureType::class, $furniture);
+        $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $furniture = $form->getData();
-            $doctrine->getManager()->flush($furniture);
+            $service = $form->getData();
+            $doctrine->getManager()->flush($service);
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
-            'title' => 'Einrichtungsgegenstand bearbeiten',
+            'title' => 'Service bearbeiten',
             'form' => $form,
         ]);
     }
@@ -58,17 +46,17 @@ class FurnitureController extends AbstractController
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
-        $furniture = new Furniture();
-        $form = $this->createForm(FurnitureType::class, $furniture);
+        $service = new Service();
+        $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $furniture = $form->getData();
-            $doctrine->getManager()->persist($furniture);
-            $doctrine->getManager()->flush($furniture);
+            $service = $form->getData();
+            $doctrine->getManager()->persist($service);
+            $doctrine->getManager()->flush($service);
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
-            'title' => 'Neuen Einrichtungsgegenstand erstellen',
+            'title' => 'Neuen Service erstellen',
             'form' => $form,
         ]);
     }

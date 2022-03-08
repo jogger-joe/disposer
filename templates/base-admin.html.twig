@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Willkommen im Admin-Bereich{% endblock %}
+
+{% block navigation %}
+    <ul class="nav me-auto">
+        <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
+        <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">Unterkünfte</a></li>
+        <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände & Dienstleistungen</a></li>
+        <li class="nav-item"><a href="{{ path('app_supporter_index') }}" class="nav-link link-dark px-2">Helfer</a></li>
+    </ul>
+    <ul class="nav">
+        <li class="nav-item"><a href="{{ path('app_public_index') }}" class="nav-link link-dark px-2">Öffentlicher Bereich</a></li>
+        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link link-dark px-2">Abmelden</a></li>
+    </ul>
+{% endblock %}
+
+{% block body %}{% endblock %}
