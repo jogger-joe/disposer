@@ -42,8 +42,7 @@ class HousingController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $housing = $form->getData();
-            dump($housing);
-            $doctrine->getManager()->flush($housing);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
         return $this->renderForm('edit.html.twig', [
