@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HousingRepository::class)
- * @UniqueEntity(fields={"title"}, message="Eine Unterkunft mit Bezeichnung existiert bereits.")
  */
 class Housing
 {

@@ -32,7 +32,7 @@ class ServiceController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $service = $form->getData();
-            $doctrine->getManager()->flush($service);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -52,7 +52,7 @@ class ServiceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $service = $form->getData();
             $doctrine->getManager()->persist($service);
-            $doctrine->getManager()->flush($service);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
