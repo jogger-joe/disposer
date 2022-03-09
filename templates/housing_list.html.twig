@@ -1,64 +1,60 @@
 {% extends 'base-admin.html.twig' %}
 
 {% block body %}
-    <section class="text-center container">
-        <div class="row ">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Übersicht der Unterkünfte</h1>
-                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Unterkünfte. Unten
-                    sind die bestehenden Unterkünfte aufgelistet.</p>
-                <div class="btn-group">
-                    <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft erstellen</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="album py-5">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for currentHousing in housing %}
-                    <div class="col">
-                        <div
-                            class="card shadow-sm">
-                            <div class="card-body">
-                                <h3 class="card-text">{{ currentHousing.title }} <span
-                                        class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                        {% if currentHousing.status == 0 %}
-                                            frei
-                                        {% elseif currentHousing.status ==  1 %}
-                                            teilweise belegt
-                                        {% elseif currentHousing.status == 2 %}
-                                            vollständig belegt
-                                        {% elseif currentHousing.status ==  3 %}
-                                            bezugsbereit
-                                        {% endif %}
-                                    </span></h3>
-                                <p class="card-text">{{ currentHousing.description }}</p>
-                                {% if currentHousing.furnitures is not empty %}<h5>vorhandene
-                                    Einrichtungsgegenstände:</h5>
-                                    <h6>{% for furniture in currentHousing.furnitures|sort((a, b) => a.title <=> b.title) %}
-                                            <span
-                                                class="badge {% if furniture.type == 1 %}bg-primary{% else %}bg-secondary{% endif %}">{{ furniture.title }}</span>
-                                        {% endfor %}</h6>
-                                {% endif %}
-                                {% if currentHousing.missingServices is not empty %}<h5>fehlende Dienstleistungen:</h5>
-                                    <h6>{% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
-                                            <span
-                                                class="badge bg-warning">{{ service.title }}</span>
-                                        {% endfor %}</h6>
-                                {% endif %}
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{{ path('app_housing_edit', { 'id': currentHousing.id }) }}"
-                                           type="button"
-                                           class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+<section class="text-center container">
+    <div class="row ">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Übersicht der Unterkünfte</h1>
+            <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Unterkünfte. Unten
+                sind die bestehenden Unterkünfte aufgelistet.</p>
+            <div class="btn-group">
+                <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft erstellen</a>
             </div>
         </div>
     </div>
+</section>
+<div class="album py-5">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for currentHousing in housing|sort((a, b) => a.title <=> b.title) %}
+            {% if currentHousing.status >= 0 %}
+            <div class="col">
+                <div
+                    class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-text">{{ currentHousing.title }} <span
+                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {{ currentHousing.statusLabel }}
+                                    </span></h3>
+                        <p class="card-text">{{ currentHousing.description }}</p>
+                        {% if currentHousing.missingFurnitures is not empty %}<h5>benötigte
+                            Einrichtungsgegenstände:</h5>
+                            <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
+                                    <span
+                                        class="badge bg-danger">{{ furniture.title }}</span>
+                                {% endfor %}</h6>
+                        {% endif %}
+                        {% if currentHousing.missingServices is not empty %}<h5>fehlende Dienstleistungen:</h5>
+                            <h6>{% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
+                                    <span
+                                        class="badge bg-warning">{{ service.title }}</span>
+                                {% endfor %}</h6>
+                        {% endif %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ path('app_housing_edit', { 'id': currentHousing.id }) }}"
+                                   type="button"
+                                   class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                                <a href="{{ path('app_housing_remove', { 'id': currentHousing.id }) }}"
+                                   type="button" class="btn btn-sm btn-outline-secondary">Entfernen</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

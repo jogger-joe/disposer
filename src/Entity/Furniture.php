@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\FurnitureRepository;
+use App\Service\FurnitureTypeResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FurnitureRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Ein Gegenstand mit der Bezeichnung existiert bereits.")
  */
 class Furniture
 {
@@ -43,7 +46,7 @@ class Furniture
     private $amount = 0;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Housing::class, mappedBy="furnitures")
+     * @ORM\ManyToMany(targetEntity=Housing::class, mappedBy="missingFurnitures")
      *
      * @var Collection
      */
@@ -76,11 +79,19 @@ class Furniture
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    public function getType(): bool
+    public function getType(): int
     {
-        return $this->type == 1;
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeLabel(): string
+    {
+        return FurnitureTypeResolver::getFurnitureTypeLabel($this->type);
     }
 
     /**
@@ -96,19 +107,6 @@ class Furniture
      */
     public function getHousings(): Collection
     {
-        return $this->housings;
-    }
-
-    /**
-     * @param Collection $housings
-     * @return Collection
-     */
-    public function setHousings(Collection $housings): Collection
-    {
-        $this->housings->clear();
-        foreach ($housings as $housing) {
-            $this->addHousing($housing);
-        }
         return $this->housings;
     }
 
@@ -142,11 +140,10 @@ class Furniture
         $this->amount = $amount;
     }
 
-    public function getRemaining(): int {
-        return $this->amount - $this->housings->count();
-    }
-
-    public function getUsed(): int {
-        return $this->housings->count();
+    public function getMissingAmount(): int
+    {
+        return $this->housings->filter(function (Housing $housing) {
+            return $housing->getStatus() >= 0;
+        })->count();
     }
 }

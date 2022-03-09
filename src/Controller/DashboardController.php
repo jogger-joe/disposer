@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Furniture;
 use App\Entity\Housing;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Supporter;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,25 +19,19 @@ class DashboardController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $defaultFurniture = $doctrine->getRepository(Furniture::class)->findBy(['type' => 1]);
-        $housings = $doctrine->getRepository(Housing::class)->findAll();
-        $housingsWithMissingDefaultFurniture = new ArrayCollection();
-
-        foreach ($housings as $housing) {
-            /**
-             * @var Housing $housing
-             */
-            foreach ($defaultFurniture as $currentDefaultFurniture) {
-                if (!$housing->getFurnitures()->contains($currentDefaultFurniture)) {
-                    $housing->addMissingDefaultFurniture($currentDefaultFurniture);
-                }
-            }
-            if ($housing->getMissingDefaultFurnitures() || $housing->getMissingServices()){
-                $housingsWithMissingDefaultFurniture->add($housing);
-            }
-        }
+        $activeSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 1]);
+        $newSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
+        $freeHousings = $doctrine->getRepository(Housing::class)->findBy(['status' => 0]);
+        $partialOccupiedHousings = $doctrine->getRepository(Housing::class)->findBy(['status' => 1]);
+        $occupiedHousings = $doctrine->getRepository(Housing::class)->findBy(['status' => 2]);
+        $readyForOccupationHousings = $doctrine->getRepository(Housing::class)->findBy(['status' => 3]);
         return $this->render('dashboard.html.twig', [
-            'housingsWithMissingDefaultFurniture' => $housingsWithMissingDefaultFurniture,
+            'activeSupporter' => count($activeSupporter),
+            'newSupporter' => count($newSupporter),
+            'freeHousings' => count($freeHousings),
+            'partialOccupiedHousings' => count($partialOccupiedHousings),
+            'occupiedHousings' => count($occupiedHousings),
+            'readyForOccupationHousings' => count($readyForOccupationHousings)
         ]);
     }
 }

@@ -42,8 +42,7 @@ class HousingController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $housing = $form->getData();
-            dump($housing);
-            $doctrine->getManager()->flush($housing);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -70,5 +69,21 @@ class HousingController extends AbstractController
             'title' => 'Neue Unterkunft erstellen',
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/remove/{id}")
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $housing = $doctrine->getRepository(Housing::class)->find($id);
+        if (!$housing) {
+            throw $this->createNotFoundException(
+                'no housing found for id ' . $id
+            );
+        }
+        $housing->setStatus(-1);
+        $doctrine->getManager()->flush($housing);
+        return $this->redirectToRoute('app_housing_index');
     }
 }
