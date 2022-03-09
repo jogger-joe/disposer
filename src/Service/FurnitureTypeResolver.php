@@ -6,9 +6,12 @@ class FurnitureTypeResolver
 {
     const FURNITURE_TYPE_MAP = [
         0 => 'Sonstiges',
-        1 => 'Möbel',
-        2 => 'Elektrogeräte',
-        3 => 'Hygieneartikel'
+        1 => 'Küche',
+        2 => 'Badezimmer',
+        3 => 'Wohnzimmer',
+        4 => 'Schlafzimmer',
+        5 => 'Zimmer 3',
+        6 => 'Zimmer 4',
     ];
 
     public static function getFurnitureTypeLabel(int $furnitureType): string

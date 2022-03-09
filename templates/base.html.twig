@@ -16,7 +16,32 @@
         {{ encore_entry_script_tags('app') }}
         <script>
             $(document).ready(function() {
-                $('select').select2();
+                $('.select2').select2();
+                $tagModeSelect = $('select.tag-mode');
+                if ($tagModeSelect) {
+                    $tagModeSelect.hide();
+                    $('<div id="tags"></div>').insertAfter($tagModeSelect);
+                    $('optgroup', $tagModeSelect).each(function () {
+                        const $groupContainer = $('<div class="mb-3"></div>');
+                        $('#tags').append($groupContainer);
+                        $groupContainer.append('<div><label class="form-label"> benötigte Einrichtungsgegenstände (' + this.label + ')</label></div>');
+                        $('option', this).each(function () {
+                            const currentOption = this;
+                            const id = $tagModeSelect.attr('id') + currentOption.value;
+                            const checkedAttribute = currentOption.selected ? 'checked' : '';
+                            $groupContainer.append('<input type="checkbox" class="btn-check" ' +
+                                'id="' + id + '" value="' + currentOption.value + '" ' + checkedAttribute + ' autocomplete="off">' +
+                                '<label id="label-' + id + '" class="btn btn-outline-danger" for="' + id + '">' + currentOption.text + '</label>');
+                            $('#' + id).change(function() {
+                                if(this.checked) {
+                                    $(currentOption).prop('selected', true);
+                                } else {
+                                    $(currentOption).prop('selected', false);
+                                }
+                            });
+                        });
+                    })
+                }
             });
         </script>
     {% endblock %}

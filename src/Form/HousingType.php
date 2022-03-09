@@ -29,7 +29,7 @@ class HousingType extends AbstractType
                 'multiple' => false,
                 'expanded' => false])
             ->add('missingFurnitures', EntityType::class, [
-                'label' => 'benötigte Einrichtungsgegenstände',
+                'label' => false,
                 'class' => Furniture::class,
                 'by_reference' => false,
                 'choice_label' => function (Furniture $furniture) {
@@ -38,6 +38,8 @@ class HousingType extends AbstractType
                 'group_by' => function(Furniture $furniture) {
                     return FurnitureTypeResolver::getFurnitureTypeLabel($furniture->getType());
                 },
+                'attr' => [
+                    'class' => 'tag-mode'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])
@@ -48,6 +50,8 @@ class HousingType extends AbstractType
                 'choice_label' => function (Service $service) {
                     return $service->getTitle();
                 },
+                'attr' => [
+                    'class' => 'select2'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])

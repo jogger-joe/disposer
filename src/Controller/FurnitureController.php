@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Furniture;
 use App\Entity\Service;
 use App\Form\FurnitureType;
+use App\Service\FurnitureTypeResolver;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +22,13 @@ class FurnitureController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $furniture = $doctrine->getRepository(Furniture::class)->findAll();
+        $furnitureGroups = [];
+        foreach (FurnitureTypeResolver::FURNITURE_TYPE_MAP as $value => $label) {
+            $furnitureGroups[$label] = $doctrine->getRepository(Furniture::class)->findBy(['type' => $value]);
+        }
         $service = $doctrine->getRepository(Service::class)->findAll();
         return $this->render('furniture_list.html.twig', [
-            'furniture' => $furniture,
+            'furnitureGroups' => $furnitureGroups,
             'service' => $service,
         ]);
     }
