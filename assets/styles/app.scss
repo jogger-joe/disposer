@@ -1,3 +1,32 @@
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 @import "~select2-bootstrap-css/select2-bootstrap";
+
+.bg-0 {
+    color: $white;
+    background-color: $blue-500;
+}
+.bg-1 {
+    color: $white;
+    background-color: $indigo-500;
+}
+.bg-2 {
+    color: $white;
+    background-color: $purple-500;
+}
+.bg-3 {
+    color: $white;
+    background-color: $pink-500;
+}
+.bg-4 {
+    color: $white;
+    background-color: $red-500;
+}
+.bg-5 {
+    color: $white;
+    background-color: $orange-500;
+}
+.bg-6 {
+    color: $white;
+    background-color: $yellow-500;
+}

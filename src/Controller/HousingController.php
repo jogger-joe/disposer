@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Housing;
 use App\Form\HousingType;
+use App\Service\FurnitureTypeResolver;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ class HousingController extends AbstractController
     {
         $housings = $doctrine->getRepository(Housing::class)->findAll();
         return $this->render('housing_list.html.twig', [
-            'housing' => $housings
+            'housing' => $housings,
+            'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
         ]);
     }
 

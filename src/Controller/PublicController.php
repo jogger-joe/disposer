@@ -7,6 +7,7 @@ use App\Entity\Housing;
 use App\Entity\Service;
 use App\Entity\Supporter;
 use App\Form\SupporterType;
+use App\Service\FurnitureTypeResolver;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,25 @@ class PublicController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $furniture = $doctrine->getRepository(Furniture::class)->findAll();
+        $furnitureGroups = [];
+        foreach (FurnitureTypeResolver::FURNITURE_TYPE_MAP as $value => $label) {
+            $furnitureWithType = $doctrine->getRepository(Furniture::class)->findBy(['type' => $value]);
+            $missingFurnitureWithType = [];
+            foreach ($furnitureWithType as $currentFurniture) {
+                /**
+                 * @var Furniture $currentFurniture
+                 */
+                if ($currentFurniture->getMissingAmount() > 0) {
+                    $missingFurnitureWithType[] = $currentFurniture;
+                }
+            }
+            if (count($missingFurnitureWithType) > 0) {
+                $furnitureGroups[$label] = $missingFurnitureWithType;
+            }
+        }
         $services = $doctrine->getRepository(Service::class)->findAll();
         return $this->render('public.html.twig', [
-            'furnitures' => $furniture,
+            'furnitureGroups' => $furnitureGroups,
             'services' => $services
         ]);
     }
