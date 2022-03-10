@@ -31,7 +31,7 @@
                             const checkedAttribute = currentOption.selected ? 'checked' : '';
                             $groupContainer.append('<input type="checkbox" class="btn-check" ' +
                                 'id="' + id + '" value="' + currentOption.value + '" ' + checkedAttribute + ' autocomplete="off">' +
-                                '<label id="label-' + id + '" class="btn btn-outline-danger" for="' + id + '">' + currentOption.text + '</label>');
+                                '<label id="label-' + id + '" class="btn btn-outline-danger m-1" for="' + id + '">' + currentOption.text + '</label>');
                             $('#' + id).change(function() {
                                 if(this.checked) {
                                     $(currentOption).prop('selected', true);

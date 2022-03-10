@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FurnitureRepository::class)
- * @UniqueEntity(fields={"title"}, message="Ein Gegenstand mit der Bezeichnung existiert bereits.")
+ * @UniqueEntity(fields={"title", "type"}, message="Ein Gegenstand mit der Bezeichnung und dem Typ existiert bereits.")
  */
 class Furniture
 {
