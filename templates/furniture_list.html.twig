@@ -5,29 +5,37 @@
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Übersicht der Einrichtungsgegenstände und Dienstleistungen</h1>
-                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Einrichtungsgegenständen. Unten sind die bestehenden Einrichtungsgegenstände und Dienstleistungen aufgelistet.</p>
+                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von
+                    Einrichtungsgegenständen. Unten sind die bestehenden Einrichtungsgegenstände und Dienstleistungen
+                    aufgelistet.</p>
                 <div class="btn-group">
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen Einrichtungsgegenstand erstellen</a>
-                    <a href="{{ path('app_service_new') }}" class="btn btn-outline-secondary">neue Dienstleistung anlegen</a>
+                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen
+                        Einrichtungsgegenstand erstellen</a>
+                    <a href="{{ path('app_service_new') }}" class="btn btn-outline-secondary">neue Dienstleistung
+                        anlegen</a>
                 </div>
             </div>
         </div>
     </section>
     <div class="album py-5">
         <div class="container">
-            <h3>Einrichtungsgegenstände</h3>
-            <h5>
-                {% for currentFurniture in furniture |sort((a, b) => a.title <=> b.title) %}
-                    <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}"><span
-                            class="badge bg-primary">{{ currentFurniture.title }} (<span
-                                title="gesamt {{ currentFurniture.amount }}, benötigt {{ currentFurniture.missingAmount }}">{{ currentFurniture.missingAmount }}</span>)</span></a>
-                {% endfor %}
-            </h5>
+            {% for key, furnitureGroup in furnitureGroups %}
+                {% if furnitureGroup is not empty %}
+                    <h3>{{ key }}</h3>
+                    <h5>
+                        {% for currentFurniture in furnitureGroup |sort((a, b) => a.title <=> b.title) %}
+                            <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}"><span
+                                    class="badge bg-{{ currentFurniture.type }}">{{ currentFurniture.title }} (<span
+                                        title="gesamt {{ currentFurniture.amount }}, benötigt {{ currentFurniture.missingAmount }}">{{ currentFurniture.missingAmount }}</span>)</span></a>
+                        {% endfor %}
+                    </h5>
+                {% endif %}
+            {% endfor %}
             <h3>Dienstleistungen</h3>
             <h5>
                 {% for currentService in service |sort((a, b) => a.title <=> b.title) %}
                     <a href="{{ path('app_service_edit', {'id': currentService.id}) }}"><span
-                            class="badge bg-primary">{{ currentService.title }}</span></a>
+                            class="badge bg-warning">{{ currentService.title }}</span></a>
                 {% endfor %}
             </h5>
         </div>

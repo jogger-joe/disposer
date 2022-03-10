@@ -31,7 +31,7 @@
                             Einrichtungsgegenstände:</h5>
                             <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
                                     <span
-                                        class="badge bg-danger">{{ furniture.title }}</span>
+                                        class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span>
                                 {% endfor %}</h6>
                         {% endif %}
                         {% if currentHousing.missingServices is not empty %}<h5>fehlende Dienstleistungen:</h5>
