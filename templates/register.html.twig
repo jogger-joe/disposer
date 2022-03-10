@@ -1,17 +1,29 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Nutzer anlegen{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <section class="text-center container">
+        <div class="row ">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Nutzer anlegen</h1>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="login-form bg-light mt-1 mb-4 p-4 border">
+                    {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.username) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

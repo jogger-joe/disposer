@@ -13,9 +13,24 @@
     </section>
     <div class="album py-5">
         <div class="container">
-            {% for currentUser in user %}
-            <h5>{{ currentUser.username }}</h5>
-            {% endfor %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for currentUser in user %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="card-text">{{ currentUser.username }}</h3>
+                                <h5>
+                                    {% for role in currentUser.roles %}
+                                        <span
+                                            class="badge bg-primary">{{ role }}</span>
+                                    {% endfor %}
+                                </h5>
+                                <p>erstellt: {{ currentUser.created | date('d.m.Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

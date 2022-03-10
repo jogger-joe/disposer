@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Furniture;
-use App\Entity\Housing;
 use App\Entity\Service;
 use App\Entity\Supporter;
 use App\Form\SupporterType;

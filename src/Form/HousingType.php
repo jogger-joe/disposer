@@ -36,7 +36,7 @@ class HousingType extends AbstractType
                 'choice_label' => function (Furniture $furniture) {
                     return $furniture->getTitle();
                 },
-                'group_by' => function(Furniture $furniture) {
+                'group_by' => function (Furniture $furniture) {
                     return FurnitureTypeResolver::getFurnitureTypeLabel($furniture->getType());
                 },
                 'attr' => [

@@ -12,15 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=SupporterRepository::class)
  * @UniqueEntity(fields={"name"}, message="Ein Helfer mit dem Namen existiert bereits.")
  */
-class Supporter
+class Supporter extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="text")
      *
@@ -59,11 +52,6 @@ class Supporter
     public function __construct()
     {
         $this->availableServices = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

@@ -13,15 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"username"}, message="Benutzername ist schon vergeben.")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
@@ -37,11 +30,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @deprecated since Symfony 5.3, use getUserIdentifier instead

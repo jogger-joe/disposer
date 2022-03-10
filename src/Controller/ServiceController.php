@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Furniture;
 use App\Entity\Service;
-use App\Form\FurnitureType;
 use App\Form\ServiceType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +29,6 @@ class ServiceController extends AbstractController
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service = $form->getData();
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }

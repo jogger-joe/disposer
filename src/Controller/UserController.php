@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="app_user_index")
      */
     public function index(ManagerRegistry $doctrine): Response
     {
