@@ -43,7 +43,6 @@ class HousingController extends AbstractController
         $form = $this->createForm(HousingType::class, $housing);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $housing = $form->getData();
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
@@ -64,7 +63,7 @@ class HousingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $housing = $form->getData();
             $doctrine->getManager()->persist($housing);
-            $doctrine->getManager()->flush($housing);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -84,8 +83,8 @@ class HousingController extends AbstractController
                 'no housing found for id ' . $id
             );
         }
-        $housing->setStatus(-1);
-        $doctrine->getManager()->flush($housing);
+        $doctrine->getManager()->remove($housing);
+        $doctrine->getManager()->flush();
         return $this->redirectToRoute('app_housing_index');
     }
 }

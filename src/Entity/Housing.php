@@ -7,20 +7,12 @@ use App\Service\HousingStatusResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HousingRepository::class)
  */
-class Housing
+class Housing extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="text")
      *
@@ -60,12 +52,6 @@ class Housing
     {
         $this->missingFurnitures = new ArrayCollection();
         $this->missingServices = new ArrayCollection();
-    }
-
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

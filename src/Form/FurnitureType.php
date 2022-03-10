@@ -24,8 +24,7 @@ class FurnitureType extends AbstractType
                 'choices' => FurnitureTypeResolver::getFurnitureTypeChoices(),
                 'multiple' => false,
                 'expanded' => false])
-            ->add('save', SubmitType::class, ['label' => 'Speichern'])
-        ;
+            ->add('save', SubmitType::class, ['label' => 'Speichern']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

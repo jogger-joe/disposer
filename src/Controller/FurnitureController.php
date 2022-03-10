@@ -47,8 +47,7 @@ class FurnitureController extends AbstractController
         $form = $this->createForm(FurnitureType::class, $furniture);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $furniture = $form->getData();
-            $doctrine->getManager()->flush($furniture);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -68,7 +67,7 @@ class FurnitureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $furniture = $form->getData();
             $doctrine->getManager()->persist($furniture);
-            $doctrine->getManager()->flush($furniture);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [

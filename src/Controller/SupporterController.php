@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Furniture;
 use App\Entity\Supporter;
-use App\Form\FurnitureType;
 use App\Form\SupporterType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +43,7 @@ class SupporterController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $supporter = $form->getData();
-            $doctrine->getManager()->flush($supporter);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_supporter_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -66,7 +64,7 @@ class SupporterController extends AbstractController
             );
         }
         $supporter->setStatus(1);
-        $doctrine->getManager()->flush($supporter);
+        $doctrine->getManager()->flush();
         return $this->redirectToRoute('app_supporter_index');
     }
 
@@ -81,8 +79,8 @@ class SupporterController extends AbstractController
                 'no supporter found for id ' . $id
             );
         }
-        $supporter->setStatus(-1);
-        $doctrine->getManager()->flush($supporter);
+        $doctrine->getManager()->remove($supporter);
+        $doctrine->getManager()->flush();
         return $this->redirectToRoute('app_supporter_index');
     }
 
@@ -98,7 +96,7 @@ class SupporterController extends AbstractController
             $supporter = $form->getData();
             $supporter->setStatus(1);
             $doctrine->getManager()->persist($supporter);
-            $doctrine->getManager()->flush($supporter);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_supporter_index');
         }
         return $this->renderForm('edit.html.twig', [
