@@ -43,19 +43,33 @@ security:
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ADMIN_USER ]
-        ROLE_ADMIN_USER: [ROLE_EDIT_USER, ROLE_CREATE_USER ]
+        ROLE_ADMIN_USER: [ ROLE_EDIT_USER, ROLE_CREATE_USER ]
         ROLE_EDIT_USER: [ ]
         ROLE_CREATE_USER: [ ]
         ROLE_ADMIN: [ ROLE_ADMIN_HOUSING, ROLE_ADMIN_FURNITURE, ROLE_ADMIN_SERVICE, ROLE_ADMIN_SUPPORTER, ROLE_CREATE_USER ]
-        ROLE_ADMIN_HOUSING: [ ]
-        ROLE_ADMIN_FURNITURE: [ ]
-        ROLE_ADMIN_SERVICE: [ ]
-        ROLE_ADMIN_SUPPORTER: [ ]
+        ROLE_ADMIN_HOUSING: [ ROLE_USER ]
+        ROLE_ADMIN_FURNITURE: [ ROLE_USER ]
+        ROLE_ADMIN_SERVICE: [ ROLE_USER ]
+        ROLE_ADMIN_SUPPORTER: [ ROLE_USER ]
         ROLE_USER: [ ]
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/admin/dashboard/$, roles: ROLE_USER }
+        - { path: ^/admin/housing/$, roles: ROLE_USER }
+        - { path: ^/admin/furniture/$, roles: ROLE_USER }
+        - { path: ^/admin/supporter/$, roles: ROLE_USER }
+        - { path: ^/admin/user/$, roles: ROLE_USER }
+        - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING }
+        - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING }
+        - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE }
+        - { path: ^/admin/furniture/new, roles: ROLE_ADMIN_FURNITURE }
+        - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE }
+        - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE }
+        - { path: ^/admin/supporter/edit, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
+        - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
 
 when@test:
     security:
