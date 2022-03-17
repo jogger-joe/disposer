@@ -5,16 +5,14 @@
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Dashboard</h1>
-                <p class="lead text-muted">Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder
-                    Dienstleistungen angezeigt.</p>
-                <div class="btn-group">
-                    <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft
-                        erstellen</a>
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen
-                        Einrichtungsgegenstand erstellen</a>
-                    <a href="{{ path('app_supporter_new') }}" class="btn btn-outline-secondary">neuen Helfer
-                        registrieren</a>
-                </div>
+                <p class="lead text-muted">Willkommen bei der Friedländer Unterkunfts- und Unterstützungsverwaltung.</p>
+                <p class="lead text-muted">Je nach Berechtigungs sind einige Menüpunkte für dich gesperrt.</p>
+                <p class="lead text-muted">Aktuell hast du folgende Berechtigungen:</p>
+                <p>
+                    {% for role in app.user.roles %}
+                        <span class="badge bg-warning">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span>
+                    {% endfor %}
+                </p>
             </div>
         </div>
     </section>

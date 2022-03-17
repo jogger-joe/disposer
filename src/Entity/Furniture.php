@@ -7,13 +7,11 @@ use App\Service\FurnitureTypeResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FurnitureRepository::class)
  * @UniqueEntity(fields={"title", "type"}, message="Ein Gegenstand mit der Bezeichnung und dem Typ existiert bereits.")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
  */
 class Furniture extends BaseEntity
 {

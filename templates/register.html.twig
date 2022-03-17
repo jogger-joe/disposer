@@ -15,7 +15,9 @@
             <div class="col-md-4 offset-md-4">
                 <div class="login-form bg-light mt-1 mb-4 p-4 border">
                     {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.username) }}
+                    {{ form_row(registrationForm.name) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.roles) }}
                     {{ form_row(registrationForm.plainPassword, {
                         label: 'Password'
                     }) }}

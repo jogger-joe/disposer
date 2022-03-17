@@ -8,24 +8,17 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        app_default_users:
-            memory:
-                users:
-                    '%env(resolve:DEFAULT_APP_USER)%': { password: '%env(resolve:DEFAULT_APP_PASSWORD)%', roles: [ 'ROLE_USER' ] }
         app_db_users:
             entity:
                 class: App\Entity\User
-                property: username
-        all_users:
-            chain:
-                providers: [ app_default_users, app_db_users ]
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: all_users
+            provider: app_db_users
             
             logout:
                 path: app_logout
@@ -43,7 +36,7 @@ security:
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ADMIN_USER ]
-        ROLE_ADMIN_USER: [ ROLE_EDIT_USER, ROLE_CREATE_USER ]
+        ROLE_ADMIN_USER: [ ROLE_EDIT_USER, ROLE_CREATE_USER, ROLE_SUPPORTER ]
         ROLE_EDIT_USER: [ ]
         ROLE_CREATE_USER: [ ]
         ROLE_ADMIN: [ ROLE_ADMIN_HOUSING, ROLE_ADMIN_FURNITURE, ROLE_ADMIN_SERVICE, ROLE_ADMIN_SUPPORTER, ROLE_CREATE_USER ]
@@ -51,15 +44,19 @@ security:
         ROLE_ADMIN_FURNITURE: [ ROLE_USER ]
         ROLE_ADMIN_SERVICE: [ ROLE_USER ]
         ROLE_ADMIN_SUPPORTER: [ ROLE_USER ]
-        ROLE_USER: [ ]
+        ROLE_USER: [ ROLE_SUPPORTER ]
+        ROLE_SUPPORTER: [ ROLE_GUEST ]
+        ROLE_GUEST: [ ]
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin/dashboard/$, roles: ROLE_USER }
-        - { path: ^/admin/housing/$, roles: ROLE_USER }
+        - { path: ^/admin/dashboard/$, roles: [ ROLE_GUEST ] }
+        - { path: ^/admin/housing/$, roles: [ROLE_USER, ROLE_SUPPORTER] }
+        - { path: ^/admin/housing/record$, roles: [ROLE_USER, ROLE_SUPPORTER] }
+        - { path: ^/admin/housing/record/edit, roles: ROLE_SUPPORTER }
         - { path: ^/admin/furniture/$, roles: ROLE_USER }
         - { path: ^/admin/supporter/$, roles: ROLE_USER }
-        - { path: ^/admin/user/$, roles: ROLE_USER }
+        - { path: ^/admin/user/$, roles: ROLE_ADMIN }
         - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING }
         - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING }
         - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE }
@@ -70,6 +67,7 @@ security:
         - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER }
         - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
         - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
+        - { path: ^/admin/user/change-password$, roles: ROLE_GUEST }
 
 when@test:
     security:

@@ -1,6 +1,9 @@
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-icons/font/bootstrap-icons";
+@import "~select2/dist/css/select2";
 @import "~select2-bootstrap-css/select2-bootstrap";
+@import "~datatables.net-bs5/css/dataTables.bootstrap5";
 
 .bg-0 {
     color: $white;

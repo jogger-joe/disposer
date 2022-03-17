@@ -5,7 +5,7 @@ namespace App\Service;
 class FurnitureTypeResolver
 {
     const FURNITURE_TYPE_MAP = [
-        0 => 'Sonstiges',
+        0 => 'Sonstiges Einrichtungsgegenstände',
         1 => 'Kücheeinrichtung',
         2 => 'Badezimmereinrichtung',
         3 => 'Wohnzimmereinrichtung',

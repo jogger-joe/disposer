@@ -7,11 +7,9 @@ use App\Service\HousingStatusResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=HousingRepository::class)
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
  */
 class Housing extends BaseEntity
 {
@@ -35,6 +33,12 @@ class Housing extends BaseEntity
      * @var Collection
      */
     private $missingFurnitures;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings")
+     */
+    private $maintainer;
 
     /**
      * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="housings", cascade={"persist"})
@@ -156,5 +160,21 @@ class Housing extends BaseEntity
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getMaintainer()
+    {
+        return $this->maintainer;
+    }
+
+    /**
+     * @param User $maintainer
+     */
+    public function setMaintainer(User $maintainer): void
+    {
+        $this->maintainer = $maintainer;
     }
 }

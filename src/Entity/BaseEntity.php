@@ -6,9 +6,17 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\MappedSuperclass;
+use Gedmo\Blameable\Blameable;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\SoftDeleteable;
+use Gedmo\Timestampable\Timestampable;
 
-class BaseEntity
+/**
+ * @MappedSuperclass
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ */
+class BaseEntity implements Timestampable, Blameable, SoftDeleteable
 {
     /**
      * @ORM\Id
@@ -23,7 +31,7 @@ class BaseEntity
      * @var DateTime $created
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $created;
 
@@ -31,7 +39,7 @@ class BaseEntity
      * @var DateTime $updated
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updated;
 
@@ -39,7 +47,7 @@ class BaseEntity
      * @var string|null
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\Column(type="string", options={"default": "unknown"})
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $createdBy;
 
@@ -47,7 +55,7 @@ class BaseEntity
      * @var string|null
      *
      * @Gedmo\Blameable(on="update")
-     * @ORM\Column(type="string", options={"default": "unknown"})
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $updatedBy;
 
@@ -65,12 +73,12 @@ class BaseEntity
 
     public function getCreated(): DateTime
     {
-        return $this->created;
+        return $this->created ?: new DateTime();
     }
 
     public function getUpdated(): DateTime
     {
-        return $this->updated;
+        return $this->updated ?: new DateTime();
     }
 
     public function getDeletedAt(): ?DateTime

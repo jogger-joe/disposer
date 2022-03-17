@@ -16,6 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServiceController extends AbstractController
 {
     /**
+     * @Route("/")
+     */
+    public function index(ManagerRegistry $doctrine): Response
+    {
+        $service = $doctrine->getRepository(Service::class)->findAll();
+        return $this->render('service_list.html.twig', [
+            'service' => $service,
+        ]);
+    }
+
+    /**
      * @Route("/edit/{id}")
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
@@ -56,5 +67,21 @@ class ServiceController extends AbstractController
             'title' => 'Neue Dienstleistung erstellen',
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/remove/{id}")
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $service = $doctrine->getRepository(Service::class)->find($id);
+        if (!$service) {
+            throw $this->createNotFoundException(
+                'no service found for id ' . $id
+            );
+        }
+        $doctrine->getManager()->remove($service);
+        $doctrine->getManager()->flush();
+        return $this->redirectToRoute('app_furniture_index');
     }
 }

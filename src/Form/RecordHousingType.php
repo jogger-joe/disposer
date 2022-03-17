@@ -5,43 +5,23 @@ namespace App\Form;
 use App\Entity\Furniture;
 use App\Entity\Housing;
 use App\Entity\Service;
-use App\Entity\User;
 use App\Service\FurnitureTypeResolver;
-use App\Service\HousingStatusResolver;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HousingType extends AbstractType
+class RecordHousingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class, ['label' => 'Beschreibung'])
-            ->add('status', ChoiceType ::class, [
-                'label' => 'Status',
-                'choices' => HousingStatusResolver::getHousingStatusChoices(),
-                'multiple' => false,
-                'expanded' => false])
-            ->add('maintainer', EntityType::class, [
-                'label' => 'für die Pflege der Daten zuständiger User/Helfer',
-                'class' => User::class,
-                'by_reference' => false,
-                'required' => false,
-                'choice_label' => function (User $user) {
-                    return $user->getName();
-                },
-                'placeholder' => '<< kein Benutzer zugeordnet >>',
-                'multiple' => false,
-                'expanded' => false
-            ])
+            ->add('title', TextType::class, ['disabled' => true])
+            ->add('description', TextareaType::class, ['label' => 'Beschreibung','disabled' => true])
             ->add('missingFurnitures', EntityType::class, [
                 'label' => false,
                 'class' => Furniture::class,
@@ -62,17 +42,14 @@ class HousingType extends AbstractType
                 'expanded' => false,
                 'required' => false])
             ->add('missingServices', EntityType::class, [
-                'label' => false,
+                'label' => 'benötigte Dienstleistungen',
                 'class' => Service::class,
                 'by_reference' => false,
                 'choice_label' => function (Service $service) {
                     return $service->getTitle();
                 },
-                'group_by' => function () {
-                    return 'Hilfe';
-                },
                 'attr' => [
-                    'class' => 'tag-mode'],
+                    'class' => 'select2'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])

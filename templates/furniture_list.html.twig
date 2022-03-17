@@ -4,40 +4,54 @@
     <section class="text-center container">
         <div class="row ">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Übersicht der Einrichtungsgegenstände und Dienstleistungen</h1>
-                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von
-                    Einrichtungsgegenständen. Unten sind die bestehenden Einrichtungsgegenstände und Dienstleistungen
-                    aufgelistet.</p>
-                <div class="btn-group">
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen
-                        Einrichtungsgegenstand erstellen</a>
-                    <a href="{{ path('app_service_new') }}" class="btn btn-outline-secondary">neue Dienstleistung
-                        anlegen</a>
-                </div>
+                <h1 class="fw-light">Übersicht der Einrichtungsgegenstände</h1>
             </div>
         </div>
+        {% if furnitures is empty %}
+            {% include 'partials/no-data.html.twig' %}
+        {% endif %}
     </section>
     <div class="album py-5">
         <div class="container">
-            {% for key, furnitureGroup in furnitureGroups %}
-                {% if furnitureGroup is not empty %}
-                    <h3>{{ key }}</h3>
-                    <h5>
-                        {% for currentFurniture in furnitureGroup |sort((a, b) => a.title <=> b.title) %}
-                            <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}"><span
-                                    class="badge bg-{{ currentFurniture.type }}">{{ currentFurniture.title }} (<span
-                                        title="gesamt {{ currentFurniture.amount }}, benötigt {{ currentFurniture.missingAmount }}">{{ currentFurniture.missingAmount }}</span>)</span></a>
-                        {% endfor %}
-                    </h5>
-                {% endif %}
-            {% endfor %}
-            <h3>Dienstleistungen</h3>
-            <h5>
-                {% for currentService in service |sort((a, b) => a.title <=> b.title) %}
-                    <a href="{{ path('app_service_edit', {'id': currentService.id}) }}"><span
-                            class="badge bg-warning">{{ currentService.title }}</span></a>
-                {% endfor %}
-            </h5>
+            {% if furnitures is not empty %}
+                <table id="housing-table" class="table table-striped datatable" style="width:100%">
+                    <thead>
+                    <tr>
+                        {% if is_granted('ROLE_ADMIN_FURNITURE') %}
+                            <td>Aktionen</td>
+                        {% endif %}
+                        <th>Einrichtungsgegenstand</th>
+                        <th>Typ</th>
+                        <th>benötigt</th>
+                        <th>erstellt</th>
+                        <th>aktualisiert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for currentFurniture in furnitures %}
+                        <tr>
+                            {% if is_granted('ROLE_ADMIN_FURNITURE') %}
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ path('app_furniture_remove', {'id': currentFurniture.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td>{{ currentFurniture.title }}</td>
+                            <td>
+                                <span class="badge bg-{{ currentFurniture.type }}">
+                                    {{ furnitureTypeLabels[currentFurniture.type] is defined ? furnitureTypeLabels[currentFurniture.type] : currentFurniture.type }}
+                                </span>
+                            </td>
+                            <td>{{ currentFurniture.missingAmount }}</td>
+                            <td>{{ currentFurniture.created | date('d.m.Y H:m') }}</td>
+                            <td>{{ currentFurniture.updated | date('d.m.Y H:m') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

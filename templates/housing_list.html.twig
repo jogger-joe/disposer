@@ -1,60 +1,75 @@
 {% extends 'base-admin.html.twig' %}
 
 {% block body %}
-<section class="text-center container">
-    <div class="row ">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Übersicht der Unterkünfte</h1>
-            <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Unterkünfte. Unten
-                sind die bestehenden Unterkünfte aufgelistet.</p>
-            <div class="btn-group">
-                <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft erstellen</a>
+    <section class="text-center container">
+        <div class="row ">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ title }}</h1>
             </div>
         </div>
-    </div>
-</section>
-<div class="album py-5">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for currentHousing in housing|sort((a, b) => a.title <=> b.title) %}
-            {% if currentHousing.status >= 0 %}
-            <div class="col">
-                <div
-                    class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-text">{{ currentHousing.title }} <span
+        {% if housing is empty %}
+            {% include 'partials/no-data.html.twig' %}
+        {% endif %}
+    </section>
+    <div class="album py-5">
+        <div class="container">
+            {% if housing is not empty %}
+                <table id="housing-table" class="table table-striped datatable" style="width:100%">
+                    <thead>
+                    <tr>
+                        {% if is_granted('ROLE_ADMIN_HOUSING') %}
+                        <th>Aktionen</th>
+                        {% endif %}
+                        <th>Titel</th>
+                        <th>Beschreibung</th>
+                        <th>Status</th>
+                        <th>fehlende Einrichtung</th>
+                        <th>fehlende Hilfe</th>
+                        <th>erstellt</th>
+                        <th>aktualisiert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for currentHousing in housing %}
+                        <tr>
+                            {% if is_granted('ROLE_ADMIN_HOUSING') %}
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_housing_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ path('app_housing_remove', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td>{{ currentHousing.title }}</td>
+                            <td>{{ currentHousing.description }}</td>
+                            <td>
+                            <span
                                 class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                        {{ currentHousing.statusLabel }}
-                                    </span></h3>
-                        <p class="card-text">{{ currentHousing.description }}</p>
-                        {% if currentHousing.missingFurnitures is not empty %}<h5>benötigte
-                            Einrichtungsgegenstände:</h5>
-                            <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                    <span
-                                        class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span>
-                                {% endfor %}</h6>
-                        {% endif %}
-                        {% if currentHousing.missingServices is not empty %}<h5>fehlende Dienstleistungen:</h5>
-                            <h6>{% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
-                                    <span
-                                        class="badge bg-warning">{{ service.title }}</span>
-                                {% endfor %}</h6>
-                        {% endif %}
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ path('app_housing_edit', { 'id': currentHousing.id }) }}"
-                                   type="button"
-                                   class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
-                                <a href="{{ path('app_housing_remove', { 'id': currentHousing.id }) }}"
-                                   type="button" class="btn btn-sm btn-outline-secondary">Entfernen</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                {{ currentHousing.statusLabel }}
+                            </span>
+                            </td>
+                            <td>
+                                {% if currentHousing.missingFurnitures is not empty %}
+                                    {% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
+                                <span class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if currentHousing.missingServices is not empty %}
+                                    {% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
+                                        <span class="badge bg-warning">{{ service.title }}</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>{{ currentHousing.created | date('d.m.Y H:m') }}</td>
+                            <td>{{ currentHousing.updated | date('d.m.Y H:m') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             {% endif %}
-            {% endfor %}
         </div>
     </div>
-</div>
 {% endblock %}

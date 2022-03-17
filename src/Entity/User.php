@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,15 +13,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"username"}, message="Benutzername ist schon vergeben.")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
+ * @UniqueEntity(fields={"email"}, message="EMail ist schon vergeben.")
  */
 class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private $email;
 
     /**
      * @ORM\Column(type="json")
@@ -34,18 +39,46 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     private $password;
 
     /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     * @var Collection
+     * @ORM\OneToMany(targetEntity=Housing::class, mappedBy="maintainer")
      */
-    public function getUsername(): string
+    private $maintainedHousings;
+
+    public function __construct()
     {
-        return (string)$this->username;
+        $this->maintainedHousings = new ArrayCollection();
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        $this->username = $username;
+        return $this->name;
+    }
 
-        return $this;
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 
     /**
@@ -55,7 +88,7 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->username;
+        return (string)$this->email;
     }
 
     /**
@@ -65,7 +98,7 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_GUEST';
 
         return array_unique($roles);
     }
@@ -110,5 +143,41 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMaintainedHousings(): Collection
+    {
+        return $this->maintainedHousings;
+    }
+
+    /**
+     * @param Collection $maintainedHousings
+     */
+    public function setMaintainedHousings(Collection $maintainedHousings): void
+    {
+        $this->maintainedHousings = $maintainedHousings;
+    }
+
+    public function addMaintainedHousings(Housing $housing): self
+    {
+        if (!$this->maintainedHousings->contains($housing)) {
+            $this->maintainedHousings->add($housing);
+            $housing->setMaintainer($this);
+        }
+        return $this;
+    }
+
+    public function removeMaintainedHousings(Housing $housing): self
+    {
+        $this->maintainedHousings->removeElement($housing);
+        return $this;
     }
 }

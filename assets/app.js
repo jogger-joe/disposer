@@ -18,6 +18,8 @@ global.$ = global.jQuery = $;
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
 require('select2');
+require('datatables.net');
+require('datatables.net-bs5');
 
 // or you can include specific pieces
 // require('bootstrap/js/dist/tooltip');
