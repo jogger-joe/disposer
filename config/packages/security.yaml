@@ -52,10 +52,11 @@ security:
     access_control:
         - { path: ^/admin/dashboard/$, roles: [ ROLE_GUEST ] }
         - { path: ^/admin/housing/$, roles: [ROLE_USER, ROLE_SUPPORTER] }
-        - { path: ^/admin/housing/record$, roles: [ROLE_USER, ROLE_SUPPORTER] }
-        - { path: ^/admin/housing/record/edit, roles: ROLE_SUPPORTER }
+        - { path: ^/admin/housing/maintained, roles: [ROLE_USER, ROLE_SUPPORTER] }
+        - { path: ^/admin/housing/maintained/edit, roles: ROLE_SUPPORTER }
         - { path: ^/admin/furniture/$, roles: ROLE_USER }
-        - { path: ^/admin/supporter/$, roles: ROLE_USER }
+        - { path: ^/admin/supporter/accepted/$, roles: ROLE_USER }
+        - { path: ^/admin/supporter/unaccepted/$, roles: ROLE_USER }
         - { path: ^/admin/user/$, roles: ROLE_ADMIN }
         - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING }
         - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING }

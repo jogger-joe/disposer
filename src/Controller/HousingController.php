@@ -6,6 +6,7 @@ use App\Entity\Housing;
 use App\Form\HousingType;
 use App\Form\RecordHousingType;
 use App\Service\FurnitureTypeResolver;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,40 +33,15 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/assigned", name="app_housing_assigned")
+     * @Route("/maintained", name="app_housing_maintained")
      */
     public function assigned(): Response
     {
         $user = $this->getUser();
-        return $this->render('housing_list.html.twig', [
+        return $this->render('housing_maintainer_list.html.twig', [
             'title' => 'Übersicht der mir zugeordneten Unterkünfte',
             'housing' => $user->getMaintainedHousings(),
             'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
-        ]);
-    }
-
-    /**
-     * @Route("/record/edit/{id}")
-     */
-    public function recordEdit(Request $request, ManagerRegistry $doctrine, int $id): Response
-    {
-        $housing = $doctrine->getRepository(Housing::class)->findOneBy([
-            'id' =>$id,
-            'status' => -1]);
-        if (!$housing) {
-            throw $this->createNotFoundException(
-                'no housing found for id ' . $id
-            );
-        }
-        $form = $this->createForm(RecordHousingType::class, $housing);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_housing_index');
-        }
-        return $this->renderForm('edit.html.twig', [
-            'title' => 'Einrichtungsgegenstände der Unterkunft pflegen',
-            'form' => $form,
         ]);
     }
 
@@ -88,6 +64,36 @@ class HousingController extends AbstractController
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Unterkunft bearbeiten',
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/maintained/edit/{id}", name="app_housing_maintained_edit")
+     */
+    public function editAssigned(Request $request, ManagerRegistry $doctrine, int $id): Response
+    {
+        $user = $this->getUser();
+        /**
+         * @var Collection $housings
+         */
+        $housings = $user->getMaintainedHousings();
+        $housing = $housings->filter(function (Housing $currentHousing) use ($id) {
+            return $currentHousing->getId() == $id;
+        });
+        if (!$housing) {
+            throw $this->createNotFoundException(
+                'no housing found in user for id ' . $id
+            );
+        }
+        $form = $this->createForm(HousingType::class, $housing);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_housing_maintained');
+        }
+        return $this->renderForm('edit.html.twig', [
+            'title' => 'Unterkunft pflegen',
             'form' => $form,
         ]);
     }

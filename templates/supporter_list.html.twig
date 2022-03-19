@@ -3,8 +3,12 @@
 {% block body %}
     <section class="text-center container">
         <div class="row ">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">{{ title }}</h1>
+            <div class="mx-auto">
+                <h1 class="fw-light">{{ title }}
+                    <a href="{{ path('app_supporter_new') }}" class="btn btn-primary btn-lg btn-icon rounded-circle {% if not is_granted('ROLE_ADMIN_SUPPORTER') %}disabled{% endif %}">
+                        <i class="bi bi-plus"></i>
+                    </a>
+                </h1>
             </div>
         </div>
         {% if supporter is empty %}

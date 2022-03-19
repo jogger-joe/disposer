@@ -3,8 +3,12 @@
 {% block body %}
     <section class="text-center container">
         <div class="row ">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">{{ title }}</h1>
+            <div class="mx-auto">
+                <h1 class="fw-light">{{ title }}
+                    <a href="{{ path('app_user_register') }}" class="btn btn-primary btn-lg btn-icon rounded-circle {% if not is_granted('ROLE_CREATE_USER') %}disabled{% endif %}">
+                        <i class="bi bi-plus"></i>
+                    </a>
+                </h1>
             </div>
             {% if user is empty %}
                 {% include 'partials/no-data.html.twig' %}
@@ -18,7 +22,7 @@
                     <thead>
                     <tr>
                         {% if is_granted('ROLE_EDIT_USER') %}
-                        <th>Aktionen</th>
+                            <th>Aktionen</th>
                         {% endif %}
                         <th>Name</th>
                         <th>EMail</th>
@@ -32,18 +36,21 @@
                     {% for currentUser in user %}
                         <tr>
                             {% if is_granted('ROLE_EDIT_USER') %}
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="{{ path('app_user_edit', {'id': currentUser.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                    <a href="{{ path('app_user_remove', {'id': currentUser.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                </div>
-                            </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_user_edit', {'id': currentUser.id}) }}" type="button"
+                                           class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ path('app_user_remove', {'id': currentUser.id}) }}" type="button"
+                                           class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
                             {% endif %}
                             <td>{{ currentUser.name }}</td>
                             <td>{{ currentUser.email }}</td>
                             <td>
                                 {% for role in currentUser.roles %}
-                                    <span class="badge bg-primary">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span>
+                                    <span
+                                        class="badge bg-primary">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span>
                                 {% endfor %}
                             </td>
                             <td>XXXX</td>

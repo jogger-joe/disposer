@@ -8,35 +8,22 @@
         <li class="nav-item dropdown">
             <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Unterkünfte</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">alle Unterkünfte anzeigen</a></li>
-                <li class="nav-item"><a href="{{ path('app_housing_assigned') }}" class="nav-link link-dark px-2">zugeordnete Unterkünfte anzeigen</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li class="nav-item"><a href="{{ path('app_housing_new') }}" class="nav-link link-dark px-2">neue Unterkunft anlegen</a></li>
+                <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">alle Unterkünfte anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_housing_maintained') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_SUPPORTER') %}disabled{% endif %}">zugeordnete Unterkünfte anzeigen</a></li>
             </ul>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Helfer</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_supporter_accepted') }}" class="nav-link link-dark px-2">bestätigte Helfer anzeigen</a></li>
-                <li class="nav-item"><a href="{{ path('app_supporter_unaccepted') }}" class="nav-link link-dark px-2">neue Helfer anzeigen</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li class="nav-item"><a href="{{ path('app_supporter_new') }}" class="nav-link link-dark px-2">neuen Helfer anlegen</a></li>
+                <li class="nav-item"><a href="{{ path('app_supporter_accepted') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">bestätigte Helfer anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_supporter_unaccepted') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">neue Helfer anzeigen</a></li>
             </ul>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Einrichtungsgegenstände</a>
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Einrichtungsgegenstände & Hilfe</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände anzeigen</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li class="nav-item"><a href="{{ path('app_furniture_new') }}" class="nav-link link-dark px-2">neuen Einrichtungsgegenstande erstellen</a></li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Unterstützung/Hilfe</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_service_index') }}" class="nav-link link-dark px-2">Unterstützung/Hilfe anzeigen</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li class="nav-item"><a href="{{ path('app_service_new') }}" class="nav-link link-dark px-2">neuen Unterstützung/Hilfe erstellen</a></li>
+                <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Einrichtungsgegenstände anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_service_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Hilfe anzeigen</a></li>
             </ul>
         </li>
     </ul>
@@ -44,9 +31,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_user_index') }}" class="nav-link link-dark px-2">alle Benutzer anzeigen</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li class="nav-item"><a href="{{ path('app_user_register') }}" class="nav-link link-dark px-2">neuen Benutzer erstellen</a></li>
+                <li class="nav-item"><a href="{{ path('app_user_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}">Benutzer anzeigen</a></li>
             </ul>
         </li>
         <li class="nav-item dropdown">

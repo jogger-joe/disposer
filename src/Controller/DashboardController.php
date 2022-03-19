@@ -20,6 +20,7 @@ class DashboardController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
+        $user = $this->getUser();
         $activeSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 1]);
         $newSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
         $freeHousings = $doctrine->getRepository(Housing::class)->findBy(['status' => 0]);
@@ -30,6 +31,7 @@ class DashboardController extends AbstractController
             'roleLabel' => RoleResolver::ROLE_MAP,
             'activeSupporter' => count($activeSupporter),
             'newSupporter' => count($newSupporter),
+            'maintainingHousings' => count($user->getMaintainedHousings()),
             'freeHousings' => count($freeHousings),
             'partialOccupiedHousings' => count($partialOccupiedHousings),
             'occupiedHousings' => count($occupiedHousings),

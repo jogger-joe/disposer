@@ -13,8 +13,9 @@ class RoleResolver
         'ROLE_ADMIN_FURNITURE' => 'Einrichtungen verwalten',
         'ROLE_ADMIN_SERVICE' => 'Dienstleistungen verwalten',
         'ROLE_ADMIN_SUPPORTER' => 'Helfer verwalten',
+        'ROLE_ADMIN_HOUSING' => 'Unterkünfte verwalten',
         'ROLE_USER' => 'Read-Only Benutzer',
-        'ROLE_HELPER' => 'Zugeordnete Wohnungen pflegen',
+        'ROLE_SUPPORTER' => 'Zugeordnete Wohnungen pflegen',
         'ROLE_GUEST' => 'registrierter User',
     ];
 

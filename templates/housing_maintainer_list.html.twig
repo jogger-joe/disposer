@@ -4,11 +4,7 @@
     <section class="text-center container">
         <div class="row ">
             <div class="mx-auto">
-                <h1 class="fw-light">{{ title }}
-                    <a href="{{ path('app_housing_new') }}" class="btn btn-primary btn-lg btn-icon rounded-circle {% if not is_granted('ROLE_ADMIN_HOUSING') %}disabled{% endif %}">
-                        <i class="bi bi-plus"></i>
-                    </a>
-                </h1>
+                <h1 class="fw-light">{{ title }}</h1>
             </div>
         </div>
         {% if housing is empty %}
@@ -21,7 +17,7 @@
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_ADMIN_HOUSING') %}
+                        {% if is_granted('ROLE_SUPPORTER') %}
                         <th>Aktionen</th>
                         {% endif %}
                         <th>Titel</th>
@@ -37,11 +33,10 @@
 
                     {% for currentHousing in housing %}
                         <tr>
-                            {% if is_granted('ROLE_ADMIN_HOUSING') %}
+                            {% if is_granted('ROLE_SUPPORTER') %}
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ path('app_housing_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ path('app_housing_remove', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                        <a href="{{ path('app_housing_maintained_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                                     </div>
                                 </td>
                             {% endif %}
