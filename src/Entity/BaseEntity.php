@@ -73,12 +73,12 @@ class BaseEntity implements Timestampable, Blameable, SoftDeleteable
 
     public function getCreated(): DateTime
     {
-        return $this->created ?: new DateTime();
+        return $this->created;
     }
 
     public function getUpdated(): DateTime
     {
-        return $this->updated ?: new DateTime();
+        return $this->updated;
     }
 
     public function getDeletedAt(): ?DateTime

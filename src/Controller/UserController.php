@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,19 +31,30 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
-    public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
+    public function edit(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher, int $id): Response
     {
         $user = $doctrine->getRepository(User::class)->find($id);
-        if (!$user) {
+        if (!$user instanceof User) {
             throw $this->createNotFoundException(
                 'no user found for id ' . $id
             );
         }
-        $form = $this->createForm(UserType::class, $user);
+        $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+        $availableRoles = RoleResolver::getAvailableRoleChoices($roleHierarchy, $user);
+        $form = $this->createForm(UserType::class, $user, ['roleChoices' => $availableRoles]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->get('plainPassword')->getData();
+            if (!empty($password)) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            }
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_user_index');
         }
@@ -53,25 +65,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/password/reset", name="app_user_password_reset")
-     */
-    public function passwordReset(Request $request, ManagerRegistry $doctrine): Response
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_dashboard_index');
-        }
-        return $this->renderForm('edit.html.twig', [
-            'title' => 'Benutzer bearbeiten',
-            'form' => $form,
-        ]);
-    }
-
-    /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {

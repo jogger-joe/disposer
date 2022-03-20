@@ -16,7 +16,7 @@
         {% endif %}
     </section>
     <div class="album py-5">
-        <div class="container">
+        <div class="container table-responsive">
             {% if furnitures is not empty %}
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
@@ -49,8 +49,8 @@
                                 </span>
                             </td>
                             <td>{{ currentFurniture.missingAmount }}</td>
-                            <td>{{ currentFurniture.created | date('d.m.Y H:m') }}</td>
-                            <td>{{ currentFurniture.updated | date('d.m.Y H:m') }}</td>
+                            <td>{{ currentFurniture.created | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentFurniture.updated | date('d.m.Y H:i') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

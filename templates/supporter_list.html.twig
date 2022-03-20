@@ -16,7 +16,7 @@
         {% endif %}
     </section>
     <div class="album py-5">
-        <div class="container">
+        <div class="container table-responsive">
             {% if supporter is not empty %}
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
@@ -40,7 +40,7 @@
                                     <div class="btn-group" role="group">
                                         <a href="{{ path('app_supporter_edit', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                                         {% if currentSupporter.status != 1 %}
-                                            <a href="{{ path('app_supporter_activate', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-check2-circle"></i></a>
+                                            <a href="{{ path('app_supporter_activate', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-success"><i class="bi bi-check2-circle"></i></a>
                                         {% endif %}
                                         <a href="{{ path('app_supporter_remove', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                                     </div>
@@ -53,8 +53,8 @@
                                 {% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
                                     <span class="badge bg-warning">{{ service.title }}</span>
                                 {% endfor %}</td>
-                            <td>{{ currentSupporter.created | date('d.m.Y H:m') }}</td>
-                            <td>{{ currentSupporter.updated | date('d.m.Y H:m') }}</td>
+                            <td>{{ currentSupporter.created | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentSupporter.updated | date('d.m.Y H:i') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

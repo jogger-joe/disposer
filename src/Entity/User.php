@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,6 +38,13 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @var DateTime|null
+     *
+     * @ORM\Column(name="lastLogin", type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     /**
      * @var Collection
@@ -97,8 +105,9 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_GUEST';
+        if (empty($roles)) {
+            $roles[] = 'ROLE_GUEST';
+        }
 
         return array_unique($roles);
     }
@@ -179,5 +188,20 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     {
         $this->maintainedHousings->removeElement($housing);
         return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getLastLogin(): ?DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     */
+    public function setLastLogin(): void
+    {
+        $this->lastLogin = new DateTime();
     }
 }

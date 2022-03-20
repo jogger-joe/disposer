@@ -35,7 +35,7 @@ class Housing extends BaseEntity
     private $missingFurnitures;
 
     /**
-     * @var User
+     * @var User | null
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings")
      */
     private $maintainer;
@@ -165,15 +165,15 @@ class Housing extends BaseEntity
     /**
      * @return User|null
      */
-    public function getMaintainer()
+    public function getMaintainer():  ?User
     {
         return $this->maintainer;
     }
 
     /**
-     * @param User $maintainer
+     * @param User|null $maintainer
      */
-    public function setMaintainer(User $maintainer): void
+    public function setMaintainer(?User $maintainer): void
     {
         $this->maintainer = $maintainer;
     }

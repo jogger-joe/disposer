@@ -29,7 +29,7 @@ class FurnitureController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -72,7 +72,7 @@ class FurnitureController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {

@@ -40,7 +40,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -63,7 +63,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/activate/{id}")
+     * @Route("/activate/{id}", requirements={"id": "\d+"})
      */
     public function activate(ManagerRegistry $doctrine, int $id): Response
     {
@@ -79,7 +79,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {

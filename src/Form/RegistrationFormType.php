@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Service\RoleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,12 +17,13 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $roleChoices = $options['roleChoices'];
         $builder
             ->add('name', TextType::class, ['label' => 'Name'])
             ->add('email', EmailType::class, ['label' => 'E-Mail'])
             ->add('roles', ChoiceType::class, [
-                'label' => 'Typ',
-                'choices' => RoleResolver::getRoleChoices(),
+                'label' => 'Rollen/Rechte',
+                'choices' => $roleChoices,
                 'multiple' => true,
                 'expanded' => false,
                 'attr' => [
@@ -50,6 +50,7 @@ class RegistrationFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setRequired('roleChoices');
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);

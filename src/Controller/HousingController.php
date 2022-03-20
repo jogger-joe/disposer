@@ -46,7 +46,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -69,7 +69,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/maintained/edit/{id}", name="app_housing_maintained_edit")
+     * @Route("/maintained/edit/{id}", name="app_housing_maintained_edit", requirements={"id": "\d+"})
      */
     public function editAssigned(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -119,7 +119,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {
