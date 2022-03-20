@@ -145,7 +145,7 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
         // $this->plainPassword = null;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }

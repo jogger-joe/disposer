@@ -7,7 +7,7 @@
                 <h1 class="fw-light">Dashboard</h1>
                 <p class="lead text-muted">Willkommen <span class="badge bg-info">{{ app.user.name }}</span> bei der Friedländer Unterkunfts- und Unterstützungsverwaltung.</p>
                 <p class="lead text-muted">Du hast folgende Berechtigungen: {% for role in app.user.roles %}<span class="badge bg-warning">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span> {% endfor %}</p>
-                <p class="lead text-muted">Je nach Berechtigungen sind einige Menüpunkte für dich gesperrt.</p>
+                <p class="lead text-muted">Je nach Berechtigungen sind einige Menüpunkte oder Funktionen für dich gesperrt.</p>
             </div>
         </div>
     </section>

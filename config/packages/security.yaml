@@ -68,7 +68,7 @@ security:
         - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER }
         - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
         - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
-        - { path: ^/admin/user/change-password$, roles: ROLE_GUEST }
+        - { path: ^/admin/user/password/reset$, roles: ROLE_GUEST }
 
 when@test:
     security:

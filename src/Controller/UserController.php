@@ -53,6 +53,24 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/password/reset", name="app_user_password_reset")
+     */
+    public function passwordReset(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_dashboard_index');
+        }
+        return $this->renderForm('edit.html.twig', [
+            'title' => 'Benutzer bearbeiten',
+            'form' => $form,
+        ]);
+    }
+
+    /**
      * @Route("/remove/{id}")
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
