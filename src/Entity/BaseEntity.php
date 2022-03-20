@@ -71,12 +71,12 @@ class BaseEntity implements Timestampable, Blameable, SoftDeleteable
         return $this->id;
     }
 
-    public function getCreated(): DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
 
-    public function getUpdated(): DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
@@ -91,12 +91,12 @@ class BaseEntity implements Timestampable, Blameable, SoftDeleteable
         $this->deletedAt = $deletedAt;
     }
 
-    public function getCreatedBy()
+    public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
 
-    public function getUpdatedBy()
+    public function getUpdatedBy(): ?string
     {
         return $this->updatedBy;
     }

@@ -53,8 +53,8 @@
                                 {% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
                                     <span class="badge bg-warning">{{ service.title }}</span>
                                 {% endfor %}</td>
-                            <td>{{ currentSupporter.created | date('d.m.Y H:i') }}</td>
-                            <td>{{ currentSupporter.updated | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentSupporter.created ? currentSupporter.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentSupporter.updated ? currentSupporter.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

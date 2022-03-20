@@ -62,8 +62,8 @@
                                     {% endfor %}
                                 {% endif %}
                             </td>
-                            <td>{{ currentHousing.created | date('d.m.Y H:i') }}</td>
-                            <td>{{ currentHousing.updated | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentHousing.created ? currentHousing.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

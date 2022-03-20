@@ -54,8 +54,8 @@
                                 {% endfor %}
                             </td>
                             <td>{{ currentUser.lastLogin ? currentUser.lastLogin | date('d.m.Y H:i') : '-' }}</td>
-                            <td>{{ currentUser.created | date('d.m.Y H:i') }}</td>
-                            <td>{{ currentUser.updated | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentUser.created ? currentUser.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentUser.updated ? currentUser.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

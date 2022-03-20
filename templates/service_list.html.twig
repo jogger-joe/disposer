@@ -43,8 +43,8 @@
                             {% endif %}
                             <td>{{ currentService.title }}</td>
                             <td>{{ currentService.missingAmount }}</td>
-                            <td>{{ currentService.created | date('d.m.Y H:i') }}</td>
-                            <td>{{ currentService.updated | date('d.m.Y H:i') }}</td>
+                            <td>{{ currentService.created ? currentService.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

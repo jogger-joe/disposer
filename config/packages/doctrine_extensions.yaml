@@ -5,14 +5,20 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
-    
+
     gedmo.listener.softdeleteable:
         class: Gedmo\SoftDeleteable\SoftDeleteableListener
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
-    
+
+    Gedmo\Loggable\LoggableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
     Gedmo\Blameable\BlameableListener:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
