@@ -29,7 +29,6 @@
                         <th>Status</th>
                         <th>fehlende Einrichtung</th>
                         <th>fehlende Hilfe</th>
-                        <th>erstellt</th>
                         <th>aktualisiert</th>
                     </tr>
                     </thead>
@@ -67,7 +66,6 @@
                                     {% endfor %}
                                 {% endif %}
                             </td>
-                            <td>{{ currentHousing.created ? currentHousing.created | date('d.m.Y H:i') : '-' }}</td>
                             <td>{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}

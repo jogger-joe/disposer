@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RecordHousingType extends AbstractType
+class MaintainHousingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -42,14 +42,17 @@ class RecordHousingType extends AbstractType
                 'expanded' => false,
                 'required' => false])
             ->add('missingServices', EntityType::class, [
-                'label' => 'benötigte Dienstleistungen',
+                'label' => false,
                 'class' => Service::class,
                 'by_reference' => false,
                 'choice_label' => function (Service $service) {
                     return $service->getTitle();
                 },
+                'group_by' => function () {
+                    return 'Hilfe';
+                },
                 'attr' => [
-                    'class' => 'select2'],
+                    'class' => 'tag-mode'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])

@@ -33,7 +33,6 @@ class HousingType extends AbstractType
             ->add('maintainer', EntityType::class, [
                 'label' => 'für die Pflege der Daten zuständiger User/Helfer',
                 'class' => User::class,
-                'by_reference' => false,
                 'required' => false,
                 'choice_label' => function (User $user) {
                     return $user->getName();
