@@ -1,0 +1,55 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block body %}
+    <section class="text-center container">
+        <div class="row ">
+            <div class="mx-auto">
+                <h1 class="fw-light">Übersicht der Unterstützung/Hilfe
+                    <a href="{{ path('app_service_new') }}" class="btn btn-primary btn-lg btn-icon rounded-circle {% if not is_granted('ROLE_ADMIN_SERVICE') %}disabled{% endif %}">
+                        <i class="bi bi-plus"></i>
+                    </a>
+                </h1>
+            </div>
+        </div>
+        {% if service is empty %}
+            {% include 'partials/no-data.html.twig' %}
+        {% endif %}
+    </section>
+    <div class="album py-5">
+        <div class="container table-responsive">
+            {% if service is not empty %}
+                <table id="housing-table" class="table table-striped datatable" style="width:100%">
+                    <thead>
+                    <tr>
+                        {% if is_granted('ROLE_ADMIN_SERVICE') %}
+                            <th>Aktionen</th>
+                        {% endif %}
+                        <th>Unterstützung/Hilfe</th>
+                        <th>benötigt</th>
+                        <th>erstellt</th>
+                        <th>aktualisiert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for currentService in service %}
+                        <tr>
+                            {% if is_granted('ROLE_ADMIN_SERVICE') %}
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_service_edit', {'id': currentService.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ path('app_service_remove', {'id': currentService.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td>{{ currentService.title }}</td>
+                            <td>{{ currentService.missingAmount }}</td>
+                            <td>{{ currentService.created ? currentService.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

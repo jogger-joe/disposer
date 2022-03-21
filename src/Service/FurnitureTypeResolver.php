@@ -5,13 +5,13 @@ namespace App\Service;
 class FurnitureTypeResolver
 {
     const FURNITURE_TYPE_MAP = [
-        0 => 'Sonstiges',
+        0 => 'Sonstiges Einrichtungsgegenstände',
         1 => 'Kücheeinrichtung',
         2 => 'Badezimmereinrichtung',
         3 => 'Wohnzimmereinrichtung',
         4 => 'Schlafzimmereinrichtung',
-        5 => 'Gäste-/Kinderzeimmereinrichtung 1',
-        6 => 'Gäste-/Kinderzeimmereinrichtung 2',
+        5 => 'Gäste-/Kinderzimmereinrichtung 1',
+        6 => 'Gäste-/Kinderzimmereinrichtung 2',
     ];
 
     public static function getFurnitureTypeLabel(int $furnitureType): string

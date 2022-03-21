@@ -4,16 +4,52 @@
 
 {% block navigation %}
     <ul class="nav me-auto">
-        <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2 active" aria-current="page">Dashboard</a></li>
-        <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2">Unterkünfte</a></li>
-        <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2">Einrichtungsgegenstände & Dienstleistungen</a></li>
-        <li class="nav-item"><a href="{{ path('app_supporter_index') }}" class="nav-link link-dark px-2">Helfer</a></li>
+        <li class="nav-item"><a href="{{ path('app_dashboard_index') }}" class="nav-link link-dark px-2 active" aria-current="page">Übersicht</a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Unterkünfte</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li class="nav-item"><a href="{{ path('app_housing_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">alle Unterkünfte anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_housing_maintained') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_SUPPORTER') %}disabled{% endif %}">zugeordnete Unterkünfte anzeigen</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Helfer</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li class="nav-item"><a href="{{ path('app_supporter_accepted') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">bestätigte Helfer anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_supporter_unaccepted') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">neue Helfer anzeigen</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Einrichtungsgegenstände & Hilfe</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Einrichtungsgegenstände anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_service_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Hilfe anzeigen</a></li>
+            </ul>
+        </li>
     </ul>
     <ul class="nav">
-        <li class="nav-item"><a href="{{ path('app_public_index') }}" class="nav-link link-dark px-2">Öffentlicher Bereich</a></li>
-        <li class="nav-item"><a href="{{ path('app_user_index') }}" class="nav-link link-dark px-2">Nutzerliste</a></li>
-        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link link-dark px-2">Abmelden</a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li class="nav-item"><a href="{{ path('app_user_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}">Benutzer anzeigen</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ app.user.name }}</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li class="nav-item"><a href="{{ path('app_public_index') }}" class="nav-link link-dark px-2">zum öffentlichen Bereich</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2 disabled" data-toggle="modal" data-target="#videoModal" data-video="">Video Guide</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="nav-item"><a href="{{ path('app_profile_edit') }}" class="nav-link link-dark px-2">Account anpassen</a></li>
+                <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link link-dark px-2">Abmelden</a></li>
+            </ul>
+        </li>
     </ul>
+{% endblock %}
+
+{% block modal %}
+    {% include 'partials/video-modal.html.twig' %}
 {% endblock %}
 
 {% block body %}{% endblock %}

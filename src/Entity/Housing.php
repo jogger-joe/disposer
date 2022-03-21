@@ -35,6 +35,12 @@ class Housing extends BaseEntity
     private $missingFurnitures;
 
     /**
+     * @var User | null
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings")
+     */
+    private $maintainer;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="housings", cascade={"persist"})
      *
      * @var Collection
@@ -154,5 +160,21 @@ class Housing extends BaseEntity
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getMaintainer():  ?User
+    {
+        return $this->maintainer;
+    }
+
+    /**
+     * @param User|null $maintainer
+     */
+    public function setMaintainer(?User $maintainer): void
+    {
+        $this->maintainer = $maintainer;
     }
 }

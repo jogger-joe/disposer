@@ -21,7 +21,7 @@ class SupporterType extends AbstractType
             ->add('contact', TextType::class, ['label' => 'Kontakt', 'attr' => ['placeholder' => 'Telefonnummer oder EMail']])
             ->add('information', TextareaType::class, ['label' => 'Informationen', 'attr' => ['placeholder' => 'z.B. Transport, Aufbau, Anpacken, Verfügbarkeit von bis o.ä.']])
             ->add('availableServices', EntityType::class, [
-                'label' => 'leistbare Dienstleistungen',
+                'label' => 'leistbare Hilfen',
                 'class' => Service::class,
                 'by_reference' => false,
                 'choice_label' => function (Service $service) {

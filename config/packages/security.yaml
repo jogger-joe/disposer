@@ -8,24 +8,17 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        app_default_users:
-            memory:
-                users:
-                    '%env(resolve:DEFAULT_APP_USER)%': { password: '%env(resolve:DEFAULT_APP_PASSWORD)%', roles: [ 'ROLE_USER' ] }
         app_db_users:
             entity:
                 class: App\Entity\User
-                property: username
-        all_users:
-            chain:
-                providers: [ app_default_users, app_db_users ]
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: all_users
+            provider: app_db_users
             
             logout:
                 path: app_logout
@@ -41,11 +34,47 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ADMIN_USER ]
+        ROLE_ADMIN_USER: [ ROLE_EDIT_USER, ROLE_CREATE_USER ]
+        ROLE_EDIT_USER: [ ]
+        ROLE_CREATE_USER: [ ]
+        ROLE_ADMIN: [ ROLE_ADMIN_HOUSING, ROLE_ADMIN_FURNITURE, ROLE_ADMIN_SERVICE, ROLE_ADMIN_SUPPORTER, ROLE_CREATE_USER ]
+        ROLE_ADMIN_HOUSING: [ ROLE_USER ]
+        ROLE_ADMIN_FURNITURE: [ ROLE_USER ]
+        ROLE_ADMIN_SERVICE: [ ROLE_USER ]
+        ROLE_ADMIN_SUPPORTER: [ ROLE_USER ]
+        ROLE_USER: [ ROLE_SUPPORTER ]
+        ROLE_SUPPORTER: [ ROLE_GUEST ]
+        ROLE_GUEST: [ ]
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/admin/dashboard/$, roles: [ ROLE_GUEST ] }
+        - { path: ^/admin/supporter/accepted/$, roles: ROLE_USER }
+        - { path: ^/admin/supporter/unaccepted/$, roles: ROLE_USER }
+        - { path: ^/admin/supporter/edit, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/supporter/activate, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN_SUPPORTER }
+        - { path: ^/admin/housing/$, roles: [ROLE_USER] }
+        - { path: ^/admin/housing/maintained$, roles: [ROLE_SUPPORTER] }
+        - { path: ^/admin/housing/maintained/edit, roles: ROLE_SUPPORTER }
+        - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING }
+        - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING }
+        - { path: ^/admin/housing/remove, roles: ROLE_ADMIN_HOUSING }
+        - { path: ^/admin/furniture/$, roles: ROLE_USER }
+        - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE }
+        - { path: ^/admin/furniture/new, roles: ROLE_ADMIN_FURNITURE }
+        - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN_FURNITURE }
+        - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE }
+        - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE }
+        - { path: ^/admin/service/remove, roles: ROLE_ADMIN_SERVICE }
+        - { path: ^/admin/user/$, roles: ROLE_ADMIN }
+        - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
+        - { path: ^/admin/user/remove, roles: ROLE_EDIT_USER }
+        - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
+        - { path: ^/admin/profile/edit, roles: ROLE_GUEST }
 
 when@test:
     security:

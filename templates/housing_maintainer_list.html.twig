@@ -1,0 +1,74 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block body %}
+    <section class="text-center container">
+        <div class="row ">
+            <div class="mx-auto">
+                <h1 class="fw-light">{{ title }}</h1>
+            </div>
+        </div>
+        {% if housing is empty %}
+            {% include 'partials/no-data.html.twig' %}
+        {% endif %}
+    </section>
+    <div class="album py-5">
+        <div class="container table-responsive">
+            {% if housing is not empty %}
+                <table id="housing-table" class="table table-striped datatable" style="width:100%">
+                    <thead>
+                    <tr>
+                        {% if is_granted('ROLE_SUPPORTER') %}
+                        <th>Aktionen</th>
+                        {% endif %}
+                        <th>Titel</th>
+                        <th>Beschreibung</th>
+                        <th>Status</th>
+                        <th>fehlende Einrichtung</th>
+                        <th>fehlende Hilfe</th>
+                        <th>erstellt</th>
+                        <th>aktualisiert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for currentHousing in housing %}
+                        <tr>
+                            {% if is_granted('ROLE_SUPPORTER') %}
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_housing_maintained_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                    </div>
+                                </td>
+                            {% endif %}
+                            <td>{{ currentHousing.title }}</td>
+                            <td>{{ currentHousing.description }}</td>
+                            <td>
+                            <span
+                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
+                                {{ currentHousing.statusLabel }}
+                            </span>
+                            </td>
+                            <td>
+                                {% if currentHousing.missingFurnitures is not empty %}
+                                    {% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
+                                <span class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if currentHousing.missingServices is not empty %}
+                                    {% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
+                                        <span class="badge bg-warning">{{ service.title }}</span><br>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>{{ currentHousing.created ? currentHousing.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

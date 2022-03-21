@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Furniture;
 use App\Entity\Housing;
 use App\Entity\Service;
+use App\Entity\User;
 use App\Service\FurnitureTypeResolver;
 use App\Service\HousingStatusResolver;
 use Doctrine\ORM\EntityRepository;
@@ -29,6 +30,18 @@ class HousingType extends AbstractType
                 'choices' => HousingStatusResolver::getHousingStatusChoices(),
                 'multiple' => false,
                 'expanded' => false])
+            ->add('maintainer', EntityType::class, [
+                'label' => 'für die Pflege der Daten zuständiger User/Helfer',
+                'class' => User::class,
+                'by_reference' => false,
+                'required' => false,
+                'choice_label' => function (User $user) {
+                    return $user->getName();
+                },
+                'placeholder' => '<< kein Benutzer zugeordnet >>',
+                'multiple' => false,
+                'expanded' => false
+            ])
             ->add('missingFurnitures', EntityType::class, [
                 'label' => false,
                 'class' => Furniture::class,
@@ -49,14 +62,17 @@ class HousingType extends AbstractType
                 'expanded' => false,
                 'required' => false])
             ->add('missingServices', EntityType::class, [
-                'label' => 'benötigte Dienstleistungen',
+                'label' => false,
                 'class' => Service::class,
                 'by_reference' => false,
                 'choice_label' => function (Service $service) {
                     return $service->getTitle();
                 },
+                'group_by' => function () {
+                    return 'Hilfe';
+                },
                 'attr' => [
-                    'class' => 'select2'],
+                    'class' => 'tag-mode'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])
