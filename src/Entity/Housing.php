@@ -7,20 +7,12 @@ use App\Service\HousingStatusResolver;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=HousingRepository::class)
  */
-class Housing
+class Housing extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="text")
      *
@@ -43,6 +35,12 @@ class Housing
     private $missingFurnitures;
 
     /**
+     * @var User | null
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings")
+     */
+    private $maintainer;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="housings", cascade={"persist"})
      *
      * @var Collection
@@ -60,12 +58,6 @@ class Housing
     {
         $this->missingFurnitures = new ArrayCollection();
         $this->missingServices = new ArrayCollection();
-    }
-
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -168,5 +160,21 @@ class Housing
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getMaintainer():  ?User
+    {
+        return $this->maintainer;
+    }
+
+    /**
+     * @param User|null $maintainer
+     */
+    public function setMaintainer(?User $maintainer): void
+    {
+        $this->maintainer = $maintainer;
     }
 }

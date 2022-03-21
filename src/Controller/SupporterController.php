@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Furniture;
 use App\Entity\Supporter;
-use App\Form\FurnitureType;
 use App\Form\SupporterType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,20 +16,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class SupporterController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/accepted", name="app_supporter_accepted")
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function accepted(ManagerRegistry $doctrine): Response
     {
         $activeSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 1]);
-        $inactiveSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
         return $this->render('supporter_list.html.twig', [
-            'activeSupporter' => $activeSupporter,
-            'inactiveSupporter' => $inactiveSupporter
+            'title' => 'bestätigte Helfer',
+            'supporter' => $activeSupporter,
         ]);
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/unaccepted", name="app_supporter_unaccepted")
+     */
+    public function unaccepted(ManagerRegistry $doctrine): Response
+    {
+        $inactiveSupporter = $doctrine->getRepository(Supporter::class)->findBy(['status' => 0]);
+        return $this->render('supporter_list.html.twig', [
+            'title' => 'unbestätigte Helfer',
+            'supporter' => $inactiveSupporter,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -44,9 +53,8 @@ class SupporterController extends AbstractController
         $form = $this->createForm(SupporterType::class, $supporter);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $supporter = $form->getData();
-            $doctrine->getManager()->flush($supporter);
-            return $this->redirectToRoute('app_supporter_index');
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_supporter_accepted');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Helfer bearbeiten',
@@ -55,7 +63,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/activate/{id}")
+     * @Route("/activate/{id}", requirements={"id": "\d+"})
      */
     public function activate(ManagerRegistry $doctrine, int $id): Response
     {
@@ -66,12 +74,12 @@ class SupporterController extends AbstractController
             );
         }
         $supporter->setStatus(1);
-        $doctrine->getManager()->flush($supporter);
-        return $this->redirectToRoute('app_supporter_index');
+        $doctrine->getManager()->flush();
+        return $this->redirectToRoute('app_supporter_accepted');
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {
@@ -81,9 +89,9 @@ class SupporterController extends AbstractController
                 'no supporter found for id ' . $id
             );
         }
-        $supporter->setStatus(-1);
-        $doctrine->getManager()->flush($supporter);
-        return $this->redirectToRoute('app_supporter_index');
+        $doctrine->getManager()->remove($supporter);
+        $doctrine->getManager()->flush();
+        return $this->redirectToRoute('app_supporter_accepted');
     }
 
     /**
@@ -98,8 +106,8 @@ class SupporterController extends AbstractController
             $supporter = $form->getData();
             $supporter->setStatus(1);
             $doctrine->getManager()->persist($supporter);
-            $doctrine->getManager()->flush($supporter);
-            return $this->redirectToRoute('app_supporter_index');
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_supporter_accepted');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Neuen Helfer erstellen',

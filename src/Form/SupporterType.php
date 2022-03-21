@@ -18,15 +18,17 @@ class SupporterType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Name', 'attr' => ['placeholder' => 'Vorname, Nachname']])
-            ->add('contact', TextType::class, ['label' => 'Kontakt', 'attr'=> ['placeholder' => 'Telefonnummer oder EMail']])
+            ->add('contact', TextType::class, ['label' => 'Kontakt', 'attr' => ['placeholder' => 'Telefonnummer oder EMail']])
             ->add('information', TextareaType::class, ['label' => 'Informationen', 'attr' => ['placeholder' => 'z.B. Transport, Aufbau, Anpacken, Verfügbarkeit von bis o.ä.']])
             ->add('availableServices', EntityType::class, [
-                'label' => 'leistbare Dienstleistungen',
+                'label' => 'leistbare Hilfen',
                 'class' => Service::class,
                 'by_reference' => false,
                 'choice_label' => function (Service $service) {
                     return $service->getTitle();
                 },
+                'attr' => [
+                    'class' => 'select2'],
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])
@@ -39,7 +41,7 @@ class SupporterType extends AbstractType
             'data_class' => Supporter::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
-            'csrf_token_id'   => 'supporter'
+            'csrf_token_id' => 'supporter'
         ]);
     }
 }

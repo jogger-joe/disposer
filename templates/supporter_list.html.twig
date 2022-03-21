@@ -3,69 +3,63 @@
 {% block body %}
     <section class="text-center container">
         <div class="row ">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Übersicht der Helfer</h1>
-                <p class="lead text-muted">Diese Seite dient nur der Übersicht und Verwaltung von Helfern. Unten sind die vorhandene Helfer aufgelistet. Neue/Unbestätigte Helfer sind Helfer, die sich über den öffentlichen Bereich registriert haben.</p>
-                <div class="btn-group">
-                    <a href="{{ path('app_supporter_new') }}" class="btn btn-outline-secondary">neuen Helfer erstellen</a>
-                </div>
+            <div class="mx-auto">
+                <h1 class="fw-light">{{ title }}
+                    <a href="{{ path('app_supporter_new') }}" class="btn btn-primary btn-lg btn-icon rounded-circle {% if not is_granted('ROLE_ADMIN_SUPPORTER') %}disabled{% endif %}">
+                        <i class="bi bi-plus"></i>
+                    </a>
+                </h1>
             </div>
         </div>
+        {% if supporter is empty %}
+            {% include 'partials/no-data.html.twig' %}
+        {% endif %}
     </section>
     <div class="album py-5">
-        <div class="container">
-            <h4>bestätigte Helfer</h4>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
-                {% for currentSupporter in activeSupporter %}
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h3 class="card-text">{{ currentSupporter.name }}</h3>
-                                <p class="card-text">{{ currentSupporter.information }}</p>
-                                <p class="card-text">{{ currentSupporter.contact }}</p>
-                                <h6>{% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
-                                        <span
-                                            class="badge bg-warning">{{ service.title }}</span>
-                                    {% endfor %}</h6>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{{ path('app_supporter_edit', { 'id': currentSupporter.id }) }}"
-                                           type="button" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
-                                        <a href="{{ path('app_supporter_remove', { 'id': currentSupporter.id }) }}"
-                                           type="button" class="btn btn-sm btn-outline-secondary">Entfernen</a>
+        <div class="container table-responsive">
+            {% if supporter is not empty %}
+                <table id="housing-table" class="table table-striped datatable" style="width:100%">
+                    <thead>
+                    <tr>
+                        {% if is_granted('ROLE_ADMIN_SUPPORTER') %}
+                        <th>Aktionen</th>
+                        {% endif %}
+                        <th>Name</th>
+                        <th>Kontakt</th>
+                        <th>Informationen</th>
+                        <th>Hilfsangebot</th>
+                        <th>erstellt</th>
+                        <th>aktualisiert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for currentSupporter in supporter %}
+                        <tr>
+                            {% if is_granted('ROLE_ADMIN_SUPPORTER') %}
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('app_supporter_edit', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                        {% if currentSupporter.status != 1 %}
+                                            <a href="{{ path('app_supporter_activate', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-success"><i class="bi bi-check2-circle"></i></a>
+                                        {% endif %}
+                                        <a href="{{ path('app_supporter_remove', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <h4>neue/unbestätigte Helfer</h4>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for currentSupporter in inactiveSupporter %}
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h3 class="card-text">{{ currentSupporter.name }}</h3>
-                                <p class="card-text">{{ currentSupporter.information }}</p>
-                                <p class="card-text">{{ currentSupporter.contact }}</p>
-                                <h6>{% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
-                                        <span
-                                            class="badge bg-warning">{{ service.title }}</span>
-                                    {% endfor %}</h6>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{{ path('app_supporter_activate', { 'id': currentSupporter.id }) }}"
-                                           type="button" class="btn btn-sm btn-outline-secondary">Aktivieren</a>
-                                        <a href="{{ path('app_supporter_remove', { 'id': currentSupporter.id }) }}"
-                                           type="button" class="btn btn-sm btn-outline-secondary">Entfernen</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+                                </td>
+                            {% endif %}
+                            <td>{{ currentSupporter.name }}</td>
+                            <td>{{ currentSupporter.contact }}</td>
+                            <td>{{ currentSupporter.information }}</td>
+                            <td>
+                                {% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
+                                    <span class="badge bg-warning">{{ service.title }}</span>
+                                {% endfor %}</td>
+                            <td>{{ currentSupporter.created ? currentSupporter.created | date('d.m.Y H:i') : '-' }}</td>
+                            <td>{{ currentSupporter.updated ? currentSupporter.updated | date('d.m.Y H:i') : '-' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

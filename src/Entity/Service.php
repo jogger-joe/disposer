@@ -12,15 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  * @UniqueEntity(fields={"title"}, message="Eine Dienstleistung mit der Bezeichnung existiert bereits.")
  */
-class Service
+class Service extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="text")
      *
@@ -46,11 +39,6 @@ class Service
     {
         $this->housings = new ArrayCollection();
         $this->supporter = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -139,7 +127,8 @@ class Service
         return $this;
     }
 
-    public function getMissingAmount(): int {
+    public function getMissingAmount(): int
+    {
         return $this->housings->filter(function (Housing $housing) {
             return $housing->getStatus() >= 0;
         })->count();

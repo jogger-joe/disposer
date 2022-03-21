@@ -13,17 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=FurnitureRepository::class)
  * @UniqueEntity(fields={"title", "type"}, message="Ein Gegenstand mit der Bezeichnung und dem Typ existiert bereits.")
  */
-class Furniture
+class Furniture extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="text")
      *
@@ -55,11 +46,6 @@ class Furniture
     public function __construct()
     {
         $this->housings = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

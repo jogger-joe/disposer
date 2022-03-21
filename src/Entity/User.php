@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -11,21 +14,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"username"}, message="Benutzername ist schon vergeben.")
+ * @UniqueEntity(fields={"email"}, message="EMail ist schon vergeben.")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=180)
      */
-    private $id;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private $email;
 
     /**
      * @ORM\Column(type="json")
@@ -38,24 +39,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-    public function getId(): ?int
+    /**
+     * @var DateTime|null
+     *
+     * @ORM\Column(name="lastLogin", type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity=Housing::class, mappedBy="maintainer")
+     */
+    private $maintainedHousings;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->maintainedHousings = new ArrayCollection();
     }
 
     /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     * @return mixed
      */
-    public function getUsername(): string
+    public function getName()
     {
-        return (string)$this->username;
+        return $this->name;
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
-        $this->username = $username;
+        $this->name = $name;
+    }
 
-        return $this;
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 
     /**
@@ -65,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->username;
+        return (string)$this->email;
     }
 
     /**
@@ -74,8 +105,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if (empty($roles)) {
+            $roles[] = 'ROLE_GUEST';
+        }
 
         return array_unique($roles);
     }
@@ -120,5 +152,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMaintainedHousings(): Collection
+    {
+        return $this->maintainedHousings;
+    }
+
+    /**
+     * @param Collection $maintainedHousings
+     */
+    public function setMaintainedHousings(Collection $maintainedHousings): void
+    {
+        $this->maintainedHousings = $maintainedHousings;
+    }
+
+    public function addMaintainedHousings(Housing $housing): self
+    {
+        if (!$this->maintainedHousings->contains($housing)) {
+            $this->maintainedHousings->add($housing);
+            $housing->setMaintainer($this);
+        }
+        return $this;
+    }
+
+    public function removeMaintainedHousings(Housing $housing): self
+    {
+        $this->maintainedHousings->removeElement($housing);
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getLastLogin(): ?DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     */
+    public function setLastLogin(): void
+    {
+        $this->lastLogin = new DateTime();
     }
 }

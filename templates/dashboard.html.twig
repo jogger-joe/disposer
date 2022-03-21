@@ -2,64 +2,91 @@
 
 {% block body %}
     <section class="text-center container">
-        <div class="row ">
-            <div class="col-lg-6 col-md-8 mx-auto">
+        <div class="row">
+            <div class="mx-auto">
                 <h1 class="fw-light">Dashboard</h1>
-                <p class="lead text-muted">Hier werden alle Wohnungen mit fehlenden Einrichtungsgegenständen und/oder
-                    Dienstleistungen angezeigt.</p>
-                <div class="btn-group">
-                    <a href="{{ path('app_housing_new') }}" class="btn btn-outline-secondary">neue Unterkunft
-                        erstellen</a>
-                    <a href="{{ path('app_furniture_new') }}" class="btn btn-outline-secondary">neuen
-                        Einrichtungsgegenstand erstellen</a>
-                    <a href="{{ path('app_supporter_new') }}" class="btn btn-outline-secondary">neuen Helfer
-                        registrieren</a>
-                </div>
+                <p class="lead text-muted">Willkommen <span class="badge bg-info">{{ app.user.name }}</span> ({% for role in app.user.roles %}<span class="badge bg-warning">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span> {% endfor %})</p>
+                <p class="lead text-muted">Je nach Berechtigungen sind einige Menüpunkte oder Funktionen für dich gesperrt.</p>
             </div>
         </div>
     </section>
     <div class="album py-5">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">aktive Unterstützer</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ activeSupporter }} aktive Unterstützer</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ activeSupporter }}</h1>
+                            <a href="{{ path('app_supporter_accepted') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">neu registrierte Unterstützer</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ newSupporter }} neu registrierte Unterstützer</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ newSupporter }}</h1>
+                            <a href="{{ path('app_supporter_unaccepted') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">mir zugeordnete Unterkünfte</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ freeHousings }} freie Unterkünfte</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ maintainingHousings }}</h1>
+                            <a href="{{ path('app_housing_maintained') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_SUPPORTER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">freie Unterkünfte</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ partialOccupiedHousings }} teilweise belegt Unterkünfte</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ freeHousings }}</h1>
+                            <a href="{{ path('app_housing_index') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">teilweise belegt Unterkünfte</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ occupiedHousings }} belegte Unterkünfte</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ partialOccupiedHousings }}</h1>
+                            <a href="{{ path('app_housing_index') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">belegte Unterkünfte</h4>
+                        </div>
                         <div class="card-body">
-                            <h3 class="card-text">{{ readyForOccupationHousings }} bezugsbereite Unterkünfte</h3>
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ occupiedHousings }}</h1>
+                            <a href="{{ path('app_housing_index') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">bezugsbereite Unterkünfte</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title display-1 mt-3 mb-5">{{ readyForOccupationHousings }}</h1>
+                            <a href="{{ path('app_housing_index') }}" type="button" class="w-100 btn btn-lg btn-outline-secondary {% if not is_granted('ROLE_USER') %}disabled{% endif %}">anzeigen</a>
                         </div>
                     </div>
                 </div>

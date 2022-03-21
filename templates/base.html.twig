@@ -8,23 +8,34 @@
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" media="screen" />
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     {% endblock %}
 
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
         <script>
+            function appendYtModalTrigger(){
+                var trigger = $("body").find('[data-toggle="modal"]');
+                trigger.click(function() {
+                    var theModal = $(this).data( "target" ),
+                        videoSRC = $(this).attr( "data-video" ),
+                        videoSRCauto = videoSRC+"?autoplay=1" ;
+                    $(theModal+' iframe').attr('src', videoSRCauto);
+                    $(theModal+' button.close').click(function () {
+                        $(theModal+' iframe').attr('src', videoSRC);
+                    });
+                });
+            }
             $(document).ready(function() {
                 $('.select2').select2();
-                $tagModeSelect = $('select.tag-mode');
-                if ($tagModeSelect) {
+                $('.datatable').DataTable();
+                $('select.tag-mode').each(function () {
+                    const $tagModeSelect = $(this);
                     $tagModeSelect.hide();
                     $('<div id="tags"></div>').insertAfter($tagModeSelect);
                     $('optgroup', $tagModeSelect).each(function () {
                         const $groupContainer = $('<div class="mb-3"></div>');
                         $('#tags').append($groupContainer);
-                        $groupContainer.append('<div><label class="form-label"> benötigte Einrichtungsgegenstände (' + this.label + ')</label></div>');
+                        $groupContainer.append('<div><label class="form-label"> benötigte ' + this.label + '</label></div>');
                         $('option', this).each(function () {
                             const currentOption = this;
                             const id = $tagModeSelect.attr('id') + currentOption.value;
@@ -40,8 +51,8 @@
                                 }
                             });
                         });
-                    })
-                }
+                    });
+                });
             });
         </script>
     {% endblock %}
@@ -60,6 +71,7 @@
     </div>
 </header>
 <main class="mb-5">
+    {% block modal %}{% endblock %}
     <div class="container">
         {% block body %}{% endblock %}
     </div>

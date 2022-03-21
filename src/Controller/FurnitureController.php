@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Furniture;
-use App\Entity\Service;
 use App\Form\FurnitureType;
 use App\Service\FurnitureTypeResolver;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,19 +21,15 @@ class FurnitureController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $furnitureGroups = [];
-        foreach (FurnitureTypeResolver::FURNITURE_TYPE_MAP as $value => $label) {
-            $furnitureGroups[$label] = $doctrine->getRepository(Furniture::class)->findBy(['type' => $value]);
-        }
-        $service = $doctrine->getRepository(Service::class)->findAll();
+        $furnitures = $doctrine->getRepository(Furniture::class)->findAll();
         return $this->render('furniture_list.html.twig', [
-            'furnitureGroups' => $furnitureGroups,
-            'service' => $service,
+            'furnitures' => $furnitures,
+            'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
         ]);
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -47,8 +42,7 @@ class FurnitureController extends AbstractController
         $form = $this->createForm(FurnitureType::class, $furniture);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $furniture = $form->getData();
-            $doctrine->getManager()->flush($furniture);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -68,12 +62,28 @@ class FurnitureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $furniture = $form->getData();
             $doctrine->getManager()->persist($furniture);
-            $doctrine->getManager()->flush($furniture);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_furniture_index');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Neuen Einrichtungsgegenstand erstellen',
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $furniture = $doctrine->getRepository(Furniture::class)->find($id);
+        if (!$furniture) {
+            throw $this->createNotFoundException(
+                'no furniture found for id ' . $id
+            );
+        }
+        $doctrine->getManager()->remove($furniture);
+        $doctrine->getManager()->flush();
+        return $this->redirectToRoute('app_furniture_index');
     }
 }

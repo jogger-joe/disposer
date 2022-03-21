@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Furniture;
 use App\Entity\Service;
-use App\Form\FurnitureType;
 use App\Form\ServiceType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +16,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServiceController extends AbstractController
 {
     /**
-     * @Route("/edit/{id}")
+     * @Route("/")
+     */
+    public function index(ManagerRegistry $doctrine): Response
+    {
+        $service = $doctrine->getRepository(Service::class)->findAll();
+        return $this->render('service_list.html.twig', [
+            'service' => $service,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -31,9 +40,8 @@ class ServiceController extends AbstractController
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service = $form->getData();
             $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_furniture_index');
+            return $this->redirectToRoute('app_service_index');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Service bearbeiten',
@@ -53,11 +61,27 @@ class ServiceController extends AbstractController
             $service = $form->getData();
             $doctrine->getManager()->persist($service);
             $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_furniture_index');
+            return $this->redirectToRoute('app_service_index');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Neue Dienstleistung erstellen',
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
+     */
+    public function remove(ManagerRegistry $doctrine, int $id): Response
+    {
+        $service = $doctrine->getRepository(Service::class)->find($id);
+        if (!$service) {
+            throw $this->createNotFoundException(
+                'no service found for id ' . $id
+            );
+        }
+        $doctrine->getManager()->remove($service);
+        $doctrine->getManager()->flush();
+        return $this->redirectToRoute('app_service_index');
     }
 }

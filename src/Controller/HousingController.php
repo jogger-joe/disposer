@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Housing;
 use App\Form\HousingType;
+use App\Form\RecordHousingType;
 use App\Service\FurnitureTypeResolver;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +26,27 @@ class HousingController extends AbstractController
     {
         $housings = $doctrine->getRepository(Housing::class)->findAll();
         return $this->render('housing_list.html.twig', [
+            'title' => 'Übersicht der Unterkünfte',
             'housing' => $housings,
             'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
         ]);
     }
 
     /**
-     * @Route("/edit/{id}")
+     * @Route("/maintained", name="app_housing_maintained")
+     */
+    public function assigned(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('housing_maintainer_list.html.twig', [
+            'title' => 'Übersicht der mir zugeordneten Unterkünfte',
+            'housing' => $user->getMaintainedHousings(),
+            'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", requirements={"id": "\d+"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -43,12 +59,41 @@ class HousingController extends AbstractController
         $form = $this->createForm(HousingType::class, $housing);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $housing = $form->getData();
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Unterkunft bearbeiten',
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/maintained/edit/{id}", name="app_housing_maintained_edit", requirements={"id": "\d+"})
+     */
+    public function editAssigned(Request $request, ManagerRegistry $doctrine, int $id): Response
+    {
+        $user = $this->getUser();
+        /**
+         * @var Collection $housings
+         */
+        $housings = $user->getMaintainedHousings();
+        $housing = $housings->filter(function (Housing $currentHousing) use ($id) {
+            return $currentHousing->getId() == $id;
+        });
+        if (!$housing) {
+            throw $this->createNotFoundException(
+                'no housing found in user for id ' . $id
+            );
+        }
+        $form = $this->createForm(HousingType::class, $housing);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_housing_maintained');
+        }
+        return $this->renderForm('edit.html.twig', [
+            'title' => 'Unterkunft pflegen',
             'form' => $form,
         ]);
     }
@@ -64,7 +109,7 @@ class HousingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $housing = $form->getData();
             $doctrine->getManager()->persist($housing);
-            $doctrine->getManager()->flush($housing);
+            $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
         return $this->renderForm('edit.html.twig', [
@@ -74,7 +119,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}")
+     * @Route("/remove/{id}", requirements={"id": "\d+"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {
@@ -84,8 +129,8 @@ class HousingController extends AbstractController
                 'no housing found for id ' . $id
             );
         }
-        $housing->setStatus(-1);
-        $doctrine->getManager()->flush($housing);
+        $doctrine->getManager()->remove($housing);
+        $doctrine->getManager()->flush();
         return $this->redirectToRoute('app_housing_index');
     }
 }
