@@ -28,7 +28,6 @@
                         <th>Kontakt</th>
                         <th>Informationen</th>
                         <th>Hilfsangebot</th>
-                        <th>erstellt</th>
                         <th>aktualisiert</th>
                     </tr>
                     </thead>
@@ -53,7 +52,6 @@
                                 {% for service in currentSupporter.availableServices|sort((a, b) => a.title <=> b.title) %}
                                     <span class="badge bg-warning">{{ service.title }}</span>
                                 {% endfor %}</td>
-                            <td>{{ currentSupporter.created ? currentSupporter.created | date('d.m.Y H:i') : '-' }}</td>
                             <td>{{ currentSupporter.updated ? currentSupporter.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}

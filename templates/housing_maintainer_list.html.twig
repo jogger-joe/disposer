@@ -12,63 +12,47 @@
         {% endif %}
     </section>
     <div class="album py-5">
-        <div class="container table-responsive">
-            {% if housing is not empty %}
-                <table id="housing-table" class="table table-striped datatable" style="width:100%">
-                    <thead>
-                    <tr>
-                        {% if is_granted('ROLE_SUPPORTER') %}
-                        <th>Aktionen</th>
-                        {% endif %}
-                        <th>Titel</th>
-                        <th>Beschreibung</th>
-                        <th>Status</th>
-                        <th>fehlende Einrichtung</th>
-                        <th>fehlende Hilfe</th>
-                        <th>erstellt</th>
-                        <th>aktualisiert</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for currentHousing in housing|sort((a, b) => a.title <=> b.title) %}
+                    {% if currentHousing.status >= 0 %}
+                        <div class="col">
 
-                    {% for currentHousing in housing %}
-                        <tr>
-                            {% if is_granted('ROLE_SUPPORTER') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_housing_maintained_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                <div
+                                    class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h3 class="card-text">{{ currentHousing.title }} <span
+                                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {{ currentHousing.statusLabel }}
+                                    </span></h3>
+                                        <p class="card-text">{{ currentHousing.description }}</p>
+                                        {% if currentHousing.missingFurnitures is not empty %}<h5>benötigte
+                                            Einrichtungsgegenstände:</h5>
+                                            <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
+                                                    <span
+                                                        class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span>
+                                                {% endfor %}</h6>
+                                        {% endif %}
+                                        {% if currentHousing.missingServices is not empty %}<h5>fehlende
+                                            Dienstleistungen:</h5>
+                                            <h6>{% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
+                                                    <span
+                                                        class="badge bg-warning">{{ service.title }}</span>
+                                                {% endfor %}</h6>
+                                        {% endif %}
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a href="{{ path('app_housing_maintained_edit', { 'id': currentHousing.id }) }}"
+                                                   type="button"
+                                                   class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                            {% endif %}
-                            <td>{{ currentHousing.title }}</td>
-                            <td>{{ currentHousing.description }}</td>
-                            <td>
-                            <span
-                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                {{ currentHousing.statusLabel }}
-                            </span>
-                            </td>
-                            <td>
-                                {% if currentHousing.missingFurnitures is not empty %}
-                                    {% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                <span class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span><br>
-                                    {% endfor %}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if currentHousing.missingServices is not empty %}
-                                    {% for service in currentHousing.missingServices|sort((a, b) => a.title <=> b.title) %}
-                                        <span class="badge bg-warning">{{ service.title }}</span><br>
-                                    {% endfor %}
-                                {% endif %}
-                            </td>
-                            <td>{{ currentHousing.created ? currentHousing.created | date('d.m.Y H:i') : '-' }}</td>
-                            <td>{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                                </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -36,7 +36,7 @@ class Housing extends BaseEntity
 
     /**
      * @var User | null
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="maintainedHousings", fetch="EAGER")
      */
     private $maintainer;
 
