@@ -27,7 +27,6 @@
                         <th>Einrichtungsgegenstand</th>
                         <th>Typ</th>
                         <th>benötigt</th>
-                        <th>erstellt</th>
                         <th>aktualisiert</th>
                     </tr>
                     </thead>
@@ -49,7 +48,6 @@
                                 </span>
                             </td>
                             <td>{{ currentFurniture.missingAmount }}</td>
-                            <td>{{ currentFurniture.created ? currentFurniture.created | date('d.m.Y H:i') : '-' }}</td>
                             <td>{{ currentFurniture.updated ? currentFurniture.updated | date('d.m.Y H:i') : '-'}}</td>
                         </tr>
                     {% endfor %}

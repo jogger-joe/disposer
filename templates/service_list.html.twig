@@ -26,7 +26,6 @@
                         {% endif %}
                         <th>Unterstützung/Hilfe</th>
                         <th>benötigt</th>
-                        <th>erstellt</th>
                         <th>aktualisiert</th>
                     </tr>
                     </thead>
@@ -43,7 +42,6 @@
                             {% endif %}
                             <td>{{ currentService.title }}</td>
                             <td>{{ currentService.missingAmount }}</td>
-                            <td>{{ currentService.created ? currentService.created | date('d.m.Y H:i') : '-' }}</td>
                             <td>{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
