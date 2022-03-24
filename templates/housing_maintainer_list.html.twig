@@ -21,17 +21,15 @@
                                 <div
                                     class="card shadow-sm">
                                     <div class="card-body">
-                                        <h3 class="card-text">{{ currentHousing.title }} <span
-                                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                        {{ currentHousing.statusLabel }}
-                                    </span></h3>
+                                        <h3 class="card-text">{{ currentHousing.title }}
+                                            <span class="badge {{ currentHousing.status | housingStatusColor }}">{{ currentHousing.status | housingStatusLabel }}</span>
+                                        </h3>
                                         <p class="card-text">{{ currentHousing.description }}</p>
                                         {% if currentHousing.missingFurnitures is not empty %}<h5>benötigte
                                             Einrichtungsgegenstände:</h5>
                                             <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                                    <span
-                                                        class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span>
-                                                {% endfor %}</h6>
+                                                    <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.type | furnitureTypeLabel }}</span>
+                                            {% endfor %}</h6>
                                         {% endif %}
                                         {% if currentHousing.missingServices is not empty %}<h5>fehlende
                                             Dienstleistungen:</h5>

@@ -26,4 +26,9 @@ class FurnitureTypeResolver
     {
         return array_flip(self::FURNITURE_TYPE_MAP);
     }
+
+    public static function getFurnitureTypeColor(float $statusId)
+    {
+        return "bg-$statusId";
+    }
 }
