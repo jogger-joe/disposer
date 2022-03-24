@@ -21,9 +21,7 @@
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_ADMIN_SUPPORTER') %}
                         <th>Aktionen</th>
-                        {% endif %}
                         <th>Name</th>
                         <th>Kontakt</th>
                         <th>Informationen</th>
@@ -34,17 +32,16 @@
                     <tbody>
                     {% for currentSupporter in supporter %}
                         <tr>
-                            {% if is_granted('ROLE_ADMIN_SUPPORTER') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_supporter_edit', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        {% if currentSupporter.status != 1 %}
-                                            <a href="{{ path('app_supporter_activate', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-success"><i class="bi bi-check2-circle"></i></a>
-                                        {% endif %}
-                                        <a href="{{ path('app_supporter_remove', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                </td>
-                            {% endif %}
+
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('app_supporter_edit', {'id': currentSupporter.id}) }}" type="button" class="btn btn-sm btn-warning {% if not is_granted('ROLE_ADMIN_SUPPORTER') %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
+                                    {% if currentSupporter.status != 1 %}
+                                        {% include 'partials/post-button.html.twig' with {'path': path('app_supporter_activate', {'id': currentSupporter.id}), 'icon': 'bi bi-check2-circle', 'color': 'btn-success' } %}
+                                    {% endif %}
+                                    {% include 'partials/delete-button.html.twig' with {'path': path('app_supporter_remove', {'id': currentSupporter.id}) } %}
+                                </div>
+                            </td>
                             <td>{{ currentSupporter.name }}</td>
                             <td>{{ currentSupporter.contact }}</td>
                             <td>{{ currentSupporter.information }}</td>

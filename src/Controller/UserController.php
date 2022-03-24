@@ -41,6 +41,11 @@ class UserController extends AbstractController
                 'no user found for id ' . $id
             );
         }
+        if ($user->isSuperAdmin()) {
+            throw $this->createAccessDeniedException(
+                'super admins cant be edited!'
+            );
+        }
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
         $availableRoles = RoleResolver::getAvailableRoleChoices($roleHierarchy, $user);
         $form = $this->createForm(UserType::class, $user, ['roleChoices' => $availableRoles]);
@@ -65,7 +70,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}", requirements={"id": "\d+"})
+     * @Route("/remove/{id}", requirements={"id": "\d+"}, methods={"DELETE"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {
@@ -73,6 +78,11 @@ class UserController extends AbstractController
         if (!$user) {
             throw $this->createNotFoundException(
                 'no user found for id ' . $id
+            );
+        }
+        if ($user->isSuperAdmin()) {
+            throw $this->createAccessDeniedException(
+                'super admins cant be deleted!'
             );
         }
         $doctrine->getManager()->remove($user);

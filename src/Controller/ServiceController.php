@@ -70,7 +70,7 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}", requirements={"id": "\d+"})
+     * @Route("/remove/{id}", requirements={"id": "\d+"}, methods={"DELETE"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {

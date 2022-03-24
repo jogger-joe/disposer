@@ -21,9 +21,7 @@
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_ADMIN_HOUSING') %}
                         <th>Aktionen</th>
-                        {% endif %}
                         <th>Titel</th>
                         <th>Beschreibung</th>
                         <th>Status</th>
@@ -36,26 +34,21 @@
 
                     {% for currentHousing in housing %}
                         <tr>
-                            {% if is_granted('ROLE_ADMIN_HOUSING') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_housing_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ path('app_housing_remove', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                </td>
-                            {% endif %}
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('app_housing_edit', {'id': currentHousing.id}) }}" type="button" class="btn btn-sm btn-warning {% if not is_granted('ROLE_ADMIN_HOUSING') %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
+                                    {% include 'partials/delete-button.html.twig' with {'path': path('app_housing_remove', {'id': currentHousing.id}) } %}
+                                </div>
+                            </td>
                             <td>{{ currentHousing.title }}</td>
                             <td>{{ currentHousing.description }}</td>
                             <td>
-                            <span
-                                class="badge {% if currentHousing.status == 2 %}bg-danger{% elseif currentHousing.status == 1 %}bg-warning{% else %}bg-success{% endif %}">
-                                {{ currentHousing.statusLabel }}
-                            </span>
+                            <span class="badge {{ currentHousing.status | housingStatusColor }}">{{ currentHousing.status | housingStatusLabel }}</span>
                             </td>
                             <td>
                                 {% if currentHousing.missingFurnitures is not empty %}
                                     {% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                <span class="badge bg-{{ furniture.type }}">{{ furniture.title }} ({{ furnitureTypeLabels[furniture.type] }})</span><br>
+                                        <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.type | furnitureTypeLabel }}</span>
                                     {% endfor %}
                                 {% endif %}
                             </td>

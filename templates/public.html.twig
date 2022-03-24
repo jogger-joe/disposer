@@ -17,9 +17,9 @@
                 <h3>{{key}}</h3>
                 <h5 class="mb-3">
                     {% for currentFurniture in furnitureGroup |sort((a, b) => a.title <=> b.title) %}
-                        <span
-                            class="badge bg-{{ currentFurniture.type }}">{{ currentFurniture.title }} (<span
-                                title="noch für {{ currentFurniture.missingAmount }} Unterkünfte benötigt">{{ currentFurniture.missingAmount }}</span>)</span>
+                        <span class="badge {{ currentFurniture.type | furnitureTypeColor }}">{{ currentFurniture.title }}
+                            (<span title="noch für {{ currentFurniture.missingAmount }} Unterkünfte benötigt">{{ currentFurniture.missingAmount }}</span>)
+                        </span>
                     {% endfor %}
                 </h5>
             {% endfor %}
