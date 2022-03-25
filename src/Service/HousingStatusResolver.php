@@ -8,14 +8,16 @@ class HousingStatusResolver
         0 => 'benötigt Erfassung',
         1 => 'teilweise belegt',
         2 => 'vollständig belegt',
-        3 => 'bezugsbereit'
+        3 => 'bezugsbereit',
+        4 => 'benötigt Einrichtung',
     ];
 
     const HOUSING_STATUS_COLOR_MAP = [
         0 => 'bg-housing-status-0',
         1 => 'bg-housing-status-1',
         2 => 'bg-housing-status-2',
-        3 => 'bg-housing-status-3'
+        3 => 'bg-housing-status-3',
+        4 => 'bg-housing-status-4',
     ];
 
     public static function getHousingStatusLabel(int $housingStatus): string
