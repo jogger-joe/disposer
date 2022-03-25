@@ -48,7 +48,7 @@
                             <td>
                                 {% if currentHousing.missingFurnitures is not empty %}
                                     {% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                        <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.type | furnitureTypeLabel }}</span>
+                                        <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.title }}</span>
                                     {% endfor %}
                                 {% endif %}
                             </td>
