@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Housing;
+use App\Entity\User;
 use App\Form\HousingType;
 use App\Form\MaintainHousingType;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ class HousingController extends AbstractController
 {
 
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -31,7 +32,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/maintained", name="app_housing_maintained")
+     * @Route("/maintained", name="app_housing_maintained", methods={"GET"})
      */
     public function assigned(): Response
     {
@@ -43,7 +44,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/require-registration", name="app_housing_require_registration")
+     * @Route("/require-registration", name="app_housing_require_registration", methods={"GET"})
      */
     public function requireRegistration(ManagerRegistry $doctrine): Response
     {
@@ -55,7 +56,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", requirements={"id": "\d+"})
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -78,24 +79,27 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/maintained/edit/{id}", name="app_housing_maintained_edit", requirements={"id": "\d+"})
+     * @Route("/supporter/edit/{id}", name="app_housing_supporter_edit", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function editAssigned(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
-        $user = $this->getUser();
         /**
-         * @var Collection $housings
+         * @var User $user
          */
-        $housings = $user->getMaintainedHousings();
-        $housing = $housings->filter(function (Housing $currentHousing) use ($id) {
-            return $currentHousing->getId() == $id;
-        });
-        if (!$housing || $housing->count() > 1) {
+        $user = $this->getUser();
+
+        $housing = $doctrine->getRepository(Housing::class)->findOneBy(['id' => $id]);
+        if (!$housing instanceof Housing) {
             throw $this->createNotFoundException(
-                'no matching single housing found in user for id ' . $id
+                'no matching housing found for id ' . $id
             );
         }
-        $form = $this->createForm(MaintainHousingType::class, $housing->first());
+        if ($housing->getStatus() != 0 and (!$housing->getMaintainer() instanceof User || $housing->getMaintainer()->getId() != $user->getId())) {
+            throw $this->createNotFoundException(
+                'wrong housing state for housing with id ' . $id
+            );
+        }
+        $form = $this->createForm(MaintainHousingType::class, $housing);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $doctrine->getManager()->flush();
@@ -108,7 +112,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", methods={"GET", "POST"})
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {

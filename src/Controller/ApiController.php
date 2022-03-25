@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/required-furniture", name="app_api_required_furniture")
+     * @Route("/required-furniture", name="api_required_furniture", methods={"GET"})
      */
     public function requiredFurniture(ManagerRegistry $doctrine): Response
     {
@@ -49,7 +49,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/required-service", name="app_api_required_service")
+     * @Route("/required-service", name="api_required_service", methods={"GET"})
      */
     public function requiredService(ManagerRegistry $doctrine): Response
     {

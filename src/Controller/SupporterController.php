@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SupporterController extends AbstractController
 {
     /**
-     * @Route("/accepted", name="app_supporter_accepted")
+     * @Route("/accepted", name="app_supporter_accepted", methods={"GET"})
      */
     public function accepted(ManagerRegistry $doctrine): Response
     {
@@ -28,7 +28,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/unaccepted", name="app_supporter_unaccepted")
+     * @Route("/unaccepted", name="app_supporter_unaccepted", methods={"GET"})
      */
     public function unaccepted(ManagerRegistry $doctrine): Response
     {
@@ -40,7 +40,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", requirements={"id": "\d+"})
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -95,7 +95,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", methods={"GET", "POST"})
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {

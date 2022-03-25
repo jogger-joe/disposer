@@ -22,10 +22,10 @@ security:
             login_throttling:
                 max_attempts: 3
                 interval: '30 minutes'
-            
+
             logout:
                 path: app_logout
-            
+
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -53,32 +53,32 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin/dashboard/$, roles: [ ROLE_GUEST ] }
-        - { path: ^/admin/supporter/accepted/$, roles: ROLE_USER }
-        - { path: ^/admin/supporter/unaccepted/$, roles: ROLE_USER }
-        - { path: ^/admin/supporter/edit, roles: ROLE_ADMIN_SUPPORTER }
-        - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER }
-        - { path: ^/admin/supporter/activate, roles: ROLE_ADMIN_SUPPORTER, methods: [POST] }
-        - { path: ^/admin/housing/$, roles: [ROLE_USER] }
-        - { path: ^/admin/housing/maintained$, roles: [ROLE_SUPPORTER] }
-        - { path: ^/admin/housing/require-registration$, roles: [ROLE_SUPPORTER] }
-        - { path: ^/admin/housing/maintained/edit, roles: ROLE_SUPPORTER }
-        - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING }
-        - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING }
-        - { path: ^/admin/furniture/$, roles: ROLE_USER }
-        - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE }
-        - { path: ^/admin/furniture/new, roles: ROLE_ADMIN_FURNITURE }
-        - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE }
-        - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE }
-        - { path: ^/admin/user/$, roles: ROLE_ADMIN }
-        - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
-        - { path: ^/admin/housing/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
-        - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
-        - { path: ^/admin/service/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
-        - { path: ^/admin/user/remove, roles: ROLE_SUPER_ADMIN, methods: [DELETE, POST] }
-        - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
-        - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
-        - { path: ^/admin/profile/edit, roles: ROLE_GUEST }
+        - { path: ^/admin/dashboard/$, roles: ROLE_GUEST, methods: [ GET ] }
+        - { path: ^/admin/supporter/accepted/$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/supporter/unaccepted/$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/supporter/edit, roles: ROLE_ADMIN_SUPPORTER, methods: [ GET,POST ] }
+        - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER, methods: [ GET,POST ] }
+        - { path: ^/admin/supporter/activate, roles: ROLE_ADMIN_SUPPORTER, methods: [ POST ] }
+        - { path: ^/admin/housing/$, roles: [ ROLE_USER ], methods: [ GET ] }
+        - { path: ^/admin/housing/maintained$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
+        - { path: ^/admin/housing/require-registration$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
+        - { path: ^/admin/housing/supporter/edit, roles: ROLE_SUPPORTER, methods: [ GET,POST ] }
+        - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING, methods: [ GET,POST ] }
+        - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING, methods: [ GET,POST ] }
+        - { path: ^/admin/furniture/$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE, methods: [ GET,POST ] }
+        - { path: ^/admin/furniture/new, roles: ROLE_ADMIN_FURNITURE, methods: [ GET,POST ] }
+        - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE, methods: [ GET,POST ] }
+        - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE, methods: [ GET,POST ] }
+        - { path: ^/admin/user/$, roles: ROLE_ADMIN, methods: [ GET ] }
+        - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
+        - { path: ^/admin/housing/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
+        - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
+        - { path: ^/admin/service/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
+        - { path: ^/admin/user/remove, roles: ROLE_SUPER_ADMIN, methods: [ DELETE, POST ] }
+        - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER, methods: [ GET,POST ] }
+        - { path: ^/admin/user/register, roles: ROLE_CREATE_USER, methods: [ GET,POST ] }
+        - { path: ^/admin/profile/edit, roles: ROLE_GUEST, methods: [ GET,POST ] }
 
 when@test:
     security:

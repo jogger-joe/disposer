@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="app_user_index")
+     * @Route("/", name="app_user_index", methods={"GET"})
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -31,7 +31,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", requirements={"id": "\d+"})
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPasswordHasher, int $id): Response
     {
