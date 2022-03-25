@@ -71,11 +71,11 @@ security:
         - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE }
         - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE }
         - { path: ^/admin/user/$, roles: ROLE_ADMIN }
-        - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN, methods: [DELETE] }
-        - { path: ^/admin/housing/remove, roles: ROLE_ADMIN, methods: [DELETE] }
-        - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN, methods: [DELETE] }
-        - { path: ^/admin/service/remove, roles: ROLE_ADMIN, methods: [DELETE] }
-        - { path: ^/admin/user/remove, roles: ROLE_SUPER_ADMIN, methods: [DELETE] }
+        - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
+        - { path: ^/admin/housing/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
+        - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
+        - { path: ^/admin/service/remove, roles: ROLE_ADMIN, methods: [DELETE, POST] }
+        - { path: ^/admin/user/remove, roles: ROLE_SUPER_ADMIN, methods: [DELETE, POST] }
         - { path: ^/admin/user/edit, roles: ROLE_EDIT_USER }
         - { path: ^/admin/user/register, roles: ROLE_CREATE_USER }
         - { path: ^/admin/profile/edit, roles: ROLE_GUEST }

@@ -28,7 +28,7 @@
                                         {% if currentHousing.missingFurnitures is not empty %}<h5>benötigte
                                             Einrichtungsgegenstände:</h5>
                                             <h6>{% for furniture in currentHousing.missingFurnitures|sort((a, b) => a.title <=> b.title) %}
-                                                    <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.type | furnitureTypeLabel }}</span>
+                                                    <span class="badge {{ furniture.type | furnitureTypeColor }}">{{ furniture.title }}</span>
                                             {% endfor %}</h6>
                                         {% endif %}
                                         {% if currentHousing.missingServices is not empty %}<h5>fehlende
