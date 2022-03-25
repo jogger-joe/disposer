@@ -21,9 +21,7 @@
                 <table id="user-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_EDIT_USER') %}
-                            <th>Aktionen</th>
-                        {% endif %}
+                        <th>Aktionen</th>
                         <th>Name</th>
                         <th>EMail</th>
                         <th>Rollen</th>
@@ -35,22 +33,21 @@
                     <tbody>
                     {% for currentUser in user %}
                         <tr>
-                            {% if is_granted('ROLE_EDIT_USER') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_user_edit', {'id': currentUser.id}) }}" type="button"
-                                           class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ path('app_user_remove', {'id': currentUser.id}) }}" type="button"
-                                           class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                </td>
-                            {% endif %}
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('app_user_edit', {'id': currentUser.id}) }}" type="button"
+                                       class="btn btn-sm btn-warning {% if not is_granted('ROLE_EDIT_USER') or currentUser.isSuperAdmin %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
+                                    {% if not currentUser.isSuperAdmin %}
+                                        {% include 'partials/delete-button.html.twig' with {'path': path('app_user_remove', {'id': currentUser.id}) } %}
+                                    {% endif %}
+                                </div>
+                            </td>
                             <td>{{ currentUser.name }}</td>
                             <td>{{ currentUser.email }}</td>
                             <td>
                                 {% for role in currentUser.roles %}
                                     <span
-                                        class="badge bg-primary">{{ roleLabel[role] is defined ? roleLabel[role] : role }}</span>
+                                        class="badge bg-primary">{{ role | roleLabel }}</span>
                                 {% endfor %}
                             </td>
                             <td>{{ currentUser.lastLogin ? currentUser.lastLogin | date('d.m.Y H:i') : '-' }}</td>

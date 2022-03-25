@@ -21,9 +21,7 @@
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_ADMIN_SERVICE') %}
-                            <th>Aktionen</th>
-                        {% endif %}
+                        <th>Aktionen</th>
                         <th>Unterstützung/Hilfe</th>
                         <th>benötigt</th>
                         <th>aktualisiert</th>
@@ -32,14 +30,12 @@
                     <tbody>
                     {% for currentService in service %}
                         <tr>
-                            {% if is_granted('ROLE_ADMIN_SERVICE') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_service_edit', {'id': currentService.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ path('app_service_remove', {'id': currentService.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                </td>
-                            {% endif %}
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('app_service_edit', {'id': currentService.id}) }}" type="button" class="btn btn-sm btn-warning {% if not is_granted('ROLE_ADMIN_SERVICE') %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
+                                    {% include 'partials/delete-button.html.twig' with {'path': path('app_service_remove', {'id': currentService.id}) } %}
+                                </div>
+                            </td>
                             <td>{{ currentService.title }}</td>
                             <td>{{ currentService.missingAmount }}</td>
                             <td>{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>

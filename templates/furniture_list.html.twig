@@ -21,9 +21,7 @@
                 <table id="housing-table" class="table table-striped datatable" style="width:100%">
                     <thead>
                     <tr>
-                        {% if is_granted('ROLE_ADMIN_FURNITURE') %}
-                            <td>Aktionen</td>
-                        {% endif %}
+                        <td>Aktionen</td>
                         <th>Einrichtungsgegenstand</th>
                         <th>Typ</th>
                         <th>benötigt</th>
@@ -33,19 +31,15 @@
                     <tbody>
                     {% for currentFurniture in furnitures %}
                         <tr>
-                            {% if is_granted('ROLE_ADMIN_FURNITURE') %}
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}" type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ path('app_furniture_remove', {'id': currentFurniture.id}) }}" type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                </td>
-                            {% endif %}
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('app_furniture_edit', {'id': currentFurniture.id}) }}" type="button" class="btn btn-sm btn-warning {% if not is_granted('ROLE_ADMIN_FURNITURE') %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
+                                    {% include 'partials/delete-button.html.twig' with {'path': path('app_furniture_remove', {'id': currentFurniture.id}) } %}
+                                </div>
+                            </td>
                             <td>{{ currentFurniture.title }}</td>
                             <td>
-                                <span class="badge bg-{{ currentFurniture.type }}">
-                                    {{ furnitureTypeLabels[currentFurniture.type] is defined ? furnitureTypeLabels[currentFurniture.type] : currentFurniture.type }}
-                                </span>
+                                <span class="badge bg-{{ currentFurniture.type | furnitureTypeColor }}">{{ currentFurniture.type | furnitureTypeLabel }}</span>
                             </td>
                             <td>{{ currentFurniture.missingAmount }}</td>
                             <td>{{ currentFurniture.updated ? currentFurniture.updated | date('d.m.Y H:i') : '-'}}</td>

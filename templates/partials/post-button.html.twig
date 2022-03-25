@@ -1,0 +1,6 @@
+{% set color = color is defined ? color : 'btn-success' %}
+{% set icon = icon is defined ? icon : 'bi bi-check2-circle' %}
+<form method="POST" action="{{ path }}">
+    <input type="hidden" name="_method" value="POST">
+    <button type="submit" class="btn delete btn-sm {{ color }}" {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}><i class="{{ icon }}"></i></button>
+</form>

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Housing;
 use App\Form\HousingType;
 use App\Form\MaintainHousingType;
-use App\Service\FurnitureTypeResolver;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +26,7 @@ class HousingController extends AbstractController
         $housings = $doctrine->getRepository(Housing::class)->findAll();
         return $this->render('housing_list.html.twig', [
             'title' => 'Übersicht der Unterkünfte',
-            'housing' => $housings,
-            'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
+            'housing' => $housings
         ]);
     }
 
@@ -40,8 +38,19 @@ class HousingController extends AbstractController
         $user = $this->getUser();
         return $this->render('housing_maintainer_list.html.twig', [
             'title' => 'Übersicht der mir zugeordneten Unterkünfte',
-            'housing' => $user->getMaintainedHousings(),
-            'furnitureTypeLabels' => FurnitureTypeResolver::FURNITURE_TYPE_MAP
+            'housing' => $user->getMaintainedHousings()
+        ]);
+    }
+
+    /**
+     * @Route("/require-registration", name="app_housing_require_registration")
+     */
+    public function requireRegistration(ManagerRegistry $doctrine): Response
+    {
+        $housings = $doctrine->getRepository(Housing::class)->findBy(['status' => 0]);
+        return $this->render('housing_maintainer_list.html.twig', [
+            'title' => 'Übersicht der zu erfassenden Unterkünfte',
+            'housing' => $housings
         ]);
     }
 
@@ -119,7 +128,7 @@ class HousingController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}", requirements={"id": "\d+"})
+     * @Route("/remove/{id}", requirements={"id": "\d+"}, methods={"DELETE", "POST"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {

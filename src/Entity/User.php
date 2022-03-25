@@ -204,4 +204,11 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     {
         $this->lastLogin = new DateTime();
     }
+
+    /**
+     */
+    public function isSuperAdmin(): bool
+    {
+        return in_array('ROLE_SUPER_ADMIN', $this->getRoles());
+    }
 }
