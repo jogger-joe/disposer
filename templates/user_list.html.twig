@@ -37,8 +37,9 @@
                                 <div class="btn-group" role="group">
                                     <a href="{{ path('app_user_edit', {'id': currentUser.id}) }}" type="button"
                                        class="btn btn-sm btn-warning {% if not is_granted('ROLE_EDIT_USER') or currentUser.isSuperAdmin %}disabled{% endif %}"><i class="bi bi-pencil-square"></i></a>
-                                    <a href="{{ path('app_user_remove', {'id': currentUser.id}) }}" type="button"
-                                       class="btn btn-sm btn-danger {% if not is_granted('ROLE_ADMIN') or currentUser.isSuperAdmin %}disabled{% endif %}"><i class="bi bi-trash"></i></a>
+                                    {% if not currentUser.isSuperAdmin %}
+                                        {% include 'partials/delete-button.html.twig' with {'path': path('app_user_remove', {'id': currentUser.id}) } %}
+                                    {% endif %}
                                 </div>
                             </td>
                             <td>{{ currentUser.name }}</td>

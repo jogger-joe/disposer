@@ -79,7 +79,7 @@ class SupporterController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}", requirements={"id": "\d+"}, methods={"DELETE"})
+     * @Route("/remove/{id}", requirements={"id": "\d+"}, methods={"DELETE", "POST"})
      */
     public function remove(ManagerRegistry $doctrine, int $id): Response
     {
