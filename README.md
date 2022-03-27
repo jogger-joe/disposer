@@ -21,7 +21,24 @@ German User-Video-Guide:
 
 ## Deployment
 
-TODO 
+### Build
+Requires ``composer`` and ``node`` installed on Build-Server.
+
+1. Install PHP-Dependencies  by running ``composer install`` in Root Directory
+2. Install JS-Dependencies by running ``npm install`` in Root Directory
+3. Build JS and Css with Webpack by running ``npm run build`` in Root Directory
+4. Export DB-Create Scripts if necessary with command ``php bin/console doctrine:schema:create --dump-sql > schema.sql``
+5. Export Migrations with command ``php bin/console doctrine:migrations:migrate --write-sql``
+6. Add ``.env``-File with Configurations for you Target-System - clone and manipulate ``.env``-File from Repository
+7. Clear caches by running ``php bin/console cache:clear --env=prod``
+   1. alternatively clear ``var/cache/prod``-Directory
+
+### Prepare Target-System
+
+1. Move Files to Target-System
+2. Create Schema with Dump if required
+3. Run Migrations if required
+4. Done
 
 ## Docs
 
