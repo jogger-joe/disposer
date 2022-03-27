@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServiceController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -27,7 +27,7 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", requirements={"id": "\d+"})
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -50,7 +50,7 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", methods={"GET", "POST"})
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {

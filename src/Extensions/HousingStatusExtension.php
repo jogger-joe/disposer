@@ -10,7 +10,7 @@ use Twig\TwigFilter;
 
 class HousingStatusExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('housingStatusLabel', [$this, 'getLabel']),
