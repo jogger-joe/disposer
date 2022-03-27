@@ -53,24 +53,25 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin/dashboard/$, roles: ROLE_GUEST, methods: [ GET ] }
-        - { path: ^/admin/supporter/accepted/$, roles: ROLE_USER, methods: [ GET ] }
-        - { path: ^/admin/supporter/unaccepted/$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/dashboard[/]?$, roles: ROLE_GUEST, methods: [ GET ] }
+        - { path: ^/admin/supporter/accepted[/]?$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/supporter/unaccepted[/]?$, roles: ROLE_USER, methods: [ GET ] }
         - { path: ^/admin/supporter/edit, roles: ROLE_ADMIN_SUPPORTER, methods: [ GET,POST ] }
         - { path: ^/admin/supporter/new, roles: ROLE_ADMIN_SUPPORTER, methods: [ GET,POST ] }
         - { path: ^/admin/supporter/activate, roles: ROLE_ADMIN_SUPPORTER, methods: [ POST ] }
-        - { path: ^/admin/housing/$, roles: [ ROLE_USER ], methods: [ GET ] }
-        - { path: ^/admin/housing/maintained$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
-        - { path: ^/admin/housing/require-registration$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
+        - { path: ^/admin/housing[/]?$, roles: [ ROLE_USER ], methods: [ GET ] }
+        - { path: ^/admin/housing/maintained[/]?$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
+        - { path: ^/admin/housing/require-registration[/]?$, roles: [ ROLE_SUPPORTER ], methods: [ GET ] }
         - { path: ^/admin/housing/supporter/edit, roles: ROLE_SUPPORTER, methods: [ GET,POST ] }
         - { path: ^/admin/housing/edit, roles: ROLE_ADMIN_HOUSING, methods: [ GET,POST ] }
         - { path: ^/admin/housing/new, roles: ROLE_ADMIN_HOUSING, methods: [ GET,POST ] }
-        - { path: ^/admin/furniture/$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/admin/furniture[/]?$, roles: ROLE_USER, methods: [ GET ] }
         - { path: ^/admin/furniture/edit, roles: ROLE_ADMIN_FURNITURE, methods: [ GET,POST ] }
         - { path: ^/admin/furniture/new, roles: ROLE_ADMIN_FURNITURE, methods: [ GET,POST ] }
+        - { path: ^/admin/service[/]?$, roles: ROLE_USER, methods: [ GET ] }
         - { path: ^/admin/service/edit, roles: ROLE_ADMIN_SERVICE, methods: [ GET,POST ] }
         - { path: ^/admin/service/new, roles: ROLE_ADMIN_SERVICE, methods: [ GET,POST ] }
-        - { path: ^/admin/user/$, roles: ROLE_ADMIN, methods: [ GET ] }
+        - { path: ^/admin/user[/]?$, roles: ROLE_ADMIN, methods: [ GET ] }
         - { path: ^/admin/supporter/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
         - { path: ^/admin/housing/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }
         - { path: ^/admin/furniture/remove, roles: ROLE_ADMIN, methods: [ DELETE, POST ] }

@@ -13,7 +13,10 @@ class SecurityTest extends WebTestCase
         'app_login',
         'app_logout',
         'app_public_index',
-        'app_register_supporter'
+        'app_register_supporter',
+        'api_required_furniture',
+        'api_required_service',
+        'app_register_result'
     ];
 
     /**
@@ -87,18 +90,15 @@ class SecurityTest extends WebTestCase
     {
         $client = static::createClient();
 
-        print "checking $routeName: ";
         if (in_array($routeName, self::PUBLIC_ROUTES)) {
-            print 'skipped' . PHP_EOL;
-            $this->assertTrue(true);
+            $this->markTestSkipped('public route');
         }
 
         $uri = str_replace('{id}', 1, $route->getPath());
         foreach ($route->getMethods() as $method) {
             $client->request($method, $uri);
-            $this->assertResponseStatusCodeSame(403);
+            $this->assertResponseStatusCodeSame(302);
         }
-        print PHP_EOL;
 
     }
 }

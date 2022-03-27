@@ -10,7 +10,7 @@ use Twig\TwigFilter;
 
 class RoleExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('roleLabel', [$this, 'getLabel']),
