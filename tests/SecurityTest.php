@@ -2,25 +2,21 @@
 
 namespace App\Tests;
 
-use App\DataFixtures\FurnitureAndServiceFixtures;
-use App\DataFixtures\HousingFixtures;
-use App\DataFixtures\SupporterFixtures;
-use App\DataFixtures\UserFixtures;
-use App\Repository\UserRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
 
 class SecurityTest extends WebTestCase
 {
-    const EXCLUDED_ROUTES = [
+    const PUBLIC_ROUTES = [
         'app_login',
         'app_logout',
         'app_public_index',
-        'app_register_supporter'
+        'app_register_supporter',
+        'api_required_furniture',
+        'api_required_service',
+        'app_register_result'
     ];
 
     /**
@@ -65,63 +61,43 @@ class SecurityTest extends WebTestCase
     }
 
     /**
-     * @dataProvider userDataProvider
-     *
-     * @param $userMail
-     * @param array $accessibleRoutes
-     *
-     * @return void
+     * @return array
      */
-    public function testAccessControl($userMail, array $accessibleRoutes): void
+    public function routeDataProvider(): array
     {
-        $client = static::createClient();
-
         /** @var $router Router */
         $router = static::getContainer()->get('router');
-
-        $doctrine = static::getContainer()->get('doctrine');
-        $entityManager = $doctrine->getManager();
-
-        print 'seeding data' . PHP_EOL;
-        $userPasswordHasherMock = $this->getMockBuilder(UserPasswordHasherInterface::class)->setMethods(['hashPassword'])->getMock();
-        $userPasswordHasherMock->method('hashPassword')->willReturn('');
-        (new UserFixtures($userPasswordHasherMock))->load($entityManager);
-        (new FurnitureAndServiceFixtures())->load($entityManager);
-        (new HousingFixtures())->load($entityManager);
-        (new SupporterFixtures())->load($entityManager);
 
         /** @var $collection RouteCollection */
         $collection = $router->getRouteCollection();
         $allRoutes = $collection->all();
-
-        print "start test for user $userMail".PHP_EOL;
-
-        if (!empty($userMail)) {
-            $userRepository = static::getContainer()->get(UserRepository::class);
-            $testUser = $userRepository->findOneByEmail($userMail);
-            $client->loginUser($testUser);
-        }
+        $testData = [];
         foreach ($allRoutes as $name => $route) {
-            print "check $name: ";
-            if (in_array($name, self::EXCLUDED_ROUTES)) {
-                print 'skipped'.PHP_EOL;
-                continue;
-            }
-            /** @var $route Route */
-            $method = count($route->getMethods()) > 0 ? $route->getMethods()[0] : 'GET';
-            $uri = str_replace('{id}', 1, $route->getPath());
-            try {
-                $client->request($method, $uri);
-                if (in_array($name, $accessibleRoutes)) {
-                    $this->assertResponseIsSuccessful();
-                } else {
-                    $this->assertResponseStatusCodeSame(403);
-                }
-            } catch (Exception $ex) {
-                print get_class($ex);
-                $this->assertTrue(!in_array($name, $accessibleRoutes));
-            }
-            print PHP_EOL;
+            $testData[$name] = [$name, $route];
+        }
+        return $testData;
+    }
+
+    /**
+     * @dataProvider routeDataProvider
+     *
+     * @param string $routeName
+     * @param Route $route
+     *
+     * @return void
+     */
+    public function testThatAllNonPublicRoutesAreNotAvailableWithoutLogin(string $routeName, Route $route): void
+    {
+        $client = static::createClient();
+
+        if (in_array($routeName, self::PUBLIC_ROUTES)) {
+            $this->markTestSkipped('public route');
+        }
+
+        $uri = str_replace('{id}', 1, $route->getPath());
+        foreach ($route->getMethods() as $method) {
+            $client->request($method, $uri);
+            $this->assertResponseStatusCodeSame(302);
         }
 
     }

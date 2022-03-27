@@ -23,7 +23,7 @@ class ProfileController extends AbstractController
 {
 
     /**
-     * @Route("/edit", name="app_profile_edit")
+     * @Route("/edit", name="app_profile_edit", methods={"GET", "POST"})
      *
      * @throws Exception
      */

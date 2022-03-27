@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PublicController extends AbstractController
 {
     /**
-     * @Route("/", name="app_public_index")
+     * @Route("/", name="app_public_index", methods={"GET"})
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -44,7 +44,7 @@ class PublicController extends AbstractController
     }
 
     /**
-     * @Route("/register_supporter", name="app_register_supporter")
+     * @Route("/register_supporter", name="app_register_supporter", methods={"GET", "POST"})
      */
     public function registerSupporter(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -65,7 +65,7 @@ class PublicController extends AbstractController
     }
 
     /**
-     * @Route("/register_result", name="app_register_result")
+     * @Route("/register_result", name="app_register_result", methods={"GET"})
      */
     public function registerResult(): Response
     {

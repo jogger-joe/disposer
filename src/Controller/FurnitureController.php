@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FurnitureController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -29,7 +29,7 @@ class FurnitureController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", requirements={"id": "\d+"})
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
@@ -52,7 +52,7 @@ class FurnitureController extends AbstractController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", methods={"GET", "POST"})
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
