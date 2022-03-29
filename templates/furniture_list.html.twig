@@ -39,7 +39,7 @@
                             </td>
                             <td>{{ currentFurniture.title }}</td>
                             <td>
-                                <span class="badge bg-{{ currentFurniture.type | furnitureTypeColor }}">{{ currentFurniture.type | furnitureTypeLabel }}</span>
+                                <span class="badge {{ currentFurniture.type | furnitureTypeColor }}">{{ currentFurniture.type | furnitureTypeLabel }}</span>
                             </td>
                             <td>{{ currentFurniture.missingAmount }}</td>
                             <td>{{ currentFurniture.updated ? currentFurniture.updated | date('d.m.Y H:i') : '-'}}</td>
