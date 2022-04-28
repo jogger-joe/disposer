@@ -42,7 +42,7 @@
                                 <span class="badge {{ currentFurniture.type | furnitureTypeColor }}">{{ currentFurniture.type | furnitureTypeLabel }}</span>
                             </td>
                             <td>{{ currentFurniture.missingAmount }}</td>
-                            <td>{{ currentFurniture.updated ? currentFurniture.updated | date('d.m.Y H:i') : '-'}}</td>
+                            <td data-order="{{ currentFurniture.updated ? currentFurniture.updated | date('U') : 0 }}">{{ currentFurniture.updated ? currentFurniture.updated | date('d.m.Y H:i') : '-'}}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

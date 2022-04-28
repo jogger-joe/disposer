@@ -38,7 +38,7 @@
                             </td>
                             <td>{{ currentService.title }}</td>
                             <td>{{ currentService.missingAmount }}</td>
-                            <td>{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>
+                            <td data-order="{{ currentService.updated ? currentService.updated | date('U') : 0 }}">{{ currentService.updated ? currentService.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

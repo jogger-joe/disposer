@@ -59,7 +59,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </td>
-                            <td>{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
+                            <td data-order="{{ currentHousing.updated ? currentHousing.updated | date('U') : 0 }}">{{ currentHousing.updated ? currentHousing.updated | date('d.m.Y H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
