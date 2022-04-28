@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Furniture;
 use App\Entity\Housing;
 use App\Entity\Service;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Service\FurnitureTypeResolver;
 use App\Service\HousingStatusResolver;
@@ -41,6 +42,22 @@ class HousingType extends AbstractType
                 'multiple' => false,
                 'expanded' => false
             ])
+            ->add('tags', EntityType::class, [
+                'label' => false,
+                'class' => Tag::class,
+                'by_reference' => false,
+                'choice_label' => function (Tag $tag) {
+                    return $tag->getTitle();
+                },
+                'attr' => [
+                    'class' => 'tag-mode'],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('t')
+                        ->orderBy('t.title', 'ASC');
+                },
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false])
             ->add('missingFurnitures', EntityType::class, [
                 'label' => false,
                 'class' => Furniture::class,

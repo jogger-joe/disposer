@@ -48,6 +48,13 @@ class Housing extends BaseEntity
     private $missingServices;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="housings", cascade={"persist"})
+     *
+     * @var Collection
+     */
+    private $tags;
+
+    /**
      * @ORM\Column(type="integer")
      *
      * @var int
@@ -58,6 +65,7 @@ class Housing extends BaseEntity
     {
         $this->missingFurnitures = new ArrayCollection();
         $this->missingServices = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -135,6 +143,29 @@ class Housing extends BaseEntity
     public function removeMissingService(Service $service): self
     {
         $this->missingServices->removeElement($service);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addHousing($this);
+        }
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
         return $this;
     }
 
