@@ -2,12 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Furniture;
 use App\Entity\Housing;
-use App\Entity\Service;
 use App\Entity\Tag;
-use App\Entity\User;
-use App\Service\FurnitureTypeResolver;
 use App\Service\HousingStatusResolver;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BaseInformationHousingType extends AbstractType
+class HousingNewType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -47,17 +43,6 @@ class BaseInformationHousingType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false])
-            ->add('maintainer', EntityType::class, [
-                'label' => 'für die Pflege der Daten zuständiger User/Helfer',
-                'class' => User::class,
-                'required' => false,
-                'choice_label' => function (User $user) {
-                    return $user->getName();
-                },
-                'placeholder' => '<< kein Benutzer zugeordnet >>',
-                'multiple' => false,
-                'expanded' => false
-            ])
             ->add('save', SubmitType::class, ['label' => 'Speichern']);
     }
 

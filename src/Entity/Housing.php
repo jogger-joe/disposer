@@ -63,7 +63,7 @@ class Housing extends BaseEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="housing")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="housing", cascade={"persist"})
      */
     private $comments;
 
