@@ -21,6 +21,10 @@
             <a class="nav-link" data-bs-toggle="tab" data-bs-target="#housing-comments" href="#">Kommentare
                 ({{ housing.comments|length }})</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#housing-files" href="#">Bilder
+                ({{ housing.files|length }})</a>
+        </li>
 
     </ul>
     {{ form_start(form) }}
@@ -81,27 +85,25 @@
                 {% include 'partials/no-data.html.twig' %}
             </div>
             {% else %}
-            <div class="album py-5">
-                <div class="container">
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        {% for file in housing.files|sort((a, b) => b.created <=> a.created) %}
-                            <div class="col">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for file in housing.files|sort((a, b) => b.created <=> a.created) %}
+                    <div class="col">
 
-                                <div class="card shadow-sm">
-                                    <div class="card-header">{{ file.title }}</div>
-                                    <div class="card-body">
-                                        <img src="{{ asset('uploads/' ~ file.filename) }}" alt="{{ file.filename }}"/>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small>erstellt: {{ file.createdBy }}
-                                            ({{ file.created ? file.created | date('d.m.Y H:i') : '-' }})</small>
-                                    </div>
-                                </div>
+                        <div class="card shadow-sm">
+                            <div class="card-header">{{ file.title }}</div>
+                            <div class="card-body">
+                                <a href="{{ asset('uploads/' ~ file.filename) }}" target="_blank"><img
+                                        src="{{ asset('uploads/' ~ file.filename) }}" alt="{{ file.filename }}"
+                                        style="max-width: 100%;"/></a>
                             </div>
-                        {% endfor %}
-                        {% endif %}
+                            <div class="card-footer">
+                                <small>erstellt: {{ file.createdBy }}
+                                    ({{ file.created ? file.created | date('d.m.Y H:i') : '-' }})</small>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -110,6 +112,10 @@
         <div class="mb-3 ms-3">
             <a type="button" id="housing_comment" href="{{ path('app_housing_comment', {'id': housing.id}) }}"
                class="btn-outline-secondary btn">Kommentar hinzufügen</a>
+        </div>
+        <div class="mb-3 ms-3">
+            <a type="button" id="housing_comment" href="{{ path('app_housing_file', {'id': housing.id}) }}"
+               class="btn-outline-secondary btn">Bild hinzufügen</a>
         </div>
     </div>
     {{ form_end(form) }}
