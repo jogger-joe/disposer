@@ -21,10 +21,11 @@
             </ul>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Einrichtungsgegenstände & Hilfe</a>
+            <a class="nav-link link-dark px-2 dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Datenpflege</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Einrichtungsgegenstände anzeigen</a></li>
-                <li class="nav-item"><a href="{{ path('app_service_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Hilfe anzeigen</a></li>
+                <li class="nav-item"><a href="{{ path('app_furniture_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Einrichtungsgegenstände</a></li>
+                <li class="nav-item"><a href="{{ path('app_service_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Hilfe</a></li>
+                <li class="nav-item"><a href="{{ path('app_tag_index') }}" class="nav-link link-dark px-2 {% if not is_granted('ROLE_USER') %}disabled{% endif %}">Tags</a></li>
             </ul>
         </li>
     </ul>

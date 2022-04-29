@@ -25,6 +25,7 @@
                         <th>Titel</th>
                         <th>Beschreibung</th>
                         <th>Status</th>
+                        <th>Tags</th>
                         <th>fehlende Einrichtung</th>
                         <th>fehlende Hilfe</th>
                         <th>aktualisiert</th>
@@ -44,6 +45,13 @@
                             <td>{{ currentHousing.description }}</td>
                             <td>
                             <span class="badge {{ currentHousing.status | housingStatusColor }}">{{ currentHousing.status | housingStatusLabel }}</span>
+                            </td>
+                            <td>
+                                {% if currentHousing.tags is not empty %}
+                                    {% for tag in currentHousing.tags|sort((a, b) => a.title <=> b.title) %}
+                                        <span class="badge" style="background-color:{{ tag.color }};">{{ tag.title }}</span>
+                                    {% endfor %}
+                                {% endif %}
                             </td>
                             <td>
                                 {% if currentHousing.missingFurnitures is not empty %}

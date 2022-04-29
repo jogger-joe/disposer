@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Housing;
 use App\Entity\User;
+use App\Form\CommentType;
+use App\Form\HousingNewType;
 use App\Form\HousingType;
 use App\Form\MaintainHousingType;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,7 +64,7 @@ class HousingController extends AbstractController
     public function edit(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
         $housing = $doctrine->getRepository(Housing::class)->find($id);
-        if (!$housing) {
+        if (!$housing instanceof Housing) {
             throw $this->createNotFoundException(
                 'no housing found for id ' . $id
             );
@@ -72,9 +75,35 @@ class HousingController extends AbstractController
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_index');
         }
-        return $this->renderForm('edit.html.twig', [
+        return $this->renderForm('housing_edit.html.twig', [
             'title' => 'Unterkunft bearbeiten',
-            'form' => $form,
+            'housing' => $housing,
+            'form' => $form
+        ]);
+    }
+
+    /**
+     * @Route("/comment/{id}", name="app_housing_comment", requirements={"id": "\d+"}, methods={"GET", "POST"})
+     */
+    public function addComment(Request $request, ManagerRegistry $doctrine, int $id): Response
+    {
+        $housing = $doctrine->getRepository(Housing::class)->find($id);
+        if (!$housing instanceof Housing) {
+            throw $this->createNotFoundException(
+                'no housing found for id ' . $id
+            );
+        }
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $housing->addComment($comment);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_housing_edit', ['id' => $id]);
+        }
+        return $this->renderForm('edit.html.twig', [
+            'title' => sprintf('Kommentar für Unterkunft `%s` erstellen', $housing->getTitle()),
+            'form' => $form
         ]);
     }
 
@@ -117,13 +146,13 @@ class HousingController extends AbstractController
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
         $housing = new Housing();
-        $form = $this->createForm(HousingType::class, $housing);
+        $form = $this->createForm(HousingNewType::class, $housing);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $housing = $form->getData();
             $doctrine->getManager()->persist($housing);
             $doctrine->getManager()->flush();
-            return $this->redirectToRoute('app_housing_index');
+            return $this->redirectToRoute('app_housing_edit', ['id' => $housing->getId()]);
         }
         return $this->renderForm('edit.html.twig', [
             'title' => 'Neue Unterkunft erstellen',
