@@ -22,6 +22,7 @@ class HousingNewType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('description', TextareaType::class, ['label' => 'Beschreibung'])
+            ->add('owner', TextareaType::class, ['label' => 'Eigentümer/Vermieter'])
             ->add('status', ChoiceType ::class, [
                 'label' => 'Status',
                 'choices' => HousingStatusResolver::getHousingStatusChoices(),

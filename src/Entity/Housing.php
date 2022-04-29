@@ -21,11 +21,18 @@ class Housing extends BaseEntity
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true, options={"default" : ""})
      *
      * @var string
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true, options={"default" : ""})
+     *
+     * @var string
+     */
+    private $owner;
 
     /**
      * @ORM\ManyToMany(targetEntity=Furniture::class, inversedBy="housings", cascade={"persist"})
@@ -105,6 +112,22 @@ class Housing extends BaseEntity
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOwner(): string
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param string $owner
+     */
+    public function setOwner(string $owner): void
+    {
+        $this->owner = $owner;
     }
 
     /**

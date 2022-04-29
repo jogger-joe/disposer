@@ -24,8 +24,7 @@
                         <th>Aktionen</th>
                         <th>Titel</th>
                         <th>Beschreibung</th>
-                        <th>Status</th>
-                        <th>Tags</th>
+                        <th>Status/Tags</th>
                         <th>fehlende Einrichtung</th>
                         <th>fehlende Hilfe</th>
                         <th>aktualisiert</th>
@@ -41,12 +40,10 @@
                                     {% include 'partials/delete-button.html.twig' with {'path': path('app_housing_remove', {'id': currentHousing.id}) } %}
                                 </div>
                             </td>
-                            <td>{{ currentHousing.title }}</td>
+                            <td>{{ currentHousing.title }}{% if currentHousing.owner %} <span title="{{ currentHousing.owner }}"><i class="bi bi-person-lines-fill"></i></span>{% endif %}</td>
                             <td>{{ currentHousing.description }}</td>
                             <td>
-                            <span class="badge {{ currentHousing.status | housingStatusColor }}">{{ currentHousing.status | housingStatusLabel }}</span>
-                            </td>
-                            <td>
+                                <span class="badge {{ currentHousing.status | housingStatusColor }}">{{ currentHousing.status | housingStatusLabel }}</span>
                                 {% if currentHousing.tags is not empty %}
                                     {% for tag in currentHousing.tags|sort((a, b) => a.title <=> b.title) %}
                                         <span class="badge" style="background-color:{{ tag.color }};">{{ tag.title }}</span>
