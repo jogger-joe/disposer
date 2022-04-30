@@ -74,12 +74,19 @@ class Housing extends BaseEntity
      */
     private $comments;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity=HousingFile::class, mappedBy="housing", cascade={"persist"})
+     */
+    private $files;
+
     public function __construct()
     {
         $this->missingFurnitures = new ArrayCollection();
         $this->missingServices = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     /**
@@ -267,6 +274,37 @@ class Housing extends BaseEntity
     public function removeComment(Comment $comment): self
     {
         $this->comments->removeElement($comment);
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param Collection $files
+     */
+    public function setFiles(Collection $files): void
+    {
+        $this->files = $files;
+    }
+
+    public function addFile(HousingFile $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+            $file->setHousing($this);
+        }
+        return $this;
+    }
+
+    public function removeFile(HousingFile $file): self
+    {
+        $this->files->removeElement($file);
         return $this;
     }
 }

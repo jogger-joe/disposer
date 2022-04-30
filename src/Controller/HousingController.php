@@ -4,14 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Housing;
+use App\Entity\HousingFile;
 use App\Entity\User;
 use App\Form\CommentType;
+use App\Form\HousingFileType;
 use App\Form\HousingNewType;
 use App\Form\HousingType;
 use App\Form\MaintainHousingType;
+use App\Service\FileUploader;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,13 +100,44 @@ class HousingController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-        $housing->addComment($comment);
         if ($form->isSubmitted() && $form->isValid()) {
+            $housing->addComment($comment);
             $doctrine->getManager()->flush();
             return $this->redirectToRoute('app_housing_edit', ['id' => $id]);
         }
         return $this->renderForm('edit.html.twig', [
             'title' => sprintf('Kommentar für Unterkunft `%s` erstellen', $housing->getTitle()),
+            'form' => $form
+        ]);
+    }
+
+    /**
+     * @Route("/file/{id}", name="app_housing_file", requirements={"id": "\d+"}, methods={"GET", "POST"})
+     */
+    public function addFile(Request $request, ManagerRegistry $doctrine, FileUploader $fileUploader, int $id): Response
+    {
+        $housing = $doctrine->getRepository(Housing::class)->find($id);
+        if (!$housing instanceof Housing) {
+            throw $this->createNotFoundException(
+                'no housing found for id ' . $id
+            );
+        }
+        $file = new HousingFile();
+        $form = $this->createForm(HousingFileType::class, $file);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $formFile = $form->get('file')->getData();
+            if ($formFile) {
+                $filename = $fileUploader->upload($formFile);
+                $file->setFilename($filename);
+            }
+            $housing->addFile($file);
+            $doctrine->getManager()->flush();
+            return $this->redirectToRoute('app_housing_edit', ['id' => $id]);
+        }
+        return $this->renderForm('edit.html.twig', [
+            'title' => sprintf('Bild für Unterkunft `%s` hinzufügen', $housing->getTitle()),
             'form' => $form
         ]);
     }
