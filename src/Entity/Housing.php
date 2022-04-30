@@ -92,7 +92,7 @@ class Housing extends BaseEntity
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -108,7 +108,7 @@ class Housing extends BaseEntity
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -124,7 +124,7 @@ class Housing extends BaseEntity
     /**
      * @return string
      */
-    public function getOwner(): string
+    public function getOwner(): ?string
     {
         return $this->owner;
     }
