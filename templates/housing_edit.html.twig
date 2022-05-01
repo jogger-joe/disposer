@@ -106,16 +106,16 @@
                 {% endif %}
             </div>
         </div>
-    </div>
-    <div class="btn-group">
-        {{ form_row(form.save) }}
-        <div class="mb-3 ms-3">
-            <a type="button" id="housing_comment" href="{{ path('app_housing_comment', {'id': housing.id}) }}"
-               class="btn-outline-secondary btn">Kommentar hinzufügen</a>
-        </div>
-        <div class="mb-3 ms-3">
-            <a type="button" id="housing_comment" href="{{ path('app_housing_file', {'id': housing.id}) }}"
-               class="btn-outline-secondary btn">Bild hinzufügen</a>
+        <div class="btn-group mt-5">
+            {{ form_row(form.save) }}
+            <div class="mb-3 ms-3">
+                <a type="button" id="housing_comment" href="{{ path('app_housing_comment', {'id': housing.id}) }}"
+                   class="btn-outline-secondary btn">Kommentar hinzufügen</a>
+            </div>
+            <div class="mb-3 ms-3">
+                <a type="button" id="housing_comment" href="{{ path('app_housing_file', {'id': housing.id}) }}"
+                   class="btn-outline-secondary btn">Bild hinzufügen</a>
+            </div>
         </div>
     </div>
     {{ form_end(form) }}
