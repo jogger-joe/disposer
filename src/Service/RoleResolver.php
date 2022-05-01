@@ -16,6 +16,7 @@ class RoleResolver
         'ROLE_ADMIN_SERVICE' => 'Dienstleistungen verwalten',
         'ROLE_ADMIN_SUPPORTER' => 'Helfer verwalten',
         'ROLE_ADMIN_HOUSING' => 'Unterkünfte verwalten',
+        'ROLE_ADMIN_TAG' => 'Tags verwalten',
         'ROLE_USER' => 'Read-Only Benutzer',
         'ROLE_SUPPORTER' => 'Zugeordnete Wohnungen pflegen',
         'ROLE_GUEST' => 'registrierter User',
